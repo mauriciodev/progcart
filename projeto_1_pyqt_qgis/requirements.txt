@@ -1,1 +1,3 @@
- 
+pytest
+pytest-qt
+PyQt6
