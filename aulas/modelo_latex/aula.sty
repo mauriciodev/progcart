@@ -1,0 +1,46 @@
+\ProvidesPackage{aula}
+
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath, amssymb}
+
+\usetheme{Madrid}
+%\usecolortheme{default}
+
+
+
+\author{Maurício C. M. de Paulo - D.Sc.}
+
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+
+
+
+% Código
+\usepackage{minted}
+
+% Configuração global do Minted
+\setminted{
+	fontsize=\small,
+	frame=single,
+	linenos,
+	%breaklines=true,
+	%tabsize=2, % Python geralmente usa 4 espaços
+	%showspaces=true,
+	%keepspaces=true,
+	%bgcolor=codegray % Usando a cor que você definiu
+}
+%
+%\definecolor{minhacor}{RGB}{0,60,120}
+%
+%\setbeamercolor{title}{fg=minhacor}
+%\setbeamercolor{frametitle}{fg=minhacor}
+
+%\newcommand{\destaque}[1]{\textcolor{minhacor}{\textbf{#1}}}
+
+\newenvironment{exemplo}{
+	\begin{block}{Exemplo}
+	}{
+	\end{block}
+}
+
+ 
