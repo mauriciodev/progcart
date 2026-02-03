@@ -3,14 +3,14 @@
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
 \usepackage{amsmath, amssymb}
-
+\usepackage{booktabs}
 \usetheme{Madrid}
 %\usecolortheme{default}
 
 
 
 \author{Maurício C. M. de Paulo - D.Sc.}
-
+\subtitle{Disciplina: Programação aplicada à engenharia cartográfica}
 \definecolor{codegray}{rgb}{0.95,0.95,0.95}
 
 
@@ -37,10 +37,26 @@
 
 %\newcommand{\destaque}[1]{\textcolor{minhacor}{\textbf{#1}}}
 
+\newcommand{\espaco}{\vspace{0.3cm}}
+
 \newenvironment{exemplo}{
 	\begin{block}{Exemplo}
 	}{
 	\end{block}
 }
+
+
+\newcommand{\colimage}[2][]{%
+	\begin{figure}
+		\centering
+		\includegraphics[
+		width=\columnwidth,
+		keepaspectratio,
+		#1
+		]{#2}
+	\end{figure}
+}
+
+
 
  

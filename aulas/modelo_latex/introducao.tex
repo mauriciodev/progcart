@@ -1,0 +1,293 @@
+\documentclass{beamer}
+
+\usepackage{aula}
+
+\title{Ambiente de desenvolvimento}
+\date{\today}
+
+\begin{document}
+	
+\input{capa}
+
+
+\begin{frame}{Instalação do Python (com ambientes virtuais)}
+Ambiente virtuais em Python: 
+\begin{itemize}
+	\item Isolamento de dependências entre projetos
+	\item Evita conflitos de versões de bibliotecas
+	\item Permite usar diferentes versões do Python no mesmo sistema
+	\item Facilita a reprodução do ambiente em outros computadores
+	\item Reduz riscos de quebrar aplicações existentes ao instalar novos pacotes
+\end{itemize}
+\textbf{Principal objetivo}: instalar GDAL e QGIS
+\end{frame}
+
+\begin{frame}{Instalação do Python (com ambientes virtuais)}
+	Gerenciadores de ambientes:
+	\begin{tabular}{p{2cm} p{2.5cm} p{2.8cm} p{3cm}}
+		\toprule
+		\textbf{Ferramenta} &
+		\textbf{Descrição} &
+		\textbf{Ambiente} &
+		\textbf{Observações} \\
+		\midrule
+		
+		pip + venv &
+		Pacotes Python &
+		Virtual no projeto &
+		Padrão do Python \\ \midrule
+		
+		uv &
+		pip + venv rápido &
+		Ambientes e projetos &
+		Alto desempenho \\ \midrule
+		
+		Conda &
+		Pacotes diversos &
+		Estrutura Conda &
+		Ciência de dados \\ \midrule
+		
+		Pixi &
+		Alternativa ao Conda &
+		Estilo Conda &
+		Substituto moderno \\
+		
+		\bottomrule
+	\end{tabular}
+	\begin{itemize}
+		\item GDAL e QGIS: Pixi (recomendado) ou miniforge (conda).
+		\item Deep learning: uv para pytorch, tensorflow, etc.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Interface de desenvolvimento}
+	\textbf{Integrated Development Environment (IDE)}
+	\textbf{VSCodium}: \url{https://vscodium.com/}
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+
+			Versão \textbf{código aberto} do VS Code.
+			
+			\textbf{Usaremos para:}
+			\begin{itemize}
+				\item Escrever código Python
+				\item Depuração (Debug)
+				\item Controle de versões de código (Git)
+				\item Cadernos Jupyter
+				\item Desenhar diagramas
+				\begin{itemize}
+					\item Fluxogramas
+					\item UML: Classes
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		
+		\begin{column}[t]{0.48\textwidth}
+			\colimage{./introducao_figs/ides.png}
+		\end{column}
+	\end{columns}	
+\end{frame}
+
+\begin{frame}{Interface de desenvolvimento}
+	Caso ainda não tenha instalado, essa é a hora de instalar o VSCodium
+	\begin{itemize}
+		\item Windows: winget VSCodium.VSCodium
+		\item Linux: Baixar .deb em https://github.com/VSCodium/vscodium/releases
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Copilotos de desenvolvimento}
+	Origem: StackOverflow \url{https://stackoverflow.com/}
+	
+	\begin{itemize}
+		
+		\item ChatGPT \url{https://chatgpt.com/} (gratuito)
+		\item Github Copilot \url{https://github.com/features/copilot} (gratuito)
+		\item Gemini \url{https://gemini.google.com} (gratuito)	
+		\item Llama: \url{https://www.meta.ai/} (gratuito + pesos e código abertos)
+		\item \textbf{Instalação local}: OLLAMA \url{https://ollama.com/} 
+	\end{itemize}
+	Entre outros, alguns especialistas. 
+	
+	\espaco
+	Não confie cegamente no trabalho de outra pessoa.  
+	
+	\espaco
+	Muito menos de uma IA.
+\end{frame}
+
+\begin{frame}{Copilotos de desenvolvimento}
+	Extensões disponíveis no VSCode/VSCodium:
+	\begin{itemize}
+		\item Github Copilot (nativo)
+		\item Gemini 
+		\item Continue.dev + Ollama \textbf{Instalação local}
+		\item Codegpt
+	\end{itemize}
+	\espaco
+	Cuidados:
+	\begin{itemize}
+		\item Seu código é compartilhado com o dono do serviço (exceto se o serviço for seu).
+		\item É fácil consumir todos os limites de uso das versões gratúitas.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Fluxograma}
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+			
+			\begin{itemize}
+				\item Pasta: \url{projeto/docs/fluxograma.drawio}	
+				\item Abrir com: \url{https://www.drawio.com/}			
+				\item VSCodium Draw.io Integration (Author: Hediet)
+				\item Tutorial de edição: \url{https://www.drawio.com/doc/getting-started-basic-flow-chart}
+			\end{itemize}
+		\end{column}
+		
+		\begin{column}[t]{0.48\textwidth}
+			\colimage{./introducao_figs/fluxograma.png}
+		\end{column}
+	\end{columns}	
+\end{frame}
+
+
+\begin{frame}{Diagramas de classes (UML)}
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+			\begin{itemize}
+				\item Pasta: \url{projeto/docs/diagrama_de_classes.drawio}	
+				\item Abrir com: \url{https://www.drawio.com/}			
+				\item VSCodium Draw.io Integration (Author: Hediet)
+				\item Tutorial de edição: \url{https://www.drawio.com/blog/uml-class-diagrams}s
+			\end{itemize}
+		\end{column}
+		
+		\begin{column}[t]{0.48\textwidth}
+			\colimage{./introducao_figs/classes.png}
+		\end{column}
+	\end{columns}	
+\end{frame}
+
+\begin{frame}{Ciclos de desenvolvimento}
+\begin{itemize}
+	\item Desenvolvimento ágil em ciclos de 2 semanas
+	\item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
+	\item Programação em pares (Xtreme programming - XP)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Projetos}
+	\begin{itemize}
+		\item Plugin Hello Map
+		\item Carregar dados matriciais e vetoriais no QGIS (GDAL opcional)
+		\item Abrir coordenadas da rede de monitoramento SIRGAS e converter para um arquivo vetorial
+		\item Baixar e manipular dados tabulados com Pandas e escrever com Geopandas.
+		\item Processing Plugin de extrair cotas de um Modelo Digital de Superfícies
+		\item Manipular dados matriciais e vetoriais no QGIS
+		\item Operações topológicas
+		\item Processing Plugin com model builder para resolver um problema de geoprocessamento.
+		\item (Opcional): RasterIO+Sklearn (XGBoost)
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Estrutura dos projetos}
+\begin{itemize}
+	\item /docs
+	\begin{itemize}
+		\item Diagrama de classes: Representa visualmente as principais classes que serão implementadas.
+		\item Fluxogramas: Representa uma visão geral de um procedimento importante.
+	\end{itemize}
+	\item /src
+	\begin{itemize}
+		\item Exemplos de código
+	\end{itemize}
+	\item /tests
+	\begin{itemize}
+		\item Testes unitários: Verificam partes do código utilizando entradas e saídas controladas.
+	\end{itemize}
+\end{itemize}	
+\end{frame}
+
+
+\begin{frame}{Avaliação}
+	
+\begin{itemize}
+	\item 	6 – Implementação (entrega no classroom)
+	\item 	Em pares.
+	\item 	3 – Apresentação oral do código (no computador)
+	\item 	Alternado entre os dos dois membros do par.
+	\item 	1 – Inovação
+	\item 	Ponto para ideias interessantes que o par tiver. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cronograma de aulas}
+	
+\end{frame}
+
+\begin{frame}{Bibliotecas úteis}
+
+\begin{itemize}
+	\item 	Matemática: Numpy, Scipy
+	\item 	Interface gráfica (GUI): PyQt5, Tkinter
+	\item 	Análises em SIG: PyQGIS, OGR
+	\item 	Dados raster geográficos: GDAL, Fiona, Rasterio,
+	\item 	Dataframes (tabelas): Pandas, Geopandas, Polars
+	\item 	Gráficos científicos: Matplotlib, Plotly
+	\item 	Backend Web: FastAPI, Flask, Django
+	\item 	Backend com interface: Taipy, Streamlit
+	\item 	Aprendizado de máquina: Sklearn, Keras, Torch, Tensorflow, Jax
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Prática pixi}
+	
+	\begin{itemize}
+		\item Criar a pasta do projeto e acessar a pasta
+		\item mkdir projeto0
+		\item cd projecto0
+		\item Inicializar o ambiente
+		\item pixi init
+		\item Ativar o ambiente criado:
+		\item Instalando pacotes:
+		\item pixi add qgis
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Prática VSCodium}
+\begin{itemize}
+	\item Prática
+	\item Fluxograma no VSCodium
+	\item Debug no VSCodium
+	\item Ctrl+Shift+P
+	\item Select Python Interpreter
+	\item Parar debugar: F5	
+\end{itemize}
+\end{frame}
+
+
+
+
+%\begin{frame}{titulo}
+%	
+%\end{frame}
+
+%\begin{frame}[fragile]{Código Python}
+%	\begin{minted}{python}
+%	def soma(a, b):
+%  return a + b
+%	\end{minted}
+%\end{frame}
+
+
+
+
+
+\end{document}

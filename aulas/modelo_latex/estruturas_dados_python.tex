@@ -1,94 +1,95 @@
 \documentclass{beamer}
 \usepackage{aula}
 
-\title{Estruturas de Dados Básicas em Python}
+\title{Python não tão básico}
 \date{\today}
 
 \begin{document}
 	
-	\begin{frame}
-		\titlepage
-	\end{frame}
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}{Objetivos}
+\begin{itemize}
+	\item Aprender a formatar strings em Python.
+	\item Aprender as estruturas de dados mais usadas.
+	\item Aprender a usar funções para organizar o código.
+\end{itemize}
+\end{frame}
 	
-	\begin{frame}{Objetivos}
-	\begin{itemize}
-		\item Aprender a formatar strings em Python.
-		\item Aprender as estruturas de dados mais usadas.
-	\end{itemize}
-	\end{frame}
+\begin{frame}[fragile]{Formatação de strings em Python}
 	
-	\begin{frame}[fragile]{Formatação de strings em Python}
-		
-		Existem três formas principais de formatar strings em Python:
-		
-		\vspace{0.3cm}
-		
-		\textbf{1. Operador \% (legado – evitar)}
-		\begin{minted}{python}
+	Existem três formas principais de formatar strings em Python:
+	
+	\vspace{0.3cm}
+	
+	\textbf{1. Operador \% (legado – evitar)}
+	\begin{minted}{python}
 nome = "Ana"
 idade = 20
 msg = "Nome: %s, Idade: %d" % (nome, idade)
-		\end{minted}
-		
-		\vspace{0.2cm}
-		
-		\textbf{2. Método \texttt{str.format()}}
-		\begin{minted}{python}
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{2. Método \texttt{str.format()}}
+	\begin{minted}{python}
 msg = "Nome: {}, Idade: {}".format(nome, idade)
 msg = "Nome: {n}, Idade: {i}".format(n=nome, i=idade)
-		\end{minted}
-		
-		\vspace{0.2cm}
-		
-		\textbf{3. f-strings (recomendado, Python $\ge$ 3.6)}
-		\begin{minted}{python}
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{3. f-strings (recomendado, Python $\ge$ 3.6)}
+	\begin{minted}{python}
 msg = f"Nome: {nome}, Idade: {idade}"
-		\end{minted}
-		
-		\textbf{Vantagens das f-strings:}
-		\begin{itemize}
-			\item Mais legíveis
-			\item Mais concisas
-			\item Permitem expressões: \texttt{f"\{x + y\}"}
-		\end{itemize}
-		
-	\end{frame}
+	\end{minted}
+	
+	\textbf{Vantagens das f-strings:}
+	\begin{itemize}
+		\item Mais legíveis
+		\item Mais concisas
+		\item Permitem expressões: \texttt{f"\{x + y\}"}
+	\end{itemize}
+	
+\end{frame}
 
 	
 	
-	\begin{frame}[fragile]{Listas em Python}
+\begin{frame}[fragile]{Listas em Python}
 		
-		\textbf{Listas} são estruturas que armazenam uma sequência de valores,
-		podendo conter elementos de tipos diferentes.
-		
-		\vspace{0.3cm}
-		
-		\textbf{Criação de listas}
-		\begin{minted}{python}
+	\textbf{Listas} são estruturas que armazenam uma sequência de valores,
+	podendo conter elementos de tipos diferentes.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Criação de listas}
+	\begin{minted}{python}
 numeros = [1, 2, 3, 4]
 nomes = ["Ana", "João", "Maria"]
 mistura = [10, "texto", 3.14]
-		\end{minted}
-		
-		\vspace{0.2cm}
-		
-		\textbf{Acesso aos elementos (indexação começa em 0)}
-		\begin{minted}{python}
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{Acesso aos elementos (indexação começa em 0)}
+	\begin{minted}{python}
 print(numeros[0])   # 1
 print(nomes[2])     # Maria
 print(numeros[-1])  # último elemento
-		\end{minted}
-		
-		\vspace{0.2cm}
-		
-		\textbf{Operações comuns}
-		\begin{minted}{python}
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{Operações comuns}
+	\begin{minted}{python}
 numeros.append(5)      # adiciona no final
 numeros.remove(2)      # remove o valor 2
 tamanho = len(numeros) # quantidade de elementos
-		\end{minted}
-		
-	\end{frame}
+	\end{minted}
+	
+\end{frame}
 
 	
 	
@@ -132,29 +133,21 @@ C = A.T             # transposta
 \end{frame}
 
 	
-	\begin{frame}[fragile]{Operações com Matrizes}
-		\textbf{Percorrendo a matriz com for}
-		\begin{minted}{python}
+\begin{frame}[fragile]{Operações com Matrizes}
+	\textbf{Percorrendo a matriz com for}
+	\begin{minted}{python}
 for i in range(len(matriz)):
 	for j in range(len(matriz[i])):
 		print(matriz[i][j])
-		\end{minted}
-		\textbf{Criação rápida}
-		\begin{minted}{python}
+	\end{minted}
+	\textbf{Criação rápida}
+	\begin{minted}{python}
 Z = np.zeros((3, 3))
 I = np.eye(3)
-		\end{minted}
-	\end{frame}
+	\end{minted}
+\end{frame}
 	
-	\begin{frame}[fragile]{Tuplas}
-		\begin{itemize}
-			\item Estrutura imutável
-		\end{itemize}
-		\begin{minted}{python}
-ponto = (3, 4)
-x, y = ponto
-		\end{minted}
-	\end{frame}
+
 	
 \begin{frame}[fragile]{Dicionários em Python}
 	
@@ -200,12 +193,94 @@ pares = aluno.items()
 \end{frame}
 
 	
-	\begin{frame}{Exercícios}
-		\begin{itemize}
-			\item Criar uma lista e calcular a média
-			\item Somar todos os elementos de uma matriz
-			\item Criar um dicionário de que relaciona o nome do aluno à sua nota.
-		\end{itemize}
-	\end{frame}
+\begin{frame}{Exercícios}
+	\begin{itemize}
+		\item Criar uma lista e calcular a média
+		\item Somar todos os elementos de uma matriz
+		\item Criar um dicionário de que relaciona o nome do aluno à sua nota.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[c]
+	
+	\begin{center}
+		\Large Utilizando funções para organizar o código.
+	\end{center}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Código sem funções}
+	
+	Considere um programa que calcula a média de notas de um aluno:
+	
+	\vspace{0.3cm}
+	
+	\begin{minted}{python}
+notas = [7.0, 8.5, 6.0, 9.0]
+
+soma = 0
+	for n in notas:
+		soma += n
+
+media = soma / len(notas)
+
+if media >= 7:
+	print("Aprovado")
+else:
+	print("Reprovado")
+	\end{minted}
+	
+\end{frame}
+
+\begin{frame}{Problemas do código sem funções}
+	
+	Embora o código funcione, ele apresenta limitações:
+	
+	\begin{itemize}
+		\item Tudo está misturado em um único bloco
+		\item Difícil de reutilizar em outro programa
+		\item Difícil de testar partes específicas
+		\item Pouca clareza sobre \textbf{o que} cada parte faz
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Problema central:} tarefas diferentes não estão separadas.
+	\vspace{0.3cm}
+	
+	Problemas complexos devem ser divididos em problemas menores, com soluções \textbf{reusáveis}.
+	\vspace{0.3cm}
+	
+	Bônus: Podemos dividir tarefas e cada aluno implementar uma parte do problema?
+	
+\end{frame}
+
+\begin{frame}[fragile]{Código com funções}
+	
+	Agora o mesmo programa dividido em funções:
+	
+	\vspace{0.3cm}
+	
+	\begin{minted}{python}
+def calcula_media(notas):
+	soma = 0
+	for n in notas:
+		soma += n
+	return soma / len(notas)
+
+def resultado(media):
+	if media >= 7:
+		return "Aprovado"
+	else:
+		return "Reprovado"
+
+notas = [7.0, 8.5, 6.0, 9.0]
+media = calcula_media(notas)
+print(resultado(media))
+	\end{minted}
+	
+\end{frame}
+
 	
 \end{document}
