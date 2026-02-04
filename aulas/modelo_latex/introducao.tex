@@ -66,6 +66,112 @@ Ambiente virtuais em Python:
 \end{frame}
 
 
+
+\begin{frame}{Pixi: visão geral}
+	
+	\textbf{Pixi} é uma ferramenta moderna para:
+	\begin{itemize}
+		\item Gerenciar \textbf{ambientes} de desenvolvimento
+		\item Gerenciar \textbf{dependências} de projetos
+		\item Reproduzir projetos de forma consistente
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Principais características:}
+	\begin{itemize}
+		\item Baseado no ecossistema Conda
+		\item Rápido e determinístico
+		\item Um projeto = um ambiente
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Ideia central:}  
+	Cada projeto Python possui seu próprio ambiente isolado.
+	
+\end{frame}
+
+\begin{frame}[fragile]{Pixi: Criando um projeto Pixi}
+	
+	\textbf{Passo 1: criar o projeto}
+	
+	\begin{minted}{bash}
+		pixi init meu_projeto
+	\end{minted}
+	
+	Isso cria:
+	\begin{itemize}
+		\item Uma pasta do projeto
+		\item O arquivo \texttt{pixi.toml}
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Arquivo central: \texttt{pixi.toml}}
+	\begin{itemize}
+		\item Lista dependências
+		\item Define versões
+		\item Descreve o ambiente
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Pixi: Adicionando dependências}
+	
+	\textbf{Passo 2: adicionar pacotes ao projeto}
+	
+	\begin{minted}{bash}
+		pixi add python numpy pandas qgis
+	\end{minted}
+	
+	O Pixi:
+	\begin{itemize}
+		\item Resolve dependências automaticamente
+		\item Cria o ambiente isolado
+		\item Atualiza o \texttt{pixi.toml}
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Importante:}
+	\begin{itemize}
+		\item Não use \texttt{pip install} diretamente
+		\item As dependências ficam documentadas no projeto
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Pixi: Executando código no ambiente}
+	
+	\textbf{Passo 3: usar o ambiente Pixi}
+	
+	\begin{minted}{bash}
+pixi shell
+	\end{minted}
+	
+	Entra em um shell com o ambiente ativo.
+	
+	\vspace{0.3cm}
+	
+	Ou execute comandos diretamente:
+	
+	\begin{minted}{bash}
+pixi run python main.py
+pixi run qgis
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Benefícios:}
+	\begin{itemize}
+		\item Mesmo ambiente para todos os usuários
+		\item Menos erros de “funciona na minha máquina”
+		\item Projeto mais organizado e reproduzível
+	\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Interface de desenvolvimento}
 	\textbf{Integrated Development Environment (IDE)}
 	\textbf{VSCodium}: \url{https://vscodium.com/}
@@ -123,7 +229,7 @@ Ambiente virtuais em Python:
 	\textbf{\Large{Muito menos de uma IA.}}
 \end{frame}
 
-\begin{frame}{Copilotos de desenvolvimento}
+\begin{frame}{VSCodium: Copilotos de desenvolvimento}
 	Extensões disponíveis no VSCode/VSCodium:
 	\begin{itemize}
 		\item Github Copilot (nativo)
@@ -140,7 +246,7 @@ Ambiente virtuais em Python:
 \end{frame}
 
 
-\begin{frame}{Fluxograma}
+\begin{frame}{VSCodium: Fluxograma}
 	\begin{columns}[t]
 		\begin{column}[t]{0.48\textwidth}
 			
@@ -159,7 +265,7 @@ Ambiente virtuais em Python:
 \end{frame}
 
 
-\begin{frame}{Diagramas de classes (UML)}
+\begin{frame}{VSCodium: Diagramas de classes (UML)}
 	\begin{columns}[t]
 		\begin{column}[t]{0.48\textwidth}
 			\begin{itemize}
@@ -176,58 +282,24 @@ Ambiente virtuais em Python:
 	\end{columns}	
 \end{frame}
 
-\begin{frame}{Ciclos de desenvolvimento}
-\begin{itemize}
-	\item Desenvolvimento ágil em ciclos de 2 semanas
-	\item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
-	\item Programação em pares (Xtreme programming - XP)
-\end{itemize}
-\begin{figure}
-	\includegraphics[width=\textwidth]{./introducao_figs/xp.png}
-\end{figure}
-	
-\end{frame}
-
-
 \begin{frame}{Projetos}
 	\begin{itemize}
 		\item Plugin Hello Map
-		\item Carregar dados matriciais e vetoriais no QGIS (GDAL opcional)
+		\\ Carregar dados matriciais e vetoriais no QGIS (GDAL opcional)
 		\item Abrir coordenadas da rede de monitoramento SIRGAS e converter para um arquivo vetorial
-		\item Baixar e manipular dados tabulados com Pandas e escrever com Geopandas.
+		\\ Baixar e manipular dados tabulados com Pandas e escrever com Geopandas.
 		\item Processing Plugin de extrair cotas de um Modelo Digital de Superfícies
-		\item Manipular dados matriciais e vetoriais no QGIS
+		\\ Manipular dados matriciais e vetoriais no QGIS
 		\item Operações topológicas
-		\item Processing Plugin com model builder para resolver um problema de geoprocessamento.
+		\\ Processing Plugin com model builder para resolver um problema de geoprocessamento.
 		\item (Opcional): RasterIO+Sklearn (XGBoost)
 	\end{itemize}
 \end{frame}
 
-
-
-\begin{frame}{Estrutura dos projetos}
-\begin{itemize}
-	\item /docs
-	\begin{itemize}
-		\item Diagrama de classes: Representa visualmente as principais classes que serão implementadas.
-		\item Fluxogramas: Representa uma visão geral de um procedimento importante.
-	\end{itemize}
-	\item /src
-	\begin{itemize}
-		\item Exemplos de código
-	\end{itemize}
-	\item /tests
-	\begin{itemize}
-		\item Testes unitários: Verificam partes do código utilizando entradas e saídas controladas.
-	\end{itemize}
-\end{itemize}	
-\end{frame}
-
-
 \begin{frame}{Avaliação}
-	
 \begin{itemize}
-	\item 	6 – Implementação (entrega no classroom)
+	\item 	6 – Implementação 
+	\\ Entrega no github.
 	\\ 	Em pares.
 	\item 	3 – Apresentação oral do código (no computador)
 	\\ 	Alternado entre os dos dois membros do par.
@@ -235,118 +307,6 @@ Ambiente virtuais em Python:
 	\\ 	Ponto para ideias interessantes que o par tiver. 
 \end{itemize}
 \end{frame}
-
-
-
-
-
-\begin{frame}{Pixi: visão geral}
-	
-	\textbf{Pixi} é uma ferramenta moderna para:
-	\begin{itemize}
-		\item Gerenciar \textbf{ambientes} de desenvolvimento
-		\item Gerenciar \textbf{dependências} de projetos
-		\item Reproduzir projetos de forma consistente
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Principais características:}
-	\begin{itemize}
-		\item Baseado no ecossistema Conda
-		\item Rápido e determinístico
-		\item Um projeto = um ambiente
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Ideia central:}  
-	Cada projeto Python possui seu próprio ambiente isolado.
-	
-\end{frame}
-
-\begin{frame}[fragile]{Pixi: Criando um projeto Pixi}
-	
-	\textbf{Passo 1: criar o projeto}
-	
-	\begin{minted}{bash}
-pixi init meu_projeto
-	\end{minted}
-	
-	Isso cria:
-	\begin{itemize}
-		\item Uma pasta do projeto
-		\item O arquivo \texttt{pixi.toml}
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Arquivo central: \texttt{pixi.toml}}
-	\begin{itemize}
-		\item Lista dependências
-		\item Define versões
-		\item Descreve o ambiente
-	\end{itemize}
-	
-\end{frame}
-
-\begin{frame}[fragile]{Pixi: Adicionando dependências}
-	
-	\textbf{Passo 2: adicionar pacotes ao projeto}
-	
-	\begin{minted}{bash}
-pixi add python numpy pandas qgis
-	\end{minted}
-	
-	O Pixi:
-	\begin{itemize}
-		\item Resolve dependências automaticamente
-		\item Cria o ambiente isolado
-		\item Atualiza o \texttt{pixi.toml}
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Importante:}
-	\begin{itemize}
-		\item Não use \texttt{pip install} diretamente
-		\item As dependências ficam documentadas no projeto
-	\end{itemize}
-	
-\end{frame}
-
-\begin{frame}[fragile]{Pixi: Executando código no ambiente}
-	
-	\textbf{Passo 3: usar o ambiente Pixi}
-	
-	\begin{minted}{bash}
-pixi shell
-	\end{minted}
-	
-	Entra em um shell com o ambiente ativo.
-	
-	\vspace{0.3cm}
-	
-	Ou execute comandos diretamente:
-	
-	\begin{minted}{bash}
-pixi run python main.py
-pixi run qgis
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Benefícios:}
-	\begin{itemize}
-		\item Mesmo ambiente para todos os usuários
-		\item Menos erros de “funciona na minha máquina”
-		\item Projeto mais organizado e reproduzível
-	\end{itemize}
-\end{frame}
-
-
-
-
 
 \begin{frame}{VSCodium: Depuração (Debug)}
 	
@@ -467,6 +427,31 @@ pixi shell
 	\end{tabular}
 	
 \end{frame}
+
+\begin{frame}{Estrutura dos projetos}
+	\begin{itemize}
+		\item /docs
+		\\ Diagrama de classes: Representa visualmente as principais classes que serão implementadas.
+		\\ Fluxogramas: Representa uma visão geral de um procedimento importante.
+		\item /src
+		\\ Exemplos de código
+		\item /tests 
+		\\ Testes unitários: Verificam partes do código utilizando entradas e saídas controladas.
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}{Ciclos de desenvolvimento}
+	\begin{itemize}
+		\item Desenvolvimento ágil em ciclos de 2 semanas
+		\item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
+		\item Programação em pares (Xtreme programming - XP)
+	\end{itemize}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{./introducao_figs/xp.png}
+	\end{figure}
+	
+\end{frame}
+
 
 %\begin{frame}{Cronograma de aulas}
 %	
