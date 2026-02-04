@@ -1,0 +1,407 @@
+\documentclass{beamer}
+
+\usepackage{aula}
+
+\title{GIT: Sistema de controle de versão de código-fonte}
+\date{\today}
+
+\begin{document}
+	
+\input{capa}
+
+\begin{frame}{GitHub}
+	
+	\textbf{GitHub} é uma plataforma online para:
+	\begin{itemize}
+		\item Hospedar repositórios Git
+		\item Compartilhar código
+		\item Colaborar em projetos
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Em resumo:}  
+	GitHub = Git + colaboração + nuvem
+	
+\end{frame}
+
+\begin{frame}{GitHub e Git: qual a diferença?}
+	
+	\begin{itemize}
+		\item \textbf{Git}
+		\begin{itemize}
+			\item Ferramenta local
+			\item Controla versões do código
+			\item Funciona sem internet
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+		\item \textbf{GitHub}
+		\begin{itemize}
+			\item Serviço online
+			\item Hospeda repositórios Git
+			\item Facilita colaboração
+		\end{itemize}
+	
+		\vspace{0.3cm}
+		\item \textbf{Repositórios Git+GitHub:}
+		\begin{itemize}
+			\item \textbf{Remotos}: repositórios conectados de controle de versão
+			\item \textbf{Locais}: cópias locais do repositório
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Repositórios no GitHub}
+	
+	Um \textbf{repositório} é:
+	\begin{itemize}
+		\item Um projeto versionado com Git
+		\item Armazenado online no GitHub
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	Pode conter:
+	\begin{itemize}
+		\item Código-fonte
+		\item Documentação
+		\item Histórico de alterações
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	Cada repositório possui:
+	\begin{itemize}
+		\item Um endereço (URL)
+		\item Permissões de acesso
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{Ações comuns no GitHub}
+	
+	\begin{itemize}
+		\item \textbf{Clone}: baixar o repositório para o computador
+		\item \textbf{Push}: enviar commits para o GitHub
+		\item \textbf{Pull}: baixar atualizações
+		\item \textbf{Fork}: criar uma cópia do repositório
+		\item \textbf{Pull Request}: propor alterações
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	Essas ações permitem o trabalho colaborativo.
+	
+\end{frame}
+
+\begin{frame}{Por que usar o GitHub?}
+	
+	\begin{itemize}
+		\item Trabalhar em equipe
+		\item Manter histórico do projeto
+		\begin{itemize}
+			\item \textbf{Lembrar o que você fez}
+			\item \textbf{Achar onde foi que você quebrou o código}
+		\end{itemize}
+		\item Facilitar revisão de código
+		\item Compartilhar projetos
+
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Benefícios:}
+	\begin{itemize}
+		\item Transparência
+		\item Organização
+		\item Reprodutibilidade
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{GitHub}
+	
+	Cada aluno deve criar seu próprio usuário
+	\begin{itemize}
+		\item Acessar \url{https://github.com}
+		\item Criar uma conta
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	Essas credenciais serão usadas:
+	\begin{itemize}
+		\item No VSCodium ou GitHub Desktop
+		\item Para baixar código
+		\item Para submeter alterações
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{GitHub Desktop — Login do usuário}
+	
+	\begin{columns}[T]
+		% TEXTO (30%)
+		\begin{column}{0.4\textwidth}
+			\textbf{Passo 1 — Login}
+			
+			\begin{itemize}
+				\item Abrir o GitHub Desktop
+				\item File $\rightarrow$ Options $\rightarrow$ Accounts
+				\item Fazer login com a conta GitHub
+			\end{itemize}
+			
+			\vspace{0.3cm}
+			Necessário para clonar e sincronizar repositórios.
+		\end{column}
+		
+		% IMAGEM (70%)
+		\begin{column}{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{GIT_figs/login.png}
+		\end{column}
+	\end{columns}
+	
+\end{frame}
+
+\begin{frame}{GitHub Desktop — Clonar repositório}
+	
+	\begin{columns}[T]
+		\begin{column}{0.3\textwidth}
+			\textbf{Passo 2 — Clonar}
+			
+			\begin{itemize}
+				\item File $\rightarrow$ Clone repository
+				\item Escolher o repositório:\\ \url{https://github.com/mauriciodev/progcart}
+				\item Definir pasta local
+			\end{itemize}
+			
+			\vspace{0.3cm}
+			O repositório é baixado apenas uma vez.
+		\end{column}
+		
+		\begin{column}{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{figs/github_clone.png}
+		\end{column}
+	\end{columns}
+	
+\end{frame}
+
+
+\begin{frame}{GitHub Desktop — Ver modificações}
+	
+	\begin{columns}[T]
+		\begin{column}{0.4\textwidth}
+			\textbf{Passo 3 — Alterações}
+			
+			\begin{itemize}
+				\item Editar arquivos no editor
+				\item Salvar alterações
+				\item Ver aba \textit{Changes}
+			\end{itemize}
+			
+			\vspace{0.3cm}
+			As diferenças são mostradas linha a linha.
+		\end{column}
+		
+		\begin{column}{0.7\textwidth}
+			\centering
+			%\includegraphics[width=\linewidth]{figs/github_changes.png}
+		\end{column}
+	\end{columns}
+	
+\end{frame}
+
+\begin{frame}{GitHub Desktop — Commit}
+	
+	\begin{columns}[T]
+		\begin{column}{0.4\textwidth}
+			\textbf{Passo 4 — Commit}
+			
+			\begin{itemize}
+				\item Selecionar arquivos
+				\item Escrever mensagem
+				\item Commit to main
+			\end{itemize}
+			
+			\vspace{0.3cm}
+			Commit registra mudanças localmente.
+		\end{column}
+		
+		\begin{column}{0.7\textwidth}
+			\centering
+			%\includegraphics[width=\linewidth]{figs/github_commit.png}
+		\end{column}
+	\end{columns}
+	
+\end{frame}
+
+\begin{frame}{GitHub Desktop — Push e Pull}
+	
+	\begin{columns}[T]
+		\begin{column}{0.4\textwidth}
+			\textbf{Passo 5 — Push}
+			\begin{itemize}
+				\item Envia commits ao GitHub
+			\end{itemize}
+			
+			\textbf{Passo 6 — Pull}
+			\begin{itemize}
+				\item Baixa atualizações remotas
+			\end{itemize}
+			
+			\vspace{0.3cm}
+			Push = local → remoto  
+			Pull = remoto → local
+		\end{column}
+		
+		\begin{column}{0.7\textwidth}
+			\centering
+			%\includegraphics[width=\linewidth]{figs/github_push_pull.png}
+		\end{column}
+	\end{columns}
+	
+\end{frame}
+
+
+\begin{frame}[fragile]{Git no terminal - Instalação}
+	
+	\textbf{Windows (PowerShell):}
+	\begin{minted}{bash}
+winget install Git.Git
+	\end{minted}
+	
+	\textbf{Linux (shell):}
+	\begin{minted}{bash}
+sudo apt install git
+	\end{minted}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Git no terminal - Configuração}
+	
+	Após a instalação, configure suas credenciais:
+	
+	\begin{minted}{bash}
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+	\end{minted}
+	
+	Essas informações identificam o autor dos commits.
+	
+\end{frame}
+
+
+\begin{frame}{Git no VSCodium}
+	
+	\textbf{Separação de arquivos:}
+	\begin{itemize}
+		\item Arquivos \textbf{tracked}: já registrados no Git
+		\item Arquivos \textbf{untracked}: ainda não versionados
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	Objetivo:
+	\begin{itemize}
+		\item Evitar versionar arquivos que não fazem parte do código-fonte
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Atalho:}
+	\begin{itemize}
+		\item \texttt{Ctrl + Shift + P}
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Abrindo um repositório Git}
+	
+	\textbf{Endereço do repositório:}
+	
+	\begin{minted}{bash}
+		git@github.com:mauriciodev/progcart.git
+	\end{minted}
+	
+	Esse endereço é usado para clonar o repositório.
+	
+\end{frame}
+
+
+
+\begin{frame}{GitHub — Autorização da máquina}
+	
+	Para acessar o GitHub a partir de um computador:
+	\begin{itemize}
+		\item É necessário cadastrar a chave SSH da máquina
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Linux/Windows: criar chave SSH}
+	\begin{itemize}
+		\item No terminal: \texttt{ssh-keygen -t ed25519}
+		\item Abrir o arquivo \texttt{.pub} gerado na pasta .ssh do seu usuário.
+		\item No GitHub acessar: Settings → SSH and GPG Keys → New SSH Key.
+		\item Copiar o conteúdo do arquivo para o GitHub.
+	\end{itemize}
+	
+	\vspace{0.2cm}
+\end{frame}
+
+\begin{frame}{Exercícios}
+	
+	\begin{enumerate}
+		\item Fazer um \textbf{fork} do repositório da disciplina:
+		\begin{itemize}
+			\item \url{https://github.com/mauriciodev/progcart}
+		\end{itemize}
+		
+		\item Criar um \textbf{clone} do repositório na sua máquina
+		\item Verificar a timeline das versões
+		\item Verificar o histórico de um arquivo
+		\item Alterar um arquivo
+		\item Fazer um \textbf{commit}
+		\item Fazer um \textbf{push}
+		\item Acessar o GitHub e verificar a ferramenta de \textbf{Pull Request}
+	\end{enumerate}
+	
+\end{frame}
+
+
+
+%
+%\begin{frame}[fragile]{Código Python}
+%	\begin{minted}{python}
+%	def soma(a, b):
+%  return a + b
+%	\end{minted}
+%\end{frame}
+%
+%\begin{frame}[fragile]{Código Python}
+%	\begin{columns}[t]
+%		\begin{column}[t]{0.48\textwidth}
+%			
+%			Versão \textbf{código aberto} do VS Code.
+%			
+%			\textbf{Usaremos para:}
+%			\begin{itemize}
+%				\item teste
+%			\end{itemize}
+%		\end{column}
+%		
+%		\begin{column}[t]{0.48\textwidth}
+%			\colimage{./introducao_GIT_figs/ides.png}
+%		\end{column}
+%	\end{columns}	
+%\end{frame}
+
+
+
+
+
+\end{document}

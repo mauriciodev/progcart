@@ -97,7 +97,7 @@ Ambiente virtuais em Python:
 	\textbf{Passo 1: criar o projeto}
 	
 	\begin{minted}{bash}
-		pixi init meu_projeto
+pixi init meu_projeto
 	\end{minted}
 	
 	Isso cria:
@@ -122,7 +122,7 @@ Ambiente virtuais em Python:
 	\textbf{Passo 2: adicionar pacotes ao projeto}
 	
 	\begin{minted}{bash}
-		pixi add python numpy pandas qgis
+pixi add python numpy pandas qgis
 	\end{minted}
 	
 	O Pixi:
@@ -200,11 +200,17 @@ pixi run qgis
 	\end{columns}	
 \end{frame}
 
-\begin{frame}{Interface de desenvolvimento}
-	Caso ainda não tenha instalado, essa é a hora de instalar o VSCodium
+\begin{frame}[fragile]{Interface de desenvolvimento}
+	Caso ainda não tenha instalado, essa é a hora de instalar o VSCodium.
+	Acessar \url{https://github.com/VSCodium/vscodium/releases}
 	\begin{itemize}
-		\item Windows: winget VSCodium.VSCodium
-		\item Linux: Baixar .deb em https://github.com/VSCodium/vscodium/releases
+		\item Windows: Baixar o arquivo VSCodiumUserSetup-x64-1.108.20787.exe e executar.
+		\item Linux: Baixar o arquivo .deb e instalar com: 
+		\\ \begin{minted}{bash}
+dpkg -i codium_1.108.20787_amd64.deb
+		\end{minted}
+			
+			
 	\end{itemize}
 \end{frame}
 
