@@ -9,6 +9,11 @@
 	
 \input{capa}
 
+\begin{frame}{Python (em 2026?)}
+	\begin{figure}
+		\includegraphics[width=0.5\textwidth]{./introducao_figs/python2025.jpeg}
+	\end{figure}
+\end{frame}
 
 \begin{frame}{Instalação do Python (com ambientes virtuais)}
 Ambiente virtuais em Python: 
@@ -102,11 +107,11 @@ Ambiente virtuais em Python:
 	
 	\begin{itemize}
 		
-		\item ChatGPT \url{https://chatgpt.com/} (gratuito)
-		\item Github Copilot \url{https://github.com/features/copilot} (gratuito)
-		\item Gemini \url{https://gemini.google.com} (gratuito)	
-		\item Llama: \url{https://www.meta.ai/} (gratuito + pesos e código abertos)
-		\item \textbf{Instalação local}: OLLAMA \url{https://ollama.com/} 
+		\item ChatGPT \url{https://chatgpt.com/}
+		\item Github Copilot \url{https://github.com/features/copilot}
+		\item Gemini \url{https://gemini.google.com}
+		\item Llama: \url{https://www.meta.ai/} (pesos e código abertos)
+		\item \textbf{Instalação local}: Ollama \url{https://ollama.com/} 
 	\end{itemize}
 	Entre outros, alguns especialistas. 
 	
@@ -114,7 +119,8 @@ Ambiente virtuais em Python:
 	Não confie cegamente no trabalho de outra pessoa.  
 	
 	\espaco
-	Muito menos de uma IA.
+	\centering
+	\textbf{\Large{Muito menos de uma IA.}}
 \end{frame}
 
 \begin{frame}{Copilotos de desenvolvimento}
@@ -176,6 +182,10 @@ Ambiente virtuais em Python:
 	\item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
 	\item Programação em pares (Xtreme programming - XP)
 \end{itemize}
+\begin{figure}
+	\includegraphics[width=\textwidth]{./introducao_figs/xp.png}
+\end{figure}
+	
 \end{frame}
 
 
@@ -218,61 +228,249 @@ Ambiente virtuais em Python:
 	
 \begin{itemize}
 	\item 	6 – Implementação (entrega no classroom)
-	\item 	Em pares.
+	\\ 	Em pares.
 	\item 	3 – Apresentação oral do código (no computador)
-	\item 	Alternado entre os dos dois membros do par.
+	\\ 	Alternado entre os dos dois membros do par.
 	\item 	1 – Inovação
-	\item 	Ponto para ideias interessantes que o par tiver. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Cronograma de aulas}
-	
-\end{frame}
-
-\begin{frame}{Bibliotecas úteis}
-
-\begin{itemize}
-	\item 	Matemática: Numpy, Scipy
-	\item 	Interface gráfica (GUI): PyQt5, Tkinter
-	\item 	Análises em SIG: PyQGIS, OGR
-	\item 	Dados raster geográficos: GDAL, Fiona, Rasterio,
-	\item 	Dataframes (tabelas): Pandas, Geopandas, Polars
-	\item 	Gráficos científicos: Matplotlib, Plotly
-	\item 	Backend Web: FastAPI, Flask, Django
-	\item 	Backend com interface: Taipy, Streamlit
-	\item 	Aprendizado de máquina: Sklearn, Keras, Torch, Tensorflow, Jax
+	\\ 	Ponto para ideias interessantes que o par tiver. 
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Prática pixi}
+
+
+
+\begin{frame}{Pixi: visão geral}
 	
+	\textbf{Pixi} é uma ferramenta moderna para:
 	\begin{itemize}
-		\item Criar a pasta do projeto e acessar a pasta
-		\item mkdir projeto0
-		\item cd projecto0
-		\item Inicializar o ambiente
-		\item pixi init
-		\item Ativar o ambiente criado:
-		\item Instalando pacotes:
-		\item pixi add qgis
+		\item Gerenciar \textbf{ambientes} de desenvolvimento
+		\item Gerenciar \textbf{dependências} de projetos
+		\item Reproduzir projetos de forma consistente
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Principais características:}
+	\begin{itemize}
+		\item Baseado no ecossistema Conda
+		\item Rápido e determinístico
+		\item Um projeto = um ambiente
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Ideia central:}  
+	Cada projeto Python possui seu próprio ambiente isolado.
+	
+\end{frame}
+
+\begin{frame}[fragile]{Pixi: Criando um projeto Pixi}
+	
+	\textbf{Passo 1: criar o projeto}
+	
+	\begin{minted}{bash}
+pixi init meu_projeto
+	\end{minted}
+	
+	Isso cria:
+	\begin{itemize}
+		\item Uma pasta do projeto
+		\item O arquivo \texttt{pixi.toml}
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Arquivo central: \texttt{pixi.toml}}
+	\begin{itemize}
+		\item Lista dependências
+		\item Define versões
+		\item Descreve o ambiente
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Pixi: Adicionando dependências}
+	
+	\textbf{Passo 2: adicionar pacotes ao projeto}
+	
+	\begin{minted}{bash}
+pixi add python numpy pandas qgis
+	\end{minted}
+	
+	O Pixi:
+	\begin{itemize}
+		\item Resolve dependências automaticamente
+		\item Cria o ambiente isolado
+		\item Atualiza o \texttt{pixi.toml}
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Importante:}
+	\begin{itemize}
+		\item Não use \texttt{pip install} diretamente
+		\item As dependências ficam documentadas no projeto
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Pixi: Executando código no ambiente}
+	
+	\textbf{Passo 3: usar o ambiente Pixi}
+	
+	\begin{minted}{bash}
+pixi shell
+	\end{minted}
+	
+	Entra em um shell com o ambiente ativo.
+	
+	\vspace{0.3cm}
+	
+	Ou execute comandos diretamente:
+	
+	\begin{minted}{bash}
+pixi run python main.py
+pixi run qgis
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Benefícios:}
+	\begin{itemize}
+		\item Mesmo ambiente para todos os usuários
+		\item Menos erros de “funciona na minha máquina”
+		\item Projeto mais organizado e reproduzível
 	\end{itemize}
 \end{frame}
 
 
-\begin{frame}{Prática VSCodium}
-\begin{itemize}
-	\item Prática
-	\item Fluxograma no VSCodium
-	\item Debug no VSCodium
-	\item Ctrl+Shift+P
-	\item Select Python Interpreter
-	\item Parar debugar: F5	
-\end{itemize}
+
+
+
+\begin{frame}{VSCodium: Depuração (Debug)}
+	
+	O \textbf{debug} permite executar o programa passo a passo,
+	inspecionando valores e o fluxo do código.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Passos básicos:}
+	\begin{itemize}
+		\item Abrir o arquivo Python no VSCodium
+		\item Definir \textbf{breakpoints} (clique à esquerda da linha)
+		\item Iniciar o modo Debug
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Durante o debug, é possível:}
+	\begin{itemize}
+		\item Executar linha a linha (\textit{Step Over / Step Into})
+		\item Ver valores das variáveis em tempo real
+		\item Avaliar expressões
+		\item Identificar erros de lógica
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Vantagem principal:}  
+	Entender \textbf{como} o programa executa, não apenas o resultado final.
+	
+\end{frame}
+
+\begin{frame}[fragile]{VSCodium: Debug com Pixi}
+	
+	\textbf{Objetivo:}  
+	Depurar um código Python usando o \textbf{ambiente Pixi} dentro do VSCodium.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Passo 1 — Abrir o projeto Pixi}
+	\begin{itemize}
+		\item Abra a pasta do projeto no VSCodium
+		\item O arquivo \texttt{pixi.toml} deve estar na raiz
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Passo 2 — Ativar o ambiente Pixi no terminal}
+	\begin{minted}{bash}
+pixi shell
+	\end{minted}
+	
+	Isso garante que o Python e as dependências corretas estejam ativas.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Passo 3 — Configurar o Debug}
+	No menu \textit{Run and Debug}, escolha:
+	\begin{itemize}
+		\item \textbf{Python File}
+		\item O VSCodium usará o Python do ambiente Pixi
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Passo 4 — Depurar}
+	\begin{itemize}
+		\item Coloque breakpoints no código
+		\item Inicie o Debug
+		\item Use \textit{Step Over / Step Into}
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Resultado:}  
+	Código executado no \textbf{ambiente isolado do Pixi}, com depuração completa.
+	
 \end{frame}
 
 
+\begin{frame}{Bibliotecas úteis}
+	
+	\begin{tabular}{p{4cm} p{7cm}}
+		\toprule
+		\textbf{Área} & \textbf{Bibliotecas Python} \\
+		\midrule
+		
+		Matemática &
+		NumPy, SciPy \\
+		
+		Interface gráfica (GUI) &
+		PyQt5, Tkinter, Kivys \\
+		
+		Análises em SIG &
+		PyQGIS, OGR, whitebox \\
+		
+		Dados raster geográficos &
+		GDAL, Fiona, Rasterio \\
+		
+		Dataframes (tabelas) &
+		Pandas, GeoPandas, Polars \\
+		
+		Gráficos científicos &
+		Matplotlib, Plotly \\
+		
+		Backend Web &
+		FastAPI, Flask, Django \\
+		
+		Backend com interface &
+		Taipy, Streamlit, Dash \\
+		
+		Aprendizado de máquina &
+		Scikit-learn, Keras, PyTorch, TensorFlow, JAX \\
+		
+		Aprendizado profundo para geoinformação & torchgeo, rastervision, geoai-py \\
+		
+		\bottomrule
+	\end{tabular}
+	
+\end{frame}
+
+%\begin{frame}{Cronograma de aulas}
+%	
+%\end{frame}
 
 
 %\begin{frame}{titulo}
