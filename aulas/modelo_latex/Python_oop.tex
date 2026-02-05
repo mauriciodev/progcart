@@ -1,0 +1,305 @@
+\documentclass{beamer}
+
+\usepackage{aula}
+
+\title{Introdução a Algoritmos}
+\date{\today}
+
+\begin{document}
+	
+\input{capa}
+
+\begin{frame}{Paradigmas de programação em Python}
+	
+	Python suporta múltiplos paradigmas:
+	\begin{itemize}
+		\item Programação funcional
+		\item Programação orientada a objetos (OO)
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Funcional}
+	\begin{itemize}
+		\item Ênfase em funções
+		\item Dados passados como argumentos
+		\item Simples para tarefas pequenas
+	\end{itemize}
+	
+	\vspace{0.2cm}
+	
+	\textbf{Orientado a Objetos}
+	\begin{itemize}
+		\item Dados + comportamento juntos
+		\item Modela entidades do mundo real
+		\item Facilita manutenção e reutilização
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{Por que usar Orientação a Objetos?}
+	
+	\textbf{Principais vantagens:}
+	\begin{itemize}
+		\item Organização do código em entidades
+		\item Reutilização por meio de classes
+		\item Facilita leitura e manutenção
+		\item Escala melhor para sistemas grandes
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Quando OO é mais indicada:}
+	\begin{itemize}
+		\item Projetos grandes
+		\item Sistemas com múltiplas responsabilidades
+		\item Modelagem de objetos reais (usuários, mapas, sensores)
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo funcional — LineString}
+	
+	\begin{minted}{python}
+import math
+
+def comprimento_linha(coords):
+	comprimento = 0.0
+	for i in range(len(coords) - 1):
+		x1, y1 = coords[i]
+		x2, y2 = coords[i + 1]
+		comprimento += math.dist((x1, y1), (x2, y2))
+		return comprimento
+
+
+linha = [(0, 0), (3, 4), (6, 4)]
+comp = comprimento_linha(linha)
+\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Características:}
+	\begin{itemize}
+		\item Dados são estruturas externas
+		\item Funções operam sobre listas de coordenadas
+		\item Pouca semântica explícita
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Módulos e pacotes em Python}
+	
+	\textbf{Estrutura de arquivos:}
+	
+	\begin{minted}{text}
+projeto/
+├── main.py
+├── modelos/
+│   ├── __init__.py
+│   └── pessoa.py
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Importação:}
+	
+	\begin{minted}{python}
+from modelos import pessoa #importa todo o módulo
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{Benefício:}
+	\begin{itemize}
+		\item Código organizado e reutilizável
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo OO — LineString}
+	
+	\begin{minted}{python}
+import math
+class LineString:
+	def __init__(self, coords):
+		self.coords = coords
+
+	def comprimento(self):
+		comprimento = 0.0
+		for i in range(len(self.coords) - 1):
+			p1 = self.coords[i]
+			p2 = self.coords[i + 1]
+			comprimento += math.dist(p1, p2)
+			return comprimento
+
+linha = LineString([(0, 0), (3, 4), (6, 4)])
+comp = linha.comprimento()
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Vantagem:}
+	\begin{itemize}
+		\item Geometria encapsula dados e operações
+	\end{itemize}
+	
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Declaração de classes em Python}
+	
+	\begin{minted}{python}
+class NomeDaClasse:
+	def __init__(self, parametro):
+		self.atributo = parametro
+		
+	def metodo(self):
+		print(self.atributo)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Elementos principais:}
+	\begin{itemize}
+		\item \texttt{class}: define uma classe
+		\item \texttt{self}: referência ao objeto
+		\item Métodos: funções da classe
+	\end{itemize}
+	\textbf{Função do \texttt{\_\_init\_\_}:}
+	\begin{itemize}
+		\item Executado na criação do objeto
+		\item Inicializa atributos
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Instanciação de objetos}
+	
+	\begin{minted}{python}
+class Ponto:
+	def __init__(self, x, y):
+		self.x = x
+		self.y = y
+
+p1 = Ponto(10,20)
+p2 = Ponto(-10,10) 
+
+print(p1) #<\_\_main\_\_.Ponto object at 0x71e2a65bcdd0>
+print(p2) #<\_\_main\_\_.Ponto object at 0x71e2a642c770>
+
+print(p2.x, p2.y) #-10 10
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Observação:}
+	\begin{itemize}
+		\item Cada objeto tem seu próprio estado
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}[fragile]{@dataclass}
+	
+	\begin{minted}{python}
+from dataclasses import dataclass
+
+@dataclass
+class Ponto:
+	x: float
+	y: float
+	
+p1 = Ponto(10,20)
+p2 = Ponto(-10,10)
+
+print(p1) # Ponto(x=10, y=20)
+print(p2) # Ponto(x=-10, y=10)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Vantagens:}
+	\begin{itemize}
+		\item Menos código repetitivo
+		\item \texttt{\_\_init\_\_}, \texttt{\_\_repr\_\_} automáticos
+		\item Ideal para classes de dados
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{@dataclass}
+\textbf{Orientação a objetos com \texttt{@dataclass}}
+
+\begin{minted}{python}
+import math
+from dataclasses import dataclass
+
+@dataclass
+class LineString:
+	coords: list[tuple[float, float]]
+	
+	def comprimento(self) -> float:
+		comprimento = 0.0
+		for i in range(len(self.coords) - 1):
+			p1 = self.coords[i]
+			p2 = self.coords[i + 1]
+			comprimento += math.dist(p1, p2)
+			return comprimento
+		
+linha = LineString([(0, 0), (3, 4), (6, 4)])
+comp = linha.comprimento()
+\end{minted}
+
+\textbf{Vantagens:}
+\begin{itemize}
+	\item Menos código boilerplate
+	\item Classe expressiva
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Simple features access}
+Especificação: \url{https://www.ogc.org/publications/standard/sfa/}
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{Python_oop/sfs}
+\end{figure}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]{Exercícios}
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+			
+\begin{itemize}
+	\item Implementem uma classe que baixe dados de um servidor.
+	\item Para criar um objeto “Downloader” devem ser passados o endereço de download e uma pasta de destino. 
+\end{itemize}
+		\end{column}
+		
+		\begin{column}[t]{0.48\textwidth}
+			\colimage{Python_oop/sfs1}
+
+		\end{column}
+	\end{columns}
+\href{https://www.geeksforgeeks.org/how-to-download-files-from-urls-with-python/}{Link da dica}\\
+Exemplo: \\
+O endereço de uma folha no geoftp do IBGE é: \\
+\url{https://geoftp.ibge.gov.br/cartas_e_mapas/folhas_topograficas/vetoriais/escala_1000mil/shapefile/g04_na19.zip} \\
+O server\_url\_format seria: 
+\begin{minted}{python}
+f”https://geoftp.ibge.gov.br/cartas_e_mapas/folhas_topograficas/vetoriais/escala_1000mil/shapefile/{name}.zip”
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Mais exercícios}
+Exercícios para o pessoal que quiser praticar orientação a objetos:
+
+\url{https://www.w3resource.com/python-exercises/oop/index.php}
+\end{frame}
+
+\end{document}
