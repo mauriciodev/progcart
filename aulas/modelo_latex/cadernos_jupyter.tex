@@ -1,0 +1,123 @@
+\documentclass{beamer}
+
+\usepackage{aula}
+
+\title{Cadernos jupyter}
+\date{\today}
+
+\begin{document}
+	
+\input{capa}
+
+\begin{frame}[fragile]{Instalação do Jupyter com Pixi}
+	
+	\textbf{Contexto:}  
+	Pixi gerencia ambientes e dependências de projetos Python.
+	
+	\vspace{0.3cm}
+	
+	\textbf{1. Criar um projeto Pixi}
+	\begin{minted}{bash}
+pixi init projeto-jupyter
+cd projeto-jupyter
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{2. Adicionar Jupyter ao ambiente}
+	\begin{minted}{bash}
+pixi add jupyter
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{3. Executar o Jupyter Notebook}
+	\begin{minted}{bash}
+pixi run jupyter notebook
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Observações:}
+	\begin{itemize}
+		\item Ambiente isolado e reprodutível
+		\item Dependências descritas no \texttt{pixi.toml}
+	\end{itemize}
+	
+\end{frame}
+\begin{frame}[fragile]{Instalação do Jupyter com uv}
+	
+	\textbf{Contexto:}  
+	\texttt{uv} é um gerenciador rápido de ambientes e pacotes Python.
+	
+	\vspace{0.3cm}
+	
+	\textbf{1. Criar ambiente virtual}
+	\begin{minted}{bash}
+uv venv
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{2. Ativar o ambiente}
+	\begin{minted}{bash}
+source .venv/bin/activate
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{3. Instalar Jupyter}
+	\begin{minted}{bash}
+uv pip install jupyter
+	\end{minted}
+	
+	\vspace{0.2cm}
+	
+	\textbf{4. Executar o Jupyter Notebook}
+	\begin{minted}{bash}
+jupyter notebook
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Observações:}
+	\begin{itemize}
+		\item Fluxo similar ao \texttt{pip + venv}
+		\item Foco em desempenho
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo — Leafmap em caderno Jupyter}
+	
+	\textbf{Contexto:}  
+	\texttt{leafmap} permite criar mapas interativos usando Python,
+	integrando Jupyter + Leaflet.
+	
+	\vspace{0.3cm}
+	
+	\begin{minted}{python}
+import leafmap
+
+# Criar um mapa interativo
+m = leafmap.Map(center=[-15, -55], zoom=4)
+
+# Adicionar camada base
+m.add_basemap("OpenStreetMap")
+
+# Exibir o mapa no Jupyter
+m
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{O que acontece no notebook:}
+	\begin{itemize}
+		\item O mapa é renderizado interativamente
+		\item Zoom e navegação com o mouse
+		\item Ideal para exploração espacial
+	\end{itemize}
+	
+\end{frame}
+
+\end{document}
