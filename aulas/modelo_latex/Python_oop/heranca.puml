@@ -1,0 +1,18 @@
+@startuml
+abstract class Geometry {
+    - pontos
+    +__init__(pontos)
+    +area(): float
+}
+
+class LineString {
+    +area(): float
+}
+
+class Polygon {
+    +area(): float
+}
+
+Geometry <|-- LineString
+Geometry <|-- Polygon
+@enduml

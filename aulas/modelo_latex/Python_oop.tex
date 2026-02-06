@@ -258,7 +258,7 @@ comp = linha.comprimento()
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Simple features access}
+\begin{frame}{Open Geospatial Consortium (OGC) - Simple features access}
 Especificação: \url{https://www.ogc.org/publications/standard/sfa/}
 \begin{figure}
 	\centering
@@ -267,8 +267,150 @@ Especificação: \url{https://www.ogc.org/publications/standard/sfa/}
 \end{frame}
 
 
+\begin{frame}[fragile]{OGC SFS — Herança de classes}
+	
+	\textbf{OGC Simple Feature Specification (SFS)}
+	
+	\vspace{0.3cm}
+	
+	No OGC SFS:
+	\begin{itemize}
+		\item \texttt{Geometry} é a classe base
+		\item Tipos geométricos específicos herdam de \texttt{Geometry}
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exemplo em Python:}
+	
+	\begin{minted}{python}
+class Geometry:
+	def __init__(self, pontos):
+		self.pontos = pontos
+		
+	def area(self) -> float:
+		raise NotImplementedError
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Conceito-chave:}
+	\begin{itemize}
+		\item Classes filhas herdam interface e comportamento
+	\end{itemize}
+	
+\end{frame}
 
+\begin{frame}{OGC SFS — Diagrama de classes (simplificado)}
+	
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.4\textwidth]{Python_oop/heranca}
+	\end{figure}
+	\vspace{0.3cm}
+	
+	\textbf{Objetivo do diagrama:}
+	\begin{itemize}
+		\item Visualizar herança
+		\item Relacionar código com modelo conceitual
+	\end{itemize}
+	
+\end{frame}
 
+\begin{frame}[fragile]{OGC SFS — Classes derivadas}
+	
+	\begin{columns}[t]
+		
+		% -------- LineString --------
+		\begin{column}{0.48\textwidth}
+			\textbf{LineString}
+			
+			\vspace{0.2cm}
+			
+			\begin{minted}[tabsize=2]{python}
+class LineString(Geometry):
+	# Método herdado:
+	# __init__(self, pontos)
+
+	def area(self) -> float:
+		return 0.0
+			\end{minted}
+			
+			\vspace{0.2cm}
+			
+			\begin{itemize}
+				\item Geometria unidimensional
+				\item Não ocupa área
+			\end{itemize}
+		\end{column}
+		
+		% -------- Polygon --------
+		\begin{column}{0.48\textwidth}
+			\textbf{Polygon}
+			
+			\vspace{0.2cm}
+			
+			\begin{minted}[tabsize=2]{python}
+class Polygon(Geometry):
+	# Método herdado:
+	# __init__(self, pontos)
+
+	def area(self) -> float:
+		area = 0.0
+		n = len(self.pontos)
+		for i in range(n):
+			x1,y1 = self.pontos[i]
+			x2,y2 = self.pontos[(i+1)\%n]
+			area += x1*y2 - x2*y1
+		return abs(area) / 2.0
+			\end{minted}
+			
+			\vspace{0.2cm}
+			
+			\begin{itemize}
+				\item Geometria bidimensional
+				\item Implementa cálculo real de área
+			\end{itemize}
+		\end{column}
+		
+	\end{columns}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Mensagem-chave:}
+	\begin{itemize}
+		\item Mesmo método
+		\item Resultados semanticamente distintos
+	\end{itemize}
+	
+\end{frame}
+\begin{frame}[fragile]{Polimorfismo com OGC SFS}
+	
+	\begin{minted}{python}
+def imprimir_area(geom: Geometry):
+	print(f"Área = {geom.area()}")
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\begin{minted}{python}
+l = LineString([(0,0), (1,1)])
+p = Polygon([(0,0), (1,0), (1,1), (0,1)])
+
+imprimir_area(l)
+imprimir_area(p)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Resultado:}
+	\begin{itemize}
+		\item Mesmo código
+		\item Comportamento depende da classe concreta
+	\end{itemize}
+	
+\end{frame}
 
 
 \begin{frame}[fragile]{Exercícios}
