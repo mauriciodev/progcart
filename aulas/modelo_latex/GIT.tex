@@ -172,14 +172,14 @@
 		\begin{column}{0.48\textwidth}
 			\begin{figure}
 				\centering
-				\includegraphics[width=\columnwidth]{GIT_figs/clone}
+				\includegraphics[width=\textwidth]{GIT_figs/clone}
 			\end{figure}
 		\end{column}
 		
 		\begin{column}{0.48\textwidth}
 			\begin{figure}
 				\centering
-				\includegraphics[width=\columnwidth]{GIT_figs/clone1}
+				\includegraphics[width=\textwidth]{GIT_figs/clone1}
 			\end{figure}
 			
 		\end{column}
@@ -209,7 +209,7 @@
 
 		\begin{figure}
 			\centering
-			\includegraphics[width=\columnwidth]{GIT_figs/diff2}
+			\includegraphics[width=\textwidth]{GIT_figs/diff2}
 		\end{figure}
 
 		\end{column}
@@ -236,7 +236,7 @@
 		\begin{column}{0.7\textwidth}
 			\begin{figure}
 				\centering
-				\includegraphics[width=\columnwidth]{GIT_figs/commit}
+				\includegraphics[width=\textwidth]{GIT_figs/commit}
 			\end{figure}
 		\end{column}
 	\end{columns}
@@ -258,13 +258,19 @@
 			\end{itemize}
 			
 			\vspace{0.3cm}
-			Push = local → remoto  
+			Push = local → remoto  \\
 			Pull = remoto → local
 		\end{column}
 		
 		\begin{column}{0.7\textwidth}
+		% TODO: \usepackage{graphicx} required
+		\begin{figure}
 			\centering
-			%\includegraphics[width=\linewidth]{figs/github_push_pull.png}
+			\includegraphics[width=\textwidth]{GIT_figs/push}
+			\caption{}
+			\label{fig:push}
+		\end{figure}
+
 		\end{column}
 	\end{columns}
 	
@@ -328,14 +334,12 @@ git config --global user.name "Your Name"
 	\textbf{Endereço do repositório:}
 	
 	\begin{minted}{bash}
-		git@github.com:mauriciodev/progcart.git
+git@github.com:mauriciodev/progcart.git
 	\end{minted}
 	
 	Esse endereço é usado para clonar o repositório.
 	
 \end{frame}
-
-
 
 \begin{frame}{GitHub — Autorização da máquina}
 	

@@ -15,6 +15,104 @@
 	\end{figure}
 \end{frame}
 
+\begin{frame}{Bibliotecas úteis}
+	
+	\begin{tabular}{p{4cm} p{7cm}}
+		\toprule
+		\textbf{Área} & \textbf{Bibliotecas Python} \\
+		\midrule
+		
+		Matemática &
+		NumPy, SciPy \\
+		
+		Interface gráfica (GUI) &
+		PyQt5, Tkinter, Kivys \\
+		
+		Análises em SIG &
+		PyQGIS, OGR, whitebox \\
+		
+		Dados raster geográficos &
+		GDAL, Fiona, Rasterio \\
+		
+		Dataframes (tabelas) &
+		Pandas, GeoPandas, Polars \\
+		
+		Gráficos científicos &
+		Matplotlib, Plotly \\
+		
+		Backend Web &
+		FastAPI, Flask, Django \\
+		
+		Backend com interface &
+		Taipy, Streamlit, Dash \\
+		
+		Aprendizado de máquina &
+		Scikit-learn, Keras, PyTorch, TensorFlow, JAX \\
+		
+		Aprendizado profundo para geoinformação & torchgeo, rastervision, geoai-py \\
+		
+		\bottomrule
+	\end{tabular}
+	
+\end{frame}
+
+\begin{frame}{Projetos}
+	\begin{itemize}
+		\item Plugin Hello Map
+		\\ Carregar dados matriciais e vetoriais no QGIS (GDAL opcional)
+		\item Abrir coordenadas da rede de monitoramento SIRGAS e converter para um arquivo vetorial
+		\\ Baixar e manipular dados tabulados com Pandas e escrever com Geopandas.
+		\item Processing Plugin de extrair cotas de um Modelo Digital de Superfícies
+		\\ Manipular dados matriciais e vetoriais no QGIS
+		\item Operações topológicas
+		\\ Processing Plugin com model builder para resolver um problema de geoprocessamento.
+		\item Opcionais (não valem nota)
+		\begin{itemize}
+			\item Classificação de imagens com RasterIO+Sklearn (XGBoost)
+			\item Interfaces web com Streamlit			
+			\item Geoagentes de IA
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Estrutura dos projetos}
+	\begin{itemize}
+		\item /docs
+		\\ Diagrama de classes: Representa visualmente as principais classes que serão implementadas.
+		\\ Fluxogramas: Representa uma visão geral de um procedimento importante.
+		\item /src
+		\\ Exemplos de código
+		\item /tests 
+		\\ Testes unitários: Verificam partes do código utilizando entradas e saídas controladas.
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}{Avaliação}
+	\begin{itemize}
+		\item 	6 – Implementação 
+		\\ Entrega no github. Colocar o link para o repositório no Classroom.
+		\\ 	Em pares.
+		\item 	3 – Apresentação oral do código (no computador)
+		\\ Alternado entre os dos dois membros do par.
+		\\ Os alunos explicam o que cada parte do código está fazendo e as decisões tomadas. 
+		\item 	1 – Inovação
+		\\ 	Ponto para ideias interessantes que o par tiver. 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Ciclos de desenvolvimento em pares}
+	\begin{itemize}
+		\item Desenvolvimento ágil em ciclos de 2 semanas
+		\item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
+		\item Programação em pares (Xtreme programming - XP)
+	\end{itemize}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{./introducao_figs/xp.png}
+	\end{figure}
+\end{frame}
+
+
 \begin{frame}{Instalação do Python (com ambientes virtuais)}
 Ambiente virtuais em Python: 
 \begin{itemize}
@@ -171,6 +269,74 @@ pixi run qgis
 	\end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Inicialização de ambiente com UV}
+	
+	\textbf{O que é o UV?}  
+	Gerenciador moderno de:
+	\begin{itemize}
+		\item ambientes virtuais
+		\item dependências Python
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Criando um novo projeto:}
+	
+	\begin{minted}{bash}
+uv init projeto_geo
+cd projeto_geo
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{O que o UV cria automaticamente:}
+	\begin{itemize}
+		\item Arquivo \texttt{pyproject.toml}
+		\item Ambiente virtual isolado
+		\item Estrutura básica do projeto
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Ativação do ambiente:}  
+	O UV ativa o ambiente automaticamente ao executar comandos.
+	
+\end{frame}
+
+\begin{frame}[fragile]{Instalação do GeoPandas com UV}
+	
+	\textbf{Instalando o GeoPandas:}
+	
+	\begin{minted}{bash}
+uv add geopandas
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{O que acontece nesse passo:}
+	\begin{itemize}
+		\item GeoPandas é adicionado ao \texttt{pyproject.toml}
+		\item Dependências são resolvidas automaticamente
+		\item O ambiente fica reproduzível
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Testando a instalação:}
+	
+	\begin{minted}{python}
+import geopandas as gpd
+print(gpd.__version__)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Boa prática:}  
+	Sempre versionar o arquivo \texttt{pyproject.toml} no Git.
+	
+\end{frame}
+
+
 
 \begin{frame}{Interface de desenvolvimento}
 	\textbf{Integrated Development Environment (IDE)}
@@ -240,8 +406,8 @@ dpkg -i codium_1.108.20787_amd64.deb
 	\begin{itemize}
 		\item Github Copilot (nativo)
 		\item Gemini 
-		\item Continue.dev + Ollama \textbf{Instalação local}
 		\item Codegpt
+		\item Continue.dev + Ollama \textbf{Instalação local}		
 	\end{itemize}
 	\espaco
 	Cuidados:
@@ -286,32 +452,6 @@ dpkg -i codium_1.108.20787_amd64.deb
 			\colimage{./introducao_figs/classes.png}
 		\end{column}
 	\end{columns}	
-\end{frame}
-
-\begin{frame}{Projetos}
-	\begin{itemize}
-		\item Plugin Hello Map
-		\\ Carregar dados matriciais e vetoriais no QGIS (GDAL opcional)
-		\item Abrir coordenadas da rede de monitoramento SIRGAS e converter para um arquivo vetorial
-		\\ Baixar e manipular dados tabulados com Pandas e escrever com Geopandas.
-		\item Processing Plugin de extrair cotas de um Modelo Digital de Superfícies
-		\\ Manipular dados matriciais e vetoriais no QGIS
-		\item Operações topológicas
-		\\ Processing Plugin com model builder para resolver um problema de geoprocessamento.
-		\item (Opcional): RasterIO+Sklearn (XGBoost)
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Avaliação}
-\begin{itemize}
-	\item 	6 – Implementação 
-	\\ Entrega no github.
-	\\ 	Em pares.
-	\item 	3 – Apresentação oral do código (no computador)
-	\\ 	Alternado entre os dos dois membros do par.
-	\item 	1 – Inovação
-	\\ 	Ponto para ideias interessantes que o par tiver. 
-\end{itemize}
 \end{frame}
 
 \begin{frame}{VSCodium: Depuração (Debug)}
@@ -393,70 +533,9 @@ pixi shell
 \end{frame}
 
 
-\begin{frame}{Bibliotecas úteis}
-	
-	\begin{tabular}{p{4cm} p{7cm}}
-		\toprule
-		\textbf{Área} & \textbf{Bibliotecas Python} \\
-		\midrule
-		
-		Matemática &
-		NumPy, SciPy \\
-		
-		Interface gráfica (GUI) &
-		PyQt5, Tkinter, Kivys \\
-		
-		Análises em SIG &
-		PyQGIS, OGR, whitebox \\
-		
-		Dados raster geográficos &
-		GDAL, Fiona, Rasterio \\
-		
-		Dataframes (tabelas) &
-		Pandas, GeoPandas, Polars \\
-		
-		Gráficos científicos &
-		Matplotlib, Plotly \\
-		
-		Backend Web &
-		FastAPI, Flask, Django \\
-		
-		Backend com interface &
-		Taipy, Streamlit, Dash \\
-		
-		Aprendizado de máquina &
-		Scikit-learn, Keras, PyTorch, TensorFlow, JAX \\
-		
-		Aprendizado profundo para geoinformação & torchgeo, rastervision, geoai-py \\
-		
-		\bottomrule
-	\end{tabular}
-	
-\end{frame}
 
-\begin{frame}{Estrutura dos projetos}
-	\begin{itemize}
-		\item /docs
-		\\ Diagrama de classes: Representa visualmente as principais classes que serão implementadas.
-		\\ Fluxogramas: Representa uma visão geral de um procedimento importante.
-		\item /src
-		\\ Exemplos de código
-		\item /tests 
-		\\ Testes unitários: Verificam partes do código utilizando entradas e saídas controladas.
-	\end{itemize}	
-\end{frame}
 
-\begin{frame}{Ciclos de desenvolvimento}
-	\begin{itemize}
-		\item Desenvolvimento ágil em ciclos de 2 semanas
-		\item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
-		\item Programação em pares (Xtreme programming - XP)
-	\end{itemize}
-	\begin{figure}
-		\includegraphics[width=\textwidth]{./introducao_figs/xp.png}
-	\end{figure}
-	
-\end{frame}
+
 
 
 %\begin{frame}{Cronograma de aulas}
