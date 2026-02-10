@@ -1,0 +1,340 @@
+\documentclass{beamer}
+
+\usepackage{aula}
+
+\title{Introdução a Algoritmos}
+\date{\today}
+
+\begin{document}
+	
+	\input{capa}
+	
+	\begin{frame}{Introdução ao PyQt6}
+		
+		\textbf{PyQt6} é um conjunto de bindings Python para o framework gráfico \textbf{Qt 6}.
+		
+		\vspace{0.3cm}
+		
+		\textbf{Qt é usado para:}
+		\begin{itemize}
+			\item Aplicações desktop multiplataforma
+			\item Interfaces gráficas profissionais
+			\item Softwares científicos e comerciais
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Principais características:}
+		\begin{itemize}
+			\item Multiplataforma (Windows, Linux, macOS)
+			\item Orientado a objetos
+			\item Baseado em sinais e slots
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}[fragile]{Estrutura de uma aplicação PyQt6}
+		
+		Toda aplicação PyQt6 segue o mesmo padrão:
+		
+		\vspace{0.3cm}
+		
+		\begin{minted}{python}
+			from PyQt6.QtWidgets import QApplication, QWidget
+			import sys
+			
+			app = QApplication(sys.argv)
+			
+			janela = QWidget()
+			janela.setWindowTitle("Minha aplicação")
+			janela.show()
+			
+			sys.exit(app.exec())
+		\end{minted}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Componentes principais:}
+		\begin{itemize}
+			\item \texttt{QApplication}: gerencia a aplicação
+			\item \texttt{QWidget}: elemento visual básico
+			\item \texttt{exec()}: loop de eventos
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}{Widgets e Layouts}
+		
+		\textbf{Widgets} são os elementos visuais:
+		\begin{itemize}
+			\item Botões (\texttt{QPushButton})
+			\item Campos de texto (\texttt{QLineEdit})
+			\item Rótulos (\texttt{QLabel})
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Layouts} organizam os widgets:
+		\begin{itemize}
+			\item \texttt{QVBoxLayout} — vertical
+			\item \texttt{QHBoxLayout} — horizontal
+			\item \texttt{QGridLayout} — grade
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Boa prática:}
+		\begin{itemize}
+			\item Nunca posicionar widgets manualmente
+			\item Sempre usar layouts
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}[fragile]{Sinais e Slots}
+		
+		PyQt6 usa o modelo de \textbf{sinais e slots} para eventos.
+		
+		\vspace{0.3cm}
+		
+		\begin{minted}{python}
+			from PyQt6.QtWidgets import QPushButton
+			
+			botao = QPushButton("Clique aqui")
+			
+			def ao_clicar():
+			print("Botão clicado!")
+			
+			botao.clicked.connect(ao_clicar)
+		\end{minted}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Ideia central:}
+		\begin{itemize}
+			\item Sinal: algo aconteceu
+			\item Slot: função que responde ao evento
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}{Boas práticas em PyQt6}
+		
+		\textbf{Recomendações:}
+		\begin{itemize}
+			\item Criar classes para janelas
+			\item Separar lógica da interface
+			\item Evitar código no escopo global
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Estrutura comum de projeto:}
+		\begin{itemize}
+			\item \texttt{main.py} — inicialização
+			\item \texttt{ui/} — interfaces
+			\item \texttt{logic/} — regras de negócio
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Próximo passo:}
+		\begin{itemize}
+			\item Criar janelas com múltiplos widgets
+			\item Integrar com dados (ex.: GeoPandas)
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}{Aplicação PyQt6 — Qt Designer}
+		
+		\textbf{Qt Designer} é uma ferramenta visual para criar interfaces gráficas.
+		
+		\vspace{0.3cm}
+		
+		\textbf{Passos:}
+		\begin{enumerate}
+			\item Abrir o Qt Designer
+			\item Criar um projeto do tipo \textbf{Main Window}
+			\item Adicionar widgets (ex.: QLabel, QPushButton)
+			\item Salvar como \texttt{main\_window.ui}
+		\end{enumerate}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Resultado:}
+		\begin{itemize}
+			\item Arquivo XML \texttt{.ui}
+			\item Descreve apenas a interface
+			\item Nenhuma lógica de aplicação
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}[fragile]{Aplicação PyQt6 — Estrutura mínima}
+		
+		\textbf{Componentes principais:}
+		\begin{itemize}
+			\item \texttt{QApplication}: gerencia o ciclo da aplicação
+			\item \texttt{QMainWindow}: janela principal
+			\item Arquivo \texttt{.ui}: interface gráfica
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Estrutura de arquivos:}
+		\begin{minted}{text}
+			projeto/
+			main.py
+			main_window.ui
+		\end{minted}
+		
+	\end{frame}
+	
+	\begin{frame}[fragile]{Aplicação PyQt6 — Código mínimo}
+		
+		\begin{minted}{python}
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.uic import loadUi
+
+class MainWindow(QMainWindow):
+	def __init__(self):
+		super().__init__()
+		loadUi("main_window.ui", self)
+		self.setWindowTitle("Aplicação PyQt6 mínima")
+
+if __name__ == "__main__":
+	app = QApplication(sys.argv)
+	window = MainWindow()
+	window.show()
+	sys.exit(app.exec())
+		\end{minted}
+		
+		\begin{itemize}
+			\item O \texttt{.ui} é carregado dinamicamente
+			\item A lógica fica separada da interface
+			\item A aplicação entra no loop de eventos
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}[fragile]{PyQt6 — Acessando widgets do .ui}
+		
+		Quando um arquivo \texttt{.ui} é carregado com \texttt{loadUi},  
+		os widgets tornam-se atributos da classe.
+		
+		\vspace{0.3cm}
+		
+		\begin{minted}{python}
+from PyQt6.QtWidgets import QMainWindow
+from PyQt6.uic import loadUi
+
+class MainWindow(QMainWindow):
+	def __init__(self):
+		super().__init__()
+		loadUi("main_window.ui", self)
+
+# Acessando widgets do .ui
+self.pushButton.setText("Clique aqui")
+self.label.setText("Olá, PyQt6!")
+		\end{minted}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Importante:}
+		\begin{itemize}
+			\item O nome do atributo vem do \textbf{objectName} no Qt Designer
+			\item Ex.: \texttt{pushButton}, \texttt{label}, \texttt{lineEdit}
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}[fragile]{PyQt6 — Conectando sinais}
+		
+		Widgets emitem \textbf{sinais} quando algo acontece.
+		
+		\vspace{0.3cm}
+		
+		\begin{minted}{python}
+class MainWindow(QMainWindow):
+	def __init__(self):
+		super().__init__()
+		loadUi("main_window.ui", self)
+	
+	self.pushButton.clicked.connect(self.ao_clicar)
+	
+	def ao_clicar(self):
+		self.label.setText("Botão clicado!")
+		\end{minted}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Fluxo:}
+		\begin{itemize}
+			\item Usuário clica no botão
+			\item Sinal \texttt{clicked} é emitido
+			\item Método \texttt{ao\_clicar()} é executado
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}[fragile]{PyQt6 — Sinais e Slots com .ui}
+		
+		\textbf{Sinais e slots} conectam eventos à lógica da aplicação.
+		
+		\vspace{0.3cm}
+		
+		\begin{minted}{python}
+self.pushButton.clicked.connect(self.processar)
+
+def processar(self):
+	texto = self.lineEdit.text()
+	self.label.setText(texto)
+		\end{minted}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Resumo conceitual:}
+		\begin{itemize}
+			\item \textbf{Sinal}: evento (ex.: clique, texto alterado)
+			\item \textbf{Slot}: função Python
+			\item O \texttt{.ui} define a interface
+			\item O Python define o comportamento
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Vantagem:}
+		\begin{itemize}
+			\item Interface desacoplada da lógica
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}{PyQt6 — Diagrama UML da aplicação}
+		
+		\vspace{0.4cm}
+		
+		\begin{center}
+			\fbox{
+				\parbox[c][5cm][c]{0.8\textwidth}{
+					\centering
+					\textbf{Inserir aqui o diagrama UML da aplicação}\\
+					(QApplication, MainWindow, Widgets)
+				}
+			}
+		\end{center}
+		
+		\vspace{0.3cm}
+		
+		\textbf{Objetivo do diagrama:}
+		\begin{itemize}
+			\item Visualizar responsabilidades
+			\item Relacionar Qt Designer e código Python
+		\end{itemize}
+		
+	\end{frame}
+	
+	
+\end{document}
