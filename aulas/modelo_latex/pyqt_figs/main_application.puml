@@ -1,0 +1,25 @@
+@startuml
+class QApplication {
+    +exec()
+}
+
+class QMainWindow
+
+class MainWindow {
+    +__init__()
+    +ao_clicar()
+    +processar()
+}
+
+class QPushButton
+class QLabel
+class QLineEdit
+
+QApplication --> MainWindow : cria
+QMainWindow <|-- MainWindow
+
+MainWindow --> QPushButton : usa
+MainWindow --> QLabel : usa
+MainWindow --> QLineEdit : usa
+
+@enduml

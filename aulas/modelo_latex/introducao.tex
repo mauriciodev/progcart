@@ -468,8 +468,6 @@ dpkg -i codium_1.108.20787_amd64.deb
 		\item Iniciar o modo Debug
 	\end{itemize}
 	
-	\vspace{0.3cm}
-	
 	\textbf{Durante o debug, é possível:}
 	\begin{itemize}
 		\item Executar linha a linha (\textit{Step Over / Step Into})
@@ -477,11 +475,14 @@ dpkg -i codium_1.108.20787_amd64.deb
 		\item Avaliar expressões
 		\item Identificar erros de lógica
 	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Vantagem principal:}  
-	Entender \textbf{como} o programa executa, não apenas o resultado final.
+
+	%\textbf{Vantagem principal:}  Entender \textbf{como} o programa executa, não apenas o resultado final.\\
+	\textbf{Alterar as configurações do VSCodium devido a um bug do Pixi}
+	\begin{itemize}
+		\item File - Preferences - Settings
+		\item Python - Terminal: Activate Environment - Disable
+	\end{itemize}
+
 	
 \end{frame}
 

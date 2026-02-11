@@ -40,16 +40,16 @@
 		\vspace{0.3cm}
 		
 		\begin{minted}{python}
-			from PyQt6.QtWidgets import QApplication, QWidget
-			import sys
-			
-			app = QApplication(sys.argv)
-			
-			janela = QWidget()
-			janela.setWindowTitle("Minha aplicação")
-			janela.show()
-			
-			sys.exit(app.exec())
+from PyQt6.QtWidgets import QApplication, QWidget
+import sys
+
+app = QApplication(sys.argv)
+
+janela = QWidget()
+janela.setWindowTitle("Minha aplicação")
+janela.show()
+
+sys.exit(app.exec())
 		\end{minted}
 		
 		\vspace{0.3cm}
@@ -98,14 +98,14 @@
 		\vspace{0.3cm}
 		
 		\begin{minted}{python}
-			from PyQt6.QtWidgets import QPushButton
-			
-			botao = QPushButton("Clique aqui")
-			
-			def ao_clicar():
-			print("Botão clicado!")
-			
-			botao.clicked.connect(ao_clicar)
+from PyQt6.QtWidgets import QPushButton
+
+botao = QPushButton("Clique aqui")
+
+def ao_clicar():
+	print("Botão clicado!")
+
+botao.clicked.connect(ao_clicar)
 		\end{minted}
 		
 		\vspace{0.3cm}
@@ -134,14 +134,6 @@
 			\item \texttt{main.py} — inicialização
 			\item \texttt{ui/} — interfaces
 			\item \texttt{logic/} — regras de negócio
-		\end{itemize}
-		
-		\vspace{0.3cm}
-		
-		\textbf{Próximo passo:}
-		\begin{itemize}
-			\item Criar janelas com múltiplos widgets
-			\item Integrar com dados (ex.: GeoPandas)
 		\end{itemize}
 		
 	\end{frame}
@@ -184,9 +176,9 @@
 		
 		\textbf{Estrutura de arquivos:}
 		\begin{minted}{text}
-			projeto/
-			main.py
-			main_window.ui
+projeto/
+	main.py
+	main_window.ui
 		\end{minted}
 		
 	\end{frame}
@@ -318,13 +310,10 @@ def processar(self):
 		
 		\begin{center}
 			\fbox{
-				\parbox[c][5cm][c]{0.8\textwidth}{
-					\centering
-					\textbf{Inserir aqui o diagrama UML da aplicação}\\
-					(QApplication, MainWindow, Widgets)
-				}
+				\includegraphics[width=0.4\textwidth]{pyqt_figs/main_application}
 			}
 		\end{center}
+			
 		
 		\vspace{0.3cm}
 		

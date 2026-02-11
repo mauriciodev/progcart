@@ -209,3 +209,6 @@ rubber.cache
 *.pre
 *.snm
 *.vrb
+
+
+exemplos_de_aula/*
