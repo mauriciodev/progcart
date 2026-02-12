@@ -1,7 +1,7 @@
 \documentclass{beamer}
 \usepackage{aula}
 
-\title{Python não tão básico}
+\title{Estruturas de dados em Python \\ (Python não tão básico)}
 \date{\today}
 
 \begin{document}
@@ -282,37 +282,12 @@ print(resultado(media))
 	
 \end{frame}
 
-% Slide 1
+% Slide 2
 \begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
 	
 	\begin{minted}[fontsize=\small, linenos]{python}
 import matplotlib.pyplot as plt
 
-dados = {
-	"Aprendizado profundo": 10,
-	"GNSS": 9,
-	"Sensoriamento remoto": 6,
-	"Fotogrametria": 5,
-	"SIG": 7,
-	"Programação desktop": 7,
-	"Programação web backend": 8,
-	"Programação web frontend": 5,
-	"Trabalho de campo": 3,
-	"Produção cartográfica": 6,
-	"Batimetria": 2
-}
-
-plotar_grafico_barras(dados, titulo="Habilidades do Maurício",
-xlabel="Habilidades", ylabel="Pontuação", 
-rotacao_labels=90, salvar_em="plot.png")
-	\end{minted}
-	
-\end{frame}
-
-% Slide 2
-\begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
-	
-	\begin{minted}[fontsize=\small, linenos]{python}
 def plotar_grafico_barras(dados, titulo="Gráfico de Barras",
 	xlabel="Categorias", ylabel="Valores", 
 	rotacao_labels=0, salvar_em="plot.png"):
@@ -332,5 +307,39 @@ def plotar_grafico_barras(dados, titulo="Gráfico de Barras",
 	\end{minted}
 		
 \end{frame}
+% Slide 1
+\begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
 	
+	\begin{minted}[fontsize=\small, linenos]{python}
+		dados = {
+			"Aprendizado profundo": 10,
+			"GNSS": 9,
+			"Sensoriamento remoto": 6,
+			"Fotogrametria": 5,
+			"SIG": 7,
+			"Programação desktop": 7,
+			"Programação web backend": 8,
+			"Programação web frontend": 5,
+			"Produção cartográfica": 6,
+			"Batimetria": 2
+		}
+		
+		plotar_grafico_barras(dados, titulo="Habilidades do Maurício",
+		xlabel="Habilidades", ylabel="Pontuação", 
+		rotacao_labels=90, salvar_em="plot.png")
+	\end{minted}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
+	% TODO: \usepackage{graphicx} required
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{estruturas_dados_python_figs/plot}
+		\caption{Gráfico das habilidades}
+		\label{fig:plot}
+	\end{figure}
+\end{frame}
+
+
 \end{document}

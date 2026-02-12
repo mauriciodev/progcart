@@ -1,0 +1,131 @@
+\documentclass{beamer}
+
+\usepackage{aula}
+
+\title{Operações espaciais no QGIS}
+\date{\today}
+
+\begin{document}
+	
+\input{capa}
+
+\begin{frame}[fragile]{Objetivos}
+Ilustrar operações de geoprocessamento em dados matriciais e vetoriais.
+% TODO: \usepackage{graphicx} required
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{operacoes_espaciais_qgis_figs/toolbox}
+	\caption{Exemplo: Ferramentas de geoprocessamento no QGIS (processing toolbox).}
+	\label{fig:toolbox}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Relações espaciais: Pontos}
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.7\linewidth]{operacoes_espaciais_qgis_figs/relacoes_ponto1}
+			\end{figure}
+		\end{column}
+		
+		\begin{column}[t]{0.48\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.7\linewidth]{operacoes_espaciais_qgis_figs/relacoes_ponto2}
+			\end{figure}
+		\end{column}
+	\end{columns}	
+	% TODO: \usepackage{graphicx} required
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.34\linewidth]{operacoes_espaciais_qgis_figs/relacoes_ponto3}
+	\end{figure}
+	Fonte: \href{https://inde.gov.br/pdf/ET-EDGV_versao_3.0_2018_05_20.pdf}{ET-EDGV 3.0 (link)} 
+\end{frame}
+
+\begin{frame}{Relações espaciais: Linhas}
+	\begin{columns}[t]
+		\begin{column}[t]{0.33\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\linewidth]{operacoes_espaciais_qgis_figs/relacoes_line1}
+			\end{figure}
+		\end{column}
+		\begin{column}[t]{0.33\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{operacoes_espaciais_qgis_figs/relacoes_line3}			
+			\end{figure}
+		\end{column}
+
+		\begin{column}[t]{0.33\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{operacoes_espaciais_qgis_figs/relacoes_line2}			
+			\end{figure}
+		\end{column}
+	\end{columns}	
+	\espaco
+	
+	Fonte: \href{https://inde.gov.br/pdf/ET-EDGV_versao_3.0_2018_05_20.pdf}{ET-EDGV 3.0 (link)} 
+\end{frame}
+
+\begin{frame}{Relações espaciais: Polígonos}
+	\begin{columns}[t]
+		\begin{column}[t]{0.33\textwidth}
+			\begin{figure}
+			\centering
+			\includegraphics[width=0.8\linewidth]{operacoes_espaciais_qgis_figs/relacoes_poly1}
+
+			\includegraphics[width=0.8\linewidth]{operacoes_espaciais_qgis_figs/relacoes_poly2}
+			\end{figure}
+		\end{column}
+		
+		\begin{column}[t]{0.66\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{operacoes_espaciais_qgis_figs/relacoes_poly3}
+				
+			\end{figure}
+		\end{column}
+	\end{columns}	
+	\espaco
+	
+	Fonte: \href{https://inde.gov.br/pdf/ET-EDGV_versao_3.0_2018_05_20.pdf}{ET-EDGV 3.0 (link)} 
+\end{frame}
+
+\begin{frame}{Simple feature access}
+	\begin{itemize}
+		\item O padrão determina os tipos de geometrias e as operações entre elas.
+		\item 	As operações são definidas principalmente para SQL (bancos relacionais).
+		\item 	Acessem em https://www.ogc.org/standards/sfs/
+		\item 	OpenGIS Implementation Specification for Geographic information – Simple feature access – Part 2: SQL option 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Operações entre dados matriciais e vetoriais}
+	Existem várias operações entre dados matriciais e vetoriais.
+	
+	% TODO: \usepackage{graphicx} required
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.4\linewidth]{operacoes_espaciais_qgis_figs/operacoes_matriciais_vetoriais}
+		\label{fig:operacoesmatriciaisvetoriais}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}{Exercícios}
+\begin{itemize}
+	\item \href{https://docs.qgis.org/3.40/pt_BR/docs/training_manual/vector_analysis/basic_analysis.html}{Processamento de dados vetoriais (Link)}
+	\item 	\href{https://docs.qgis.org/3.40/pt_BR/docs/training_manual/rasters/terrain_analysis.html }{Processamento de dados matriciais (Link)}
+\end{itemize}
+	
+\end{frame}
+
+
+
+
+\end{document}

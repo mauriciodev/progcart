@@ -1,0 +1,265 @@
+\documentclass{beamer}
+
+\usepackage{aula}
+
+\title{PyQGIS plugin de geoprocessamento}
+\date{\today}
+
+\begin{document}
+	
+\input{capa}
+
+\begin{frame}{Objetivos}
+	\begin{itemize}
+		\item Ilustrar operações de geoprocessamento
+		\item Trabalhar com dados Matriciais (Raster) e Vetoriais (Vector)
+	\end{itemize}
+	% TODO: \usepackage{graphicx} required
+	\begin{figure}
+		\centering
+		\includegraphics[width=\linewidth]{pyqgis_processing_plugin_figs/toolbox}
+		\caption{Exemplo: Ferramentas de geoprocessamento no QGIS (processing toolbox).}
+	\end{figure}
+	
+\end{frame}
+
+% Slide 2
+\begin{frame}{Executando Algoritmos pelo Console}
+	O QGIS permite executar algoritmos diretamente via console Python.
+	
+	\vspace{0.3cm}
+	
+	Documentação oficial:
+	
+	\url{https://docs.qgis.org/3.40/en/docs/user_manual/processing/console.html}
+	
+	\vspace{0.3cm}
+	
+	Exemplo:
+	\begin{itemize}
+		\item \texttt{processing.run("native:buffer", \{...\})}
+	\end{itemize}
+	% TODO: \usepackage{graphicx} required
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{pyqgis_processing_plugin_figs/script}
+	\end{figure}
+\end{frame}
+
+% Slide 3
+\begin{frame}{Construindo um Script com Model Builder}
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+Estratégia recomendada:
+
+			\begin{enumerate}
+				\item Abrir o \textbf{Model Builder}
+				\item Criar um modelo com as entradas do plugin
+				\item Inserir processos que serão utilizados
+				\item Testar o fluxo
+				\item Exportar para Python:
+				\begin{itemize}
+					\item Model → Export → Export as Python Script
+				\end{itemize}
+			\end{enumerate}
+		\end{column}
+		
+		\begin{column}[t]{0.48\textwidth}
+			\colimage{pyqgis_processing_plugin_figs/model_builder}
+		\end{column}
+	\end{columns}	
+	
+\end{frame}
+
+\begin{frame}{Plugin Builder}
+	Criar um plugin do tipo \textbf{Processing Provider}
+
+	Passos:
+	\begin{itemize}
+		\item Gerar estrutura do plugin pelo Plugin Builder
+		\item Copiar para pasta de plugins do QGIS
+		\item Ativar no Instalador de Plugins
+	\end{itemize}
+	
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{pyqgis_processing_plugin_figs/plugin_builder2}
+			\end{figure}
+		\end{column}
+		\begin{column}[t]{0.48\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{pyqgis_processing_plugin_figs/plugin_builder2}
+			\end{figure}
+			
+		\end{column}
+	\end{columns}	
+\end{frame}
+
+% Slide 5
+\begin{frame}{Adicionar o Script ao Plugin}
+	\begin{itemize}
+		\item Copiar o arquivo exportado pelo Model Builder
+		\item Inserir na pasta do plugin
+		\item Adicionar o import no provider
+		
+	% TODO: \usepackage{graphicx} required
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{pyqgis_processing_plugin_figs/adicionar_script}
+	\end{figure}
+
+	\end{itemize}
+\end{frame}
+
+% Slide 6
+\begin{frame}{Processing Scripts no QGIS}
+	Referência essencial: \\
+	\url{https://docs.qgis.org/3.40/en/docs/user_manual/processing/scripts.html}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{pyqgis_processing_plugin_figs/acessando_feicoes}
+	\end{figure}
+	Leitura interessante: \\
+	\url{https://qgis-tuts-wu.readthedocs.io/en/latest/land_degradation_development/scripts/rasterizing.html}
+\end{frame}
+
+% Slide 7
+\begin{frame}{Entradas e Saídas no Processing}
+	Principais tipos de parâmetros:
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+			\textbf{Entradas} \\
+
+			QgsProcessingParameterRasterLayer
+			QgsProcessingParameterVectorLayer
+			QgsProcessingParameterNumber
+			QgsProcessingParameterNumber.Type.Double
+
+		\end{column}
+		
+		\begin{column}[t]{0.48\textwidth}
+			\textbf{Saídas}\\
+
+			QgsProcessingOutputNumber
+			QgsProcessingOutputVectorLayer
+			QgsProcessingOutputRasterLayer
+
+		\end{column}
+	\end{columns}	
+	\espaco
+	\centering
+	\href{https://docs.qgis.org/3.40/en/docs/user_manual/processing/parameters.html}{Link com parâmetros disponíveis no Processing.}
+\end{frame}
+
+% Slide 8
+\begin{frame}[fragile]{Acessando as Feições do VectorLayer}
+	Dentro do método \texttt{processAlgorithm()}:
+	
+	\begin{itemize}
+		\item Recuperar camada:
+		\begin{itemize}
+			\item \texttt{self.parameterAsVectorLayer(...)}
+		\end{itemize}
+		\item Iterar feições:
+		\begin{itemize}
+			\item \texttt{for feat in layer.getFeatures():}
+		\end{itemize}
+		\item Acessar geometria:
+		\begin{itemize}
+			\item \texttt{feat.geometry()}
+		\end{itemize}
+	\end{itemize}
+% TODO: \usepackage{graphicx} required
+\end{frame}
+
+\begin{frame}[fragile]{Acessando as Feições do VectorLayer}
+	\begin{figure}
+		\centering
+		\includegraphics[width=\linewidth]{pyqgis_processing_plugin_figs/acessando_feicoes1}
+	\end{figure}
+	\begin{minted}{python}
+input_featuresource = self.parameterAsSource(parameters, 'camada_vetorial_a_ser_verificada', context)
+for feat in input_featuresource.getFeatures():
+	print(feat)
+	\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de Algoritmo Processing (Buffer)}
+	\begin{minted}[fontsize=\scriptsize]{python}
+from qgis.core import (
+QgsProcessing,
+QgsProcessingAlgorithm,
+QgsProcessingParameterVectorLayer,
+QgsProcessingParameterNumber,
+QgsProcessingParameterFeatureSink,
+QgsFeature
+)
+
+class SimpleBuffer(QgsProcessingAlgorithm):
+
+INPUT = 'INPUT'
+DIST = 'DIST'
+OUTPUT = 'OUTPUT'
+
+def initAlgorithm(self, config=None):
+self.addParameter(
+QgsProcessingParameterVectorLayer(
+self.INPUT,
+'Camada de entrada'
+)
+)
+
+self.addParameter(
+QgsProcessingParameterNumber(
+self.DIST,
+'Distância do buffer',
+type=QgsProcessingParameterNumber.Double,
+defaultValue=10.0
+)
+)
+
+self.addParameter(
+QgsProcessingParameterFeatureSink(
+self.OUTPUT,
+'Camada de saída'
+)
+)
+
+def processAlgorithm(self, parameters, context, feedback):
+
+layer = self.parameterAsVectorLayer(
+parameters, self.INPUT, context
+)
+
+dist = self.parameterAsDouble(
+parameters, self.DIST, context
+)
+
+(sink, dest_id) = self.parameterAsSink(
+parameters,
+self.OUTPUT,
+context,
+layer.fields(),
+layer.wkbType(),
+layer.sourceCrs()
+)
+
+for feat in layer.getFeatures():
+geom = feat.geometry()
+buffered = geom.buffer(dist, 8)
+
+new_feat = QgsFeature()
+new_feat.setGeometry(buffered)
+new_feat.setAttributes(feat.attributes())
+sink.addFeature(new_feat)
+
+return {self.OUTPUT: dest_id}
+	\end{minted}
+\end{frame}
+
+
+\end{document}
