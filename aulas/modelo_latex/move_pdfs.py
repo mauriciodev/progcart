@@ -37,7 +37,7 @@ def compilar_tex(root_dir: str = ".", build_dir: str = "build"):
 
 #pdflatex -synctex=1 --shell-escape -interaction=nonstopmode -output-directory=build %.tex
 
-compilar_tex()
+#compilar_tex()
 
 pdf_files = list(build_dir.glob("*.pdf"))
 
