@@ -10,17 +10,19 @@
 \input{capa}
 
 % Slide 1
-\begin{frame}{Introdução ao Streamlit}
+\begin{frame}[fragile]{Introdução ao Streamlit}
 	\begin{itemize}
 		\item Framework Python para aplicações web interativas
 		\item Foco em simplicidade e prototipação rápida
 		\item Executa com:
 	\end{itemize}
 	
-	\begin{center}
-		\texttt{streamlit run app.py}
-	\end{center}
-	
+\begin{minted}{shell}
+pixi shell
+pixi add streamlit 
+streamlit run app.py
+\end{minted}
+
 	\vspace{0.3cm}
 	
 	\textbf{Principais conceitos:}
@@ -35,17 +37,17 @@
 % Slide 2
 \begin{frame}[fragile]{Estrutura Básica da Aplicação}
 	\begin{minted}[fontsize=\scriptsize]{python}
-		import streamlit as st
-		import matplotlib.pyplot as plt
-		import leafmap.foliumap as leafmap
-		
-		st.title("Exemplo Streamlit + Matplotlib + Leafmap")
-		
-		st.sidebar.header("Controles")
-		
-		lat = st.sidebar.number_input("Latitude", value=-15.78)
-		lon = st.sidebar.number_input("Longitude", value=-47.93)
-		zoom_btn = st.sidebar.button("Zoom na coordenada")
+import streamlit as st
+import matplotlib.pyplot as plt
+import leafmap.foliumap as leafmap
+
+st.title("Exemplo Streamlit + Matplotlib + Leafmap")
+
+st.sidebar.header("Controles")
+
+lat = st.sidebar.number_input("Latitude", value=-15.78)
+lon = st.sidebar.number_input("Longitude", value=-47.93)
+zoom_btn = st.sidebar.button("Zoom na coordenada")
 	\end{minted}
 	
 	\begin{itemize}

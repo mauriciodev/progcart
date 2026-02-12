@@ -8,7 +8,7 @@ Sequência de aulas
 - [Aula 7 PyQGIS - plugins de interface](pyqgis_plugins.pdf)
 - [Aula 7 Geopandas com cadernos Jupyter com e Leafmap](geopandas_jupyter_leafmap.pdf) (Iniciado)
 https://py.geocompx.org/01-spatial-data  
-- [Aula 8 Interfaces web rápidas](interfaces_web_rapidas)(Iniciado)
+- [Aula 8 Interfaces web rápidas](interfaces_web_rapidas.pdf)(Iniciado)
 - [Aula 9 Geoprocessamento](geoprocessamento.pdf)
 - [Aula 10 Operações espaciais no QGIS](operacoes_espaciais_qgis.pdf) (ok)
 - [Aula 11 PyQGIS plugin de geoprocessamento](pyqgis_processing_plugin.pdf) (Iniciado)
