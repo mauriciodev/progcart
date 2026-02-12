@@ -162,6 +162,12 @@ botao.clicked.connect(ao_clicar)
 		\end{itemize}
 		
 	\end{frame}
+
+	\begin{frame}{Aplicação PyQt6 — Qt Designer}
+	
+		\includegraphics[width=\textwidth]{pyqt_figs/designer}
+	
+	\end{frame}
 	
 	\begin{frame}[fragile]{Aplicação PyQt6 — Estrutura mínima}
 		
@@ -337,6 +343,62 @@ def processar(self):
 		
 	\end{frame}
 	
+
+\begin{frame}[fragile]{Plots da MatPlotLib em PyQt}
+	A MatPlotLib já tem widgets para PyQt prontas no backend qtagg.
+	\begin{minted}{python}
+import sys
+import time
+import numpy as np
+
+from matplotlib.backends.backend_qtagg import FigureCanvas
+from matplotlib.backends.backend_qtagg import \
+NavigationToolbar2QT as NavigationToolbar
+#Note a utilização de um backend específico.
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.figure import Figure
+
+from PyQt5 import QtWidgets, uic
+	\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Plots da MatPlotLib em PyQt}
+	\begin{minted}{python}
+class ApplicationWindow(QtWidgets.QMainWindow):
+	def __init__(self):
+		super(ApplicationWindow, self).__init__()
+		# Carrega a MainWindow que tem um objeto verticalLayout
+		uic.loadUi('plot.ui', self)
+	
+	# Cria um canvas da MatPlotLib integrado à PyQt
+	self.static_canvas = FigureCanvas(Figure(figsize=(5, 3)))
+	#  Adiciona a barra de navegação no layout
+	self.verticalLayout.addWidget(NavigationToolbar(self.static_canvas, self))
+	# Adiciona o canvas no layout
+	self.verticalLayout.addWidget(self.static_canvas)
+	
+	def draw_plot(self): # Função que gera os dados e desenha
+		self._static_ax = self.static_canvas.figure.subplots()
+		t = np.linspace(0, 10, 501)
+		m = np.random.rand(128,128)s
+		self._static_ax.imshow(m)
+	\end{minted}
+\end{frame}
+\begin{frame}[fragile]{Plots da MatPlotLib em PyQt}
+	Essa é a aplicação que executa a widget da classe anterior.
+	\begin{minted}{python}
+if __name__ == "__main__":
+	qapp = QtWidgets.QApplication.instance()
+	if not qapp:
+		qapp = QtWidgets.QApplication(sys.argv)
+	
+	app = ApplicationWindow()
+	app.show()
+	app.draw_plot()
+	qapp.exec()
+	\end{minted}
+\end{frame}
+
 % Slide 1
 \begin{frame}[fragile]{Empacotando PyQt6 com Pixi}
 	\textbf{Objetivo:} gerar executável (.exe) mantendo ambiente reprodutível.
