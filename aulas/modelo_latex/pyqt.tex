@@ -336,4 +336,85 @@ def processar(self):
 		\end{itemize}
 		
 	\end{frame}
+	
+% Slide 1
+\begin{frame}[fragile]{Empacotando PyQt6 com Pixi}
+	\textbf{Objetivo:} gerar executável (.exe) mantendo ambiente reprodutível.
+	
+	\vspace{0.4cm}
+	
+	\textbf{Criar projeto Pixi (se ainda não existir)}
+	\begin{minted}{bash}
+pixi init
+	\end{minted}
+	
+	\vspace{0.4cm}
+	\textbf{Adicionar dependências}
+	
+	\begin{minted}{bash}
+pixi add python pyqt pyinstaller
+	\end{minted}
+	
+	\vspace{0.4cm}
+	
+	Pixi garante:
+	\begin{itemize}
+		\item Ambiente isolado
+		\item Controle de versões
+		\item Reprodutibilidade do build
+	\end{itemize}
+\end{frame}
+
+% Slide 2
+\begin{frame}[fragile]{Executando PyInstaller via Pixi}
+	\textbf{Rodar dentro do ambiente Pixi:}
+	
+	\begin{minted}{bash}
+pixi run pyinstaller --onefile --windowed main.py
+	\end{minted}
+	
+	\vspace{0.4cm}
+	
+	Arquivos gerados:
+	\begin{itemize}
+		\item \texttt{dist/main.exe}
+		\item \texttt{build/}
+		\item \texttt{main.spec}
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Vantagem:
+	\begin{itemize}
+		\item Não depende do Python global do sistema
+		\item Build consistente entre máquinas
+	\end{itemize}
+\end{frame}
+
+% Slide 3
+\begin{frame}[fragile]{Automatizando com pixi.toml}
+	Podemos criar uma task no \texttt{pixi.toml}:
+	
+	\begin{minted}{toml}
+[tasks]
+build = "pyinstaller --onefile --windowed main.py"
+	\end{minted}
+	
+	\vspace{0.4cm}
+	
+	Executar com:
+	\begin{minted}{bash}
+pixi run build
+	\end{minted}
+	
+	\vspace{0.5cm}
+	
+	\textbf{Boas práticas:}
+	\begin{itemize}
+		\item Versionar o \texttt{pixi.lock}
+		\item Testar o executável fora do ambiente
+		\item Ajustar o .spec se houver recursos externos
+	\end{itemize}
+\end{frame}
+
 \end{document}
