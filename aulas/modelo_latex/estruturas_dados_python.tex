@@ -350,18 +350,57 @@ print(resultado(media))
 	
 \end{frame}
 
-% Slide 2
+
+\begin{frame}[fragile]{Boas Práticas ao Escrever Funções}
+	\textbf{1. Funções devem ter responsabilidade única}
+	\begin{itemize}
+		\item Faça uma coisa — e faça bem.
+	\end{itemize}
+	
+	
+	\textbf{2. Use nomes claros e descritivos}
+	\begin{itemize}
+		\item Evite: \texttt{def calc(x):}
+		\item Prefira: \texttt{def calcular\_area\_poligono(vertices):}
+	\end{itemize}
+	
+	
+	\textbf{3. Tipagem explícita (quando possível)}
+	\begin{minted}[fontsize=\scriptsize]{python}
+def area_triangulo(base: float, altura: float) -> float:
+	return (base * altura) / 2
+	\end{minted}
+	
+	
+	\textbf{4. Evite efeitos colaterais}
+	\begin{itemize}
+		\item Não modifique variáveis globais
+		\item Prefira retorno explícito
+	\end{itemize}
+	
+	\textbf{5. Documente comportamento e contratos}
+	\begin{minted}[fontsize=\scriptsize]{python}
+def normalizar(v: np.ndarray) -> np.ndarray:
+	"""Retorna vetor normalizado (norma L2 = 1)."""
+	return v / np.linalg.norm(v)
+	\end{minted}
+	
+\end{frame}
+
+
 \begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
 	
-	\begin{minted}[fontsize=\small, linenos]{python}
+	\begin{minted}[fontsize=\scriptsize]{python}
 import matplotlib.pyplot as plt
 
 def plotar_grafico_barras(dados, titulo="Gráfico de Barras",
 	xlabel="Categorias", ylabel="Valores", 
 	rotacao_labels=0, salvar_em="plot.png"):
+	
 	# Separando chaves e valores
 	labels = list(dados.keys())
 	valores = list(dados.values())
+	
 	# Plot
 	plt.figure() # Inicializa área de desenho.
 	plt.bar(labels, valores) # Gráfico de barras.
@@ -375,10 +414,10 @@ def plotar_grafico_barras(dados, titulo="Gráfico de Barras",
 	\end{minted}
 		
 \end{frame}
-% Slide 1
+
 \begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
 	
-	\begin{minted}[fontsize=\small, linenos]{python}
+	\begin{minted}[fontsize=\scriptsize, linenos]{python}
 dados = {
 	"Aprendizado profundo": 10,
 	"GNSS": 9,
