@@ -1,0 +1,19 @@
+@startuml
+hide circle
+
+class Downloader {
+    - server_url_format : str
+    - destination_folder : str
+    --
+    + __init__(server_url_format: str, destination_folder: str)
+    + download_file(name: str) : void
+}
+
+'package "External Libraries" {
+'    class requests
+'    class os
+'}
+
+'Downloader ..> requests : uses
+'Downloader ..> os : uses
+@enduml
