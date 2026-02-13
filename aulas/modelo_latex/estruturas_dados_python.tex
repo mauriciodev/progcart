@@ -117,38 +117,106 @@ A = np.array([
 print(A.shape)     # (2, 3)
 print(A[0, 1])     # elemento da 1ª linha, 2ª coluna
 	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{Operações comuns}
-	\begin{minted}{python}
-B = A * 2           # operação elemento a elemento
-C = A.T             # transposta
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-
-	
 \end{frame}
 
 	
 \begin{frame}[fragile]{Operações com Matrizes}
+	\textbf{Criação rápida}
+	\begin{minted}{python}
+Z = np.zeros((3, 3))
+I = np.eye(3)
+	\end{minted}
+
+	\textbf{Operações comuns}
+	\begin{minted}{python}
+B = A * 2  # operação elemento a elemento
+C = A.T    # transposta
+	\end{minted}
+
 	\textbf{Percorrendo a matriz com for}
 	\begin{minted}{python}
 for i in range(len(matriz)):
 	for j in range(len(matriz[i])):
 		print(matriz[i][j])
 	\end{minted}
-	\textbf{Criação rápida}
-	\begin{minted}{python}
-Z = np.zeros((3, 3))
-I = np.eye(3)
-	\end{minted}
 \end{frame}
+	
+\begin{frame}[fragile]{Principais Funções de numpy.linalg}
+	\begin{minted}[fontsize=\scriptsize]{python}
+import numpy as np
+
+# Vetor e matriz de exemplo
+v = np.array([3, 4])
+A = np.array([[3, 1], [1, 2]])
+b = np.array([9, 8])
+
+np.linalg.norm(v)             # Norma Euclidiana (magnitude do vetor)
+
+x = np.linalg.solve(A, b)     # Resolver sistema linear Ax = b
+
+np.linalg.det(A)              # Determinante
+
+np.linalg.inv(A)              # Inversa (evitar se possível; prefira solve)
+
+vals, vecs = np.linalg.eig(A) # Autovalores e autovetores
+	\end{minted}
+	
+	\textbf{Observações importantes:}
+	\begin{itemize}
+		\item \texttt{norm} calcula magnitude (L2 por padrão; pode usar \texttt{ord=1}, \texttt{ord=np.inf}, etc.).
+		\item \texttt{solve} é numericamente mais estável que usar \texttt{inv(A) @ b}.
+		\item Evite calcular a inversa explicitamente quando for resolver sistemas lineares.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Mínimos Quadrados (Least Squares)}
+	
+	\begin{columns}[t]
+		\begin{column}[t]{0.48\textwidth}
+			\textbf{Problema:}
+			
+			Resolver um sistema sobredeterminado \\
+			$ A x \approx b $ \\
+			minimizando o erro: \\
+			
+			$\min_x \|Ax - b\|_2$
+			
+		\end{column}
+		\begin{column}[t]{0.48\textwidth}
+			\textbf{Saídas da função:}
+			\begin{itemize}
+				\item \texttt{coef} → solução ótima
+				\item \texttt{residuals} → soma dos erros quadráticos
+				\item \texttt{rank} → posto de $A$
+				\item \texttt{s} → valores singulares
+			\end{itemize}
+		\end{column}
+	\end{columns}	
+	
+	
+	\begin{minted}[fontsize=\scriptsize]{python}
+import numpy as np
+# Ajuste linear y = ax + b
+x_data = np.array([1, 2, 3, 4])
+y_data = np.array([1.2, 1.9, 3.0, 3.9])
+
+# Matriz do modelo linear
+A = np.vstack([x_data, np.ones(len(x_data))]).T
+
+# Resolver mínimos quadrados
+coef, residuals, rank, s = np.linalg.lstsq(A, y_data, rcond=None)
+
+a, b = coef
+print("Coeficientes:", a, b)
+	\end{minted}
 	
 
 	
+
+	
+\end{frame}
+
+
 \begin{frame}[fragile]{Dicionários em Python}
 	
 	\textbf{Dicionários} armazenam pares \textbf{chave → valor}, permitindo
@@ -220,8 +288,8 @@ pares = aluno.items()
 notas = [7.0, 8.5, 6.0, 9.0]
 
 soma = 0
-	for n in notas:
-		soma += n
+for n in notas:
+	soma += n
 
 media = soma / len(notas)
 
@@ -311,22 +379,22 @@ def plotar_grafico_barras(dados, titulo="Gráfico de Barras",
 \begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
 	
 	\begin{minted}[fontsize=\small, linenos]{python}
-		dados = {
-			"Aprendizado profundo": 10,
-			"GNSS": 9,
-			"Sensoriamento remoto": 6,
-			"Fotogrametria": 5,
-			"SIG": 7,
-			"Programação desktop": 7,
-			"Programação web backend": 8,
-			"Programação web frontend": 5,
-			"Produção cartográfica": 6,
-			"Batimetria": 2
-		}
-		
-		plotar_grafico_barras(dados, titulo="Habilidades do Maurício",
-		xlabel="Habilidades", ylabel="Pontuação", 
-		rotacao_labels=90, salvar_em="plot.png")
+dados = {
+	"Aprendizado profundo": 10,
+	"GNSS": 9,
+	"Sensoriamento remoto": 6,
+	"Fotogrametria": 5,
+	"SIG": 7,
+	"Programação desktop": 7,
+	"Programação web backend": 8,
+	"Programação web frontend": 5,
+	"Produção cartográfica": 6,
+	"Batimetria": 2
+}
+
+plotar_grafico_barras(dados, titulo="Habilidades do Maurício",
+xlabel="Habilidades", ylabel="Pontuação", 
+rotacao_labels=90, salvar_em="plot.png")
 	\end{minted}
 	
 \end{frame}
