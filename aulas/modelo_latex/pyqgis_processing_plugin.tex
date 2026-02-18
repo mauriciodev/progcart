@@ -23,6 +23,267 @@
 	
 \end{frame}
 
+\begin{frame}{Sistema de Processing no QGIS}
+	\centering
+	\Large Sistema de Processing no QGIS
+\end{frame}
+
+\begin{frame}{Sistema de Processing no QGIS}
+	\textbf{Processing} é o framework de execução de algoritmos do QGIS.
+	
+	\vspace{0.4cm}
+	
+	Permite:
+	\begin{itemize}
+		\item Executar algoritmos nativos
+		\item Executar algoritmos do GDAL, GRASS, SAGA
+		\item Criar algoritmos customizados
+		\item Automatizar fluxos de geoprocessamento
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	A API é acessível via PyQGIS.
+\end{frame}
+
+\begin{frame}[fragile]{Executando Algoritmos via Python}
+	\begin{minted}{python}
+		import processing
+		
+		params = {
+			"INPUT": layer,
+			"DISTANCE": 100,
+			"SEGMENTS": 8,
+			"OUTPUT": "memory:"
+		}
+		
+		result = processing.run("native:buffer", params)
+	\end{minted}
+	
+	\vspace{0.4cm}
+	
+	\textbf{Formato:}
+	\begin{center}
+		\texttt{processing.run("provider:algorithm", parametros)}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Estrutura de um Algoritmo Customizado}
+	Todo algoritmo herda de:
+	
+	\begin{center}
+		\texttt{QgsProcessingAlgorithm}
+	\end{center}
+	
+	\vspace{0.4cm}
+	
+	Métodos principais:
+	\begin{itemize}
+		\item \texttt{initAlgorithm()} → define parâmetros
+		\item \texttt{processAlgorithm()} → lógica principal
+		\item \texttt{name()}, \texttt{displayName()}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Definindo Parâmetros}
+	\begin{minted}{python}
+		self.addParameter(
+		QgsProcessingParameterVectorLayer(
+		"INPUT",
+		"Camada de entrada"
+		)
+		)
+		
+		self.addParameter(
+		QgsProcessingParameterNumber(
+		"DIST",
+		"Distância",
+		type=QgsProcessingParameterNumber.Double
+		)
+		)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	Tipos comuns:
+	\begin{itemize}
+		\item VectorLayer
+		\item RasterLayer
+		\item Number
+		\item FeatureSink (saída)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Lógica do processAlgorithm()}
+	\begin{minted}{python}
+		def processAlgorithm(self, parameters, context, feedback):
+		layer = self.parameterAsVectorLayer(
+		parameters, "INPUT", context
+		)
+		
+		dist = self.parameterAsDouble(
+		parameters, "DIST", context
+		)
+		
+		for feat in layer.getFeatures():
+		if feedback.isCanceled():
+		break
+		
+		geom = feat.geometry()
+		new_geom = geom.buffer(dist, 8)
+		
+		return {}
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{feedback} permite:
+	\begin{itemize}
+		\item Cancelamento
+		\item Barra de progresso
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Saídas com FeatureSink}
+	Para gerar nova camada:
+	
+	\begin{itemize}
+		\item Usar \texttt{QgsProcessingParameterFeatureSink}
+		\item Criar feições
+		\item Adicionar ao sink
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Vantagens:
+	\begin{itemize}
+		\item Integração automática com o projeto
+		\item Suporte a arquivos ou memória
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Model Builder e Exportação}
+	Alternativa prática:
+	
+	\begin{itemize}
+		\item Criar fluxo no Model Builder
+		\item Exportar para Python
+		\item Adaptar o código
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Útil para:
+	\begin{itemize}
+		\item Prototipagem rápida
+		\item Aprender estrutura interna
+		\item Construir plugins Processing
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exercício 1 — Executar Buffer via Python}
+	\textbf{Objetivo:} executar algoritmo nativo via console.
+	
+	\begin{enumerate}
+		\item Abrir o console Python do QGIS
+		\item Selecionar uma camada vetorial ativa
+		\item Executar:
+	\end{enumerate}
+	
+	\begin{minted}{python}
+		import processing
+		
+		layer = iface.activeLayer()
+		
+		params = {
+			"INPUT": layer,
+			"DISTANCE": 100,
+			"SEGMENTS": 8,
+			"OUTPUT": "memory:"
+		}
+		
+		result = processing.run("native:buffer", params)
+	\end{minted}
+	
+	\textbf{Pergunta:}
+	Onde está armazenada a camada resultante?
+\end{frame}
+
+\begin{frame}[fragile]{Exercício 2 — Buffer Parametrizado}
+	\textbf{Objetivo:} usar valor da seleção do usuário.
+	
+	\begin{minted}{python}
+		layer = iface.activeLayer()
+		selected = layer.selectedFeatures()
+		
+		processing.run("native:buffer", {
+			"INPUT": selected,
+			"DISTANCE": 50,
+			"OUTPUT": "memory:"
+		})
+	\end{minted}
+	
+	\textbf{Desafio:}
+	Modifique para usar distância diferente por atributo.
+\end{frame}
+
+\begin{frame}[fragile]{Exercício 3 — Encadeando Algoritmos}
+	\textbf{Objetivo:} criar fluxo Buffer → Dissolve
+	
+	\begin{minted}{python}
+		buffered = processing.run("native:buffer", {
+			"INPUT": layer,
+			"DISTANCE": 100,
+			"OUTPUT": "memory:"
+		})
+		
+		dissolved = processing.run("native:dissolve", {
+			"INPUT": buffered["OUTPUT"],
+			"OUTPUT": "memory:"
+		})
+	\end{minted}
+	
+	\textbf{Pergunta:}
+	Como evitar criar camadas intermediárias visíveis?
+\end{frame}
+
+\begin{frame}[fragile]{Exercício 4 — Criar Algoritmo Simples}
+	\textbf{Objetivo:} criar algoritmo próprio.
+	
+	Passos:
+	\begin{enumerate}
+		\item Criar classe herdando de QgsProcessingAlgorithm
+		\item Definir parâmetros
+		\item Implementar processAlgorithm()
+	\end{enumerate}
+	
+	\textbf{Tarefa:}
+	Criar algoritmo que:
+	\begin{itemize}
+		\item Recebe camada vetorial
+		\item Cria campo "area\_calc"
+		\item Calcula área geométrica
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exercício 5 — Feedback e Performance}
+	\textbf{Objetivo:} usar feedback corretamente.
+	
+	\begin{minted}{python}
+		for i, feat in enumerate(layer.getFeatures()):
+		if feedback.isCanceled():
+		break
+		
+		feedback.setProgress(i * 100 / layer.featureCount())
+	\end{minted}
+	
+	\textbf{Discussão:}
+	\begin{itemize}
+		\item Quando evitar loops Python?
+		\item Quando delegar para algoritmo nativo?
+	\end{itemize}
+\end{frame}
+
 % Slide 2
 \begin{frame}{Executando Algoritmos pelo Console}
 	O QGIS permite executar algoritmos diretamente via console Python.
@@ -126,6 +387,8 @@ Estratégia recomendada:
 	Leitura interessante: \\
 	\url{https://qgis-tuts-wu.readthedocs.io/en/latest/land_degradation_development/scripts/rasterizing.html}
 \end{frame}
+
+
 
 % Slide 7
 \begin{frame}{Entradas e Saídas no Processing}

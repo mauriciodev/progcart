@@ -1,0 +1,31 @@
+@startuml
+hide stereotype
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam roundcorner 8
+
+class QgsVectorLayer {
+	+ getFeatures()
+	+ fields()
+	+ startEditing()
+	+ commitChanges()
+}
+
+class QgsFeature {
+	- id : int
+	- attributes : list
+	+ geometry() : QgsGeometry
+	+ attributes()
+}
+
+class QgsGeometry {
+	+ area() : float
+	+ length() : float
+	+ buffer(distance) : QgsGeometry
+	+ intersection(other) : QgsGeometry
+}
+
+QgsVectorLayer "1" -- "0..*" QgsFeature : contains
+QgsFeature "1" -- "1" QgsGeometry : has
+
+@enduml
