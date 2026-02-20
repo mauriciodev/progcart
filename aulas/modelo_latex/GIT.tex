@@ -140,6 +140,34 @@
 	
 \end{frame}
 
+\begin{frame}{GitHub Web - Criando Repositório via Interface Web}
+	\begin{columns}
+		\begin{column}[t]{0.40\textwidth}
+			Passos:
+			\begin{enumerate}
+				\item Acessar github.com
+				\item Clicar em "New repository"
+				\item Definir:
+				\begin{itemize}
+					\item Nome
+					\item Descrição
+					\item Público ou Privado
+				\end{itemize}
+				\item (Opcional) Inicializar com README
+				\item Criar repositório
+			\end{enumerate}
+		\end{column}
+		\begin{column}[t]{0.60\textwidth}
+			Após fazer o login, crie um repositório na sua conta.
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{GIT_figs/new_repo}
+			\end{figure}
+		\end{column}
+	\end{columns}
+	
+\end{frame}
+
 \begin{frame}{GitHub Desktop — Login do usuário}
 	
 	\begin{columns}[T]
@@ -166,8 +194,12 @@
 	
 \end{frame}
 
-\begin{frame}{GitHub Desktop — Clonar repositório}
+
+\begin{frame}[fragile]{GitHub Desktop — Clonar repositório}
 	\textbf{Passo 2 — Clonar}
+	\begin{minted}{bash}
+https://github.com/usuario/meu-repo.git
+	\end{minted}
 	\begin{columns}[T]
 		\begin{column}{0.48\textwidth}
 			\begin{figure}
@@ -277,6 +309,7 @@
 \end{frame}
 
 
+
 \begin{frame}[fragile]{Git no terminal - Instalação}
 	
 	\textbf{Windows (PowerShell):}
@@ -304,6 +337,23 @@ git config --global user.name "Your Name"
 	
 \end{frame}
 
+\begin{frame}[fragile]{Git no terminal - Clonando Repositório}
+	Clonar repositório no modo somente leitura:
+	\begin{minted}{bash}
+git clone https://github.com/mauriciodev/progcart.git
+	\end{minted}
+		\vspace{0.3cm}
+	Clonar repositório no modo leitura e escrita (via ssh):
+	\begin{minted}{bash}
+git clone git@github.com/mauriciodev/progcart.git
+	\end{minted}
+		\vspace{0.3cm}
+	Estrutura criada:
+	\begin{itemize}
+		\item Diretório do projeto
+		\item Pasta .git
+	\end{itemize}
+\end{frame}
 
 \begin{frame}{Git no VSCodium}
 	
@@ -326,18 +376,6 @@ git config --global user.name "Your Name"
 	\begin{itemize}
 		\item \texttt{Ctrl + Shift + P}
 	\end{itemize}
-	
-\end{frame}
-
-\begin{frame}[fragile]{Abrindo um repositório Git}
-	
-	\textbf{Endereço do repositório:}
-	
-	\begin{minted}{bash}
-git@github.com:mauriciodev/progcart.git
-	\end{minted}
-	
-	Esse endereço é usado para clonar o repositório.
 	
 \end{frame}
 
@@ -380,7 +418,22 @@ git@github.com:mauriciodev/progcart.git
 	
 \end{frame}
 
-
+\begin{frame}[fragile]{Git no terminal - Criando Repositório Local}
+	Caso o projeto já exista:
+	
+	\begin{minted}{bash}
+git init
+git add .
+git commit -m "Initial commit"
+	\end{minted}
+	
+	Adicionar remoto:
+	
+	\begin{minted}{bash}
+git remote add origin https://github.com/usuario/meu-repo.git
+git push -u origin main
+	\end{minted}
+\end{frame}
 
 %
 %\begin{frame}[fragile]{Código Python}
