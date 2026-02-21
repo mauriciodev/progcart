@@ -9,29 +9,373 @@
 	
 \input{capa}
 
-\begin{frame}[fragile]{Código Python}
+\begin{frame}{Arquitetura do QGIS}
+	\textbf{QGIS é estruturado em camadas (layers de software):}
+	
+	\begin{itemize}
+		\item \textbf{Core} → Modelo de dados geoespacial
+		\item \textbf{GUI} → Interface gráfica (Qt)
+		\item \textbf{Analysis} → Algoritmos e Processing
+		\item \textbf{Providers} → OGR, GDAL, PostGIS, etc.
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	\textbf{PyQGIS} é o binding Python da API C++ do QGIS.
+\end{frame}
+
+\begin{frame}[fragile]{QgsApplication e Inicialização}
+	\textbf{Dentro do QGIS:}
 	\begin{minted}{python}
-	def soma(a, b):
-  return a + b
+# Já inicializado automaticamente
+layer = iface.activeLayer()
+	\end{minted}
+	
+	\vspace{0.4cm}
+	
+	\textbf{Script standalone:}
+	\begin{minted}{python}
+from qgis.core import QgsApplication
+
+QgsApplication.setPrefixPath("/usr", True)
+app = QgsApplication([], False)
+app.initQgis()
+
+# código aqui
+
+app.exitQgis()
 	\end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Código Python}
-	\begin{columns}[t]
+\begin{frame}{Projeto e Singleton}
+	\textbf{QgsProject}
+	
+	\begin{itemize}
+		\item Representa o projeto aberto (.qgz)
+		\item Gerencia camadas
+		\item Singleton
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	\textbf{Acesso global:}
+	
+	\begin{center}
+		\texttt{QgsProject.instance()}
+	\end{center}
+	
+	\vspace{0.3cm}
+	
+	Permite:
+	\begin{itemize}
+		\item Adicionar camadas
+		\item Remover camadas
+		\item Acessar CRS do projeto
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Providers}
+	\textbf{Providers são responsáveis pelo acesso aos dados}
+	
+	\begin{itemize}
+		\item OGR → Shapefile, GeoPackage
+		\item GDAL → Raster
+		\item PostGIS → Banco espacial
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Ao criar uma camada:
+	\begin{center}
+		\texttt{QgsVectorLayer(path, name, "ogr")}
+	\end{center}
+	
+	\textbf{"ogr"} é o provider.
+\end{frame}
+
+\begin{frame}{Modelo de Dados Vetorial}
+	\begin{columns}
 		\begin{column}[t]{0.48\textwidth}
+					Principais classes:
 			
-			Versão \textbf{código aberto} do VS Code.
-			
-			\textbf{Usaremos para:}
 			\begin{itemize}
-				\item teste
+				\item \textbf{QgsVectorLayer}
+				\item \textbf{QgsFeature}
+				\item \textbf{QgsGeometry}
+				\item \textbf{QgsField / QgsFields}
 			\end{itemize}
 		\end{column}
-		
 		\begin{column}[t]{0.48\textwidth}
-			\colimage{./introducao_figs/ides.png}
+			\centering
+			Diagrama de classes \\
+			\includegraphics[width=0.4\textwidth]{pyqgis_figs/pyqgis_classes}
 		\end{column}
-	\end{columns}	
+	\end{columns}
+	
+	\vspace{0.4cm}
+	
+	Relação conceitual:
+	\begin{center}
+		Layer → Features → Geometry + Attributes
+	\end{center}
 \end{frame}
+
+\begin{frame}[fragile]{Iterando Feições}
+	\begin{minted}{python}
+layer = iface.activeLayer()
+
+for feat in layer.getFeatures():
+	geom = feat.geometry()
+	attrs = feat.attributes()
+
+print(geom.area(), attrs)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Observação:}
+	\begin{itemize}
+		\item Iteração é lazy (generator)
+		\item Geometria e atributos são acessados separadamente
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Geometria (QgsGeometry)}
+	Operações comuns:
+	
+	\begin{itemize}
+		\item \texttt{area()}
+		\item \texttt{length()}
+		\item \texttt{buffer()}
+		\item \texttt{intersection()}
+		\item \texttt{difference()}
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Conversões:
+	\begin{itemize}
+		\item WKT
+		\item WKB
+		\item GeoJSON
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Edição de Camadas}
+	\begin{minted}{python}
+layer.startEditing()
+
+for feat in layer.getFeatures():
+	feat["area"] = feat.geometry().area()
+	layer.updateFeature(feat)
+
+layer.commitChanges()
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Regra importante:}
+	\begin{itemize}
+		\item Sempre iniciar e finalizar modo de edição
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{CRS e Transformações}
+	Classes importantes:
+	
+	\begin{itemize}
+		\item \textbf{QgsCoordinateReferenceSystem}
+		\item \textbf{QgsCoordinateTransform}
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Transformação típica:
+	\begin{itemize}
+		\item CRS origem
+		\item CRS destino
+		\item Contexto do projeto
+	\end{itemize}
+	
+	Essencial para operações métricas corretas.
+\end{frame}
+
+\begin{frame}{Automação e Scripts Standalone}
+	\textbf{Objetivo:}
+	
+	Executar rotinas de geoprocessamento fora da interface gráfica do QGIS.
+	
+	\vspace{0.4cm}
+	
+	Casos típicos:
+	\begin{itemize}
+		\item Processamento em lote
+		\item Integração com pipelines ETL (extract, transform, load)
+		\item Execução em servidor
+		\item Agendamento (cron / task scheduler)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Comparação: Standalone vs Plugin}
+	\centering
+	\begin{tabular}{l|c|c}
+		& Plugin & Standalone \\
+		\hline
+		Interface gráfica & Sim & Não \\
+		Execução agendada & Limitado & Sim \\
+		Escalabilidade & Média & Alta \\
+		Uso em servidor & Difícil & Ideal \\
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{Arquitetura: GUI vs Standalone}
+	\textbf{Dentro do QGIS:}
+	\begin{itemize}
+		\item iface disponível
+		\item Projeto já carregado
+		\item Ambiente inicializado
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	\textbf{Standalone:}
+	\begin{itemize}
+		\item Inicializar QApplication
+		\item Inicializar QgsApplication
+		\item Configurar prefixPath
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estrutura Mínima de Script Standalone}
+	\begin{minted}{python}
+		from qgis.core import *
+		from qgis.PyQt.QtWidgets import QApplication
+		import sys
+		
+		QgsApplication.setPrefixPath(
+		"/usr", True
+		)
+		
+		app = QApplication(sys.argv)
+		qgs = QgsApplication([], False)
+		qgs.initQgis()
+		
+		# --- código aqui ---
+		
+		qgs.exitQgis()
+	\end{minted}
+\end{frame}
+
+\begin{frame}{Componentes Críticos}
+	\textbf{QgsApplication:}
+	\begin{itemize}
+		\item Inicializa provedores
+		\item Carrega drivers GDAL/OGR
+		\item Gerencia ambiente QGIS
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	\textbf{setPrefixPath():}
+	\begin{itemize}
+		\item Define onde o QGIS está instalado
+		\item Essencial para localizar recursos internos
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Carregando Camada Vetorial}
+	\begin{minted}{python}
+		layer = QgsVectorLayer(
+		"/dados/limites.shp",
+		"limites",
+		"ogr"
+		)
+		
+		if not layer.isValid():
+		raise Exception("Camada inválida")
+	\end{minted}
+	
+	\textbf{Importante:}
+	Sem projeto QGIS carregado, tudo deve ser instanciado manualmente.
+\end{frame}
+
+\begin{frame}[fragile]{Executando Processing Standalone}
+	\begin{minted}{python}
+		import processing
+		from processing.core.Processing import Processing
+		
+		Processing.initialize()
+		
+		result = processing.run("native:buffer", {
+			"INPUT": layer,
+			"DISTANCE": 100,
+			"OUTPUT": "/dados/buffer.shp"
+		})
+	\end{minted}
+	
+	\textbf{Observação:}
+	Processing precisa ser explicitamente inicializado.
+\end{frame}
+
+\begin{frame}{Automação em Lote}
+	Padrão típico:
+	
+	\begin{itemize}
+		\item Listar arquivos com glob/os
+		\item Iterar camadas
+		\item Executar algoritmo
+		\item Salvar saída
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Aplicações:
+	\begin{itemize}
+		\item Processamento municipal
+		\item Geração de buffers por estado
+		\item Reprojeção em massa
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Integração com CLI}
+	Script pode receber argumentos:
+	
+	\begin{itemize}
+		\item argparse
+		\item variáveis de ambiente
+		\item arquivos de configuração (YAML/JSON)
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Permite:
+	\begin{itemize}
+		\item Execução parametrizada
+		\item Integração com Airflow
+		\item Pipelines CI/CD
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Boas Práticas}
+	\begin{itemize}
+		\item Encapsular lógica em funções
+		\item Evitar código global
+		\item Validar camadas antes de processar
+		\item Usar logs ao invés de print
+		\item Garantir qgs.exitQgis()
+	\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Arquitetura Standalone — PyQGIS}
+% TODO: \usepackage{graphicx} required
+	\begin{center}
+		\includegraphics[width=\linewidth]{pyqgis_figs/standalone}
+	\end{center}
+\end{frame}
+
+
 
 \end{document}

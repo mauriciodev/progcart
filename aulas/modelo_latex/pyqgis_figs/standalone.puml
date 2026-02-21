@@ -1,0 +1,38 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class QApplication
+class QgsApplication {
+    +setPrefixPath()
+    +initQgis()
+    +exitQgis()
+}
+
+class Processing {
+    +initialize()
+}
+
+class ScriptMain {
+    +main()
+    +loadLayer()
+    +runAlgorithm()
+}
+
+class QgsVectorLayer {
+    +isValid()
+}
+
+class processing {
+    +run()
+}
+
+ScriptMain --> QApplication : instancia
+ScriptMain --> QgsApplication : inicializa
+ScriptMain --> Processing : initialize()
+ScriptMain --> QgsVectorLayer : carrega dados
+ScriptMain --> processing : executa algoritmo
+
+QgsApplication --> Processing : registra provedores
+processing --> QgsVectorLayer : usa como INPUT
+
+@enduml
