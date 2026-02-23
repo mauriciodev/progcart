@@ -9,29 +9,87 @@
 	
 \input{capa}
 
-\begin{frame}[fragile]{Código Python}
-	\begin{minted}{python}
-	def soma(a, b):
-  return a + b
-	\end{minted}
+\begin{frame}{Plugin Builder: Passo a passo}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{pyqgis_plugins_figs/builder_menu}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{pyqgis_plugins_figs/builder_install}
+\end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Código Python}
-	\begin{columns}[t]
-		\begin{column}[t]{0.48\textwidth}
-			
-			Versão \textbf{código aberto} do VS Code.
-			
-			\textbf{Usaremos para:}
-			\begin{itemize}
-				\item teste
-			\end{itemize}
+\begin{frame}{Plugin Builder: Passo a passo}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{pyqgis_plugins_figs/builder_menu2}
+	\end{figure}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{pyqgis_plugins_figs/builder_wizard1}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Plugin Builder: Passo a passo}
+	\begin{columns}
+		\begin{column}{0.48\linewidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{pyqgis_plugins_figs/builder_wizard2}
+			\end{figure}
+		\end{column}
+	
+		\begin{column}{0.48\linewidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{pyqgis_plugins_figs/builder_wizard3}
+			\end{figure}	
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Plugin Builder: Passo a passo}
+	\begin{columns}
+		\begin{column}{0.48\linewidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{pyqgis_plugins_figs/builder_wizard4}
+			\end{figure}
 		\end{column}
 		
-		\begin{column}[t]{0.48\textwidth}
-			\colimage{./introducao_figs/ides.png}
+		\begin{column}{0.48\linewidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{pyqgis_plugins_figs/builder_wizard5}
+			\end{figure}	
 		\end{column}
-	\end{columns}	
+	\end{columns}
 \end{frame}
+
+\begin{frame}{Plugin Builder: Onde salvar?}
+\begin{itemize}
+	\item 	Onde salvar?
+	\item 	LINUX
+	\item 	\url{/home/username/.local/share/QGIS/QGIS3/profiles/default/python/plugins/}
+	\item 	WINDOWS
+	\item 	\url{C:\\Users\\<user>\\AppData\\Roaming\\QGIS\\QGIS3\\profiles\\default\\python\\plugins\\}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Criação de Plugin: Estrutura básica do plugin}
+	\begin{itemize}
+		\item \_\_init\_\_.py = The starting point of the plugin. It has to have the classFactory() method and may have any other initialisation code.
+		\item mainPlugin.py = The main working code of the plugin. Contains all the information about the actions of the plugin and the main code.
+		\item resources.qrc = The .xml document created by Qt Designer. Contains relative paths to resources of the forms.
+		\item resources.py = The translation of the .qrc file described above to Python.
+		\item form.ui = The GUI created by Qt Designer.
+		\item form.py = The translation of the form.ui described above to Python.
+		\item metadata.txt = Contains general info, version, name and some other metadata used by plugins website and plugin infrastructure.
+	\end{itemize}
+	\url{https://docs.qgis.org/3.34/en/docs/pyqgis_developer_cookbook/plugins/plugins.html}
+\end{frame}
+
+
 
 \end{document}

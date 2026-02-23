@@ -117,6 +117,145 @@ Ilustrar operações de geoprocessamento em dados matriciais e vetoriais.
 	
 \end{frame}
 
+\begin{frame}[fragile]{Execução de módulos do processing em Python}
+	\begin{minted}{python}
+from qgis import processing
+result = processing.run(
+"native:buffer",
+{
+	'INPUT': layer,
+	'OUTPUT': 'memory:'
+},
+context,
+feedback
+)
+QgsProject.instance().addMapLayer(result['OUTPUT'])
+	\end{minted}
+	\begin{minted}{python}
+import processing
+processing.run(
+"native:extractbyextent",
+{
+	'INPUT':'C:/Users/MDT-NOT/Desktop/Programação Aplicada/Aulas/poligonos.gpkg',
+	'EXTENT':'-54.832642739,-54.570154142,-29.489490136,-29.270209539 [EPSG:4326]',
+	'CLIP':True,
+	'OUTPUT':'TEMPORARY_OUTPUT'
+}
+)
+	\end{minted}
+
+\end{frame}
+
+\begin{frame}{Consultas Espaciais no Processing: Seleção}
+	content...
+\end{frame}
+
+\begin{frame}{Consultas Espaciais no Processing: Extração}
+	content...
+\end{frame}
+
+
+\begin{frame}[fragile]{Consultas Espaciais no PyQGIS}
+	\begin{minted}{python}
+# polygon_geometry contains a complex polygon, with many vertices
+polygon_geometry = QgsGeometry.fromWkt('Polygon((...))')
+
+
+# now we are ready to quickly test intersection against many other objects
+for feature in my_layer.getFeatures():
+	feature_geometry = feature.geometry()
+	# test whether the feature's geometry intersects our original complex polygon
+	if polygon_geometry.intersects(feature_geometry):
+		print('feature intersects the polygon!')	
+	\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Consultas Espaciais no PyQGIS}
+	Geometry Engine:
+	\begin{minted}{python}
+# polygon_geometry contains a complex polygon, with many vertices
+polygon_geometry = QgsGeometry.fromWkt('Polygon((...))')
+
+# create a QgsGeometryEngine representation of the polygon
+polygon_geometry_engine = QgsGeometry.createGeometryEngine(polygon_geometry.constGet())
+
+# since we'll be performing many intersects tests, we can speed up these tests considerably
+# by first "preparing" the geometry engine
+polygon_geometry_engine.prepareGeometry()
+# now we are ready to quickly test intersection against many other objects
+for feature in my_layer.getFeatures():
+feature_geometry = feature.geometry()
+# test whether the feature's geometry intersects our original complex polygon
+if polygon_geometry_engine.intersects(feature_geometry.constGet()):
+print('feature intersects the polygon!')
+	\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Índices Espaciais (Spatial Index)}
+	teste
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Índices Espaciais: Criação no PyQGIS}
+	\begin{minted}{python}
+		processing.run(
+		"native:createspatialindex",
+		{'INPUT':inputLyr},
+		feedback=feedback,
+		context=context,
+		is_child_algorithm=is_child_algorithm
+		)
+	\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Índices Espaciais: Criação no PyQGIS}
+	\begin{minted}{python}
+		spatialIdx = QgsSpatialIndex()
+		idDict = {}
+		for feature in layer.getFeatures():
+		idDict[feature.id()] = feature
+		spatialIdx.addFeature(feature)
+	\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Índices Espaciais: Uso de índice espacial no PyQGIS}
+	\begin{minted}{python}
+for featA in layerA.getFeatures():
+geomA = featA.geometry()
+bbox = geomA.boundingBox()
+for featB in layerB.getFeatures(bbox): # usa o índice espacial para fazer a consulta
+geomB = featB.geometry()
+if geomB.intersects(geomA):
+print(f"Feicoes {featA.id()} e {featB.id()} se intersectam")
+
+layer_B_id_dict = {}
+layerB_spatial_idx = QgsSpatialIndex()
+for featB in layerB.getFeatures():
+layer_B_id_dict[featB.id()] = featB
+layerB_spatial_idx.addFeature(featB)
+
+for featA in layerA.getFeatures():
+geomA = featA.geometry()
+bbox = geomA.boundingBox()
+for id in layerB_spatial_idx.intersects(bbox):
+featB = layer_B_id_dict[id]
+geomB = featB.geometry()
+if geomB.intersects(geomA):
+print(f"Feicoes {featA.id()} e {featB.id()} se intersectam")
+	\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Índices Espaciais: Uso de índice espacial no PyQGIS}
+	\begin{enumerate}
+		\item Buffer
+		\item Intersecção
+		\item União
+		\item Diferença Simétrica
+		\item Diferença
+	\end{enumerate}
+\end{frame}
+
 \begin{frame}{Exercícios}
 \begin{itemize}
 	\item \href{https://docs.qgis.org/3.40/pt_BR/docs/training_manual/vector_analysis/basic_analysis.html}{Processamento de dados vetoriais (Link)}
