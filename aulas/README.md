@@ -1,4 +1,4 @@
-Sequência de aulas  
+Sequência de aulas:  
 - [Aula 1 - Ambiente de desenvolvimento](introducao.pdf)  (ok)
 - [Aula 2 - Git - Controle de versões de arquivos](GIT.pdf)  (ok)
 - [Aula 2.1 - Estruturas de dados em python](estruturas_dados_python.pdf) (ok)
@@ -14,3 +14,7 @@ https://py.geocompx.org/01-spatial-data
 - [Aula 11 PyQGIS plugin de geoprocessamento](pyqgis_processing_plugin.pdf) (Iniciado)
 - Aula XX Serviços web de geoinformação
 https://drive.google.com/file/d/1x9_QKMC1RiGESCXSCmmUEdtg-oOd9kV7/view?usp=drive_link
+
+Extras:  
+- [Agentes de IA para geoinformação](strands.pdf) (Iniciado)
+- [Bancos de dados relacionais](bancos_de_dados_relacionais) (Iniciado)
