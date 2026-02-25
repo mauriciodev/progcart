@@ -413,6 +413,233 @@ imprimir_area(p)
   
 \end{frame}
 
+\begin{frame}{Pandas - Principais conceitos}
+    
+    \textbf{Pandas} é uma biblioteca para manipulação e análise de dados tabulares (planilhas ou tabelas).
+    
+    \vspace{0.4cm}
+    
+    Estruturas fundamentais:
+    
+    \begin{itemize}
+        \item \textbf{Series} → vetor unidimensional
+        \item \textbf{DataFrame} → tabela bidimensional (linhas × colunas)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Conceitos importantes:
+    
+    \begin{itemize}
+        \item Índice (index)
+        \item Seleção: \texttt{loc}, \texttt{iloc}
+        \item Operações vetorizadas
+        \item GroupBy e agregações
+        \item Integração com NumPy
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Modelo mental:
+    
+    \begin{center}
+        Tabela relacional em memória
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Pandas - Operações em planilhas}
+    \begin{columns}[t]
+        \begin{column}[t]{0.6\textwidth}
+    
+            \begin{minted}{python}
+import pandas as pd
+
+# Ler arquivo CSV
+df = pd.read_csv("dados.csv")
+
+# Criar nova coluna (operação vetorizada)
+df["soma"] = df["attr1"] + df["attr2"]
+
+print(df)
+            \end{minted}
+        \end{column}
+        \begin{column}[t]{0.40\textwidth}
+            \textbf{CSV exemplo:}
+        
+            \begin{verbatim}
+                attr1,attr2
+                10,5
+                7,3
+            \end{verbatim}
+        \end{column}
+    \end{columns}
+    \textbf{Observação:}
+    
+    Operações são vetorizadas → não é necessário loop explícito.\\
+    Outras opções úteis: 
+    \begin{itemize}
+        \item read\_excel() 
+        \item read\_parquet()
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{GeoPandas}
+    
+    \textbf{GeoPandas} estende o Pandas para dados espaciais vetoriais.
+    
+    \vspace{0.4cm}
+    
+    Principais conceitos:
+    
+    \begin{itemize}
+        \item GeoDataFrame (extensão do DataFrame)
+        \item Coluna especial: \texttt{geometry}
+        \item Integração com Shapely
+        \item Uso de CRS (Coordinate Reference System)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Stack típica:
+    \begin{itemize}
+        \item Pandas (estrutura tabular)
+        \item Shapely (geometria)
+        \item Fiona / Pyogrio (leitura/escrita)
+        \item PROJ (sistemas de referência)
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{GeoPandas - Estrutura Fundamental}
+    
+    \textbf{GeoDataFrame = DataFrame + geometria}
+    
+    \vspace{0.4cm}
+    
+    Componentes principais:
+    
+    \begin{itemize}
+        \item Atributos tabulares
+        \item Coluna geometry (Point, LineString, Polygon)
+        \item CRS associado
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Operações comuns:
+    
+    \begin{itemize}
+        \item \texttt{gdf.plot()}
+        \item \texttt{gdf.to\_crs()}
+        \item \texttt{gdf.buffer()}
+        \item \texttt{gdf.overlay()}
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{GeoPandas - Diagrama de Classes}
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            \textbf{Interpretação:}
+            
+            \begin{itemize}
+                \item Linhas → feições (features)
+                \item Colunas → atributos
+                \item Uma coluna especial: \texttt{geometry}
+                \item GeoDataFrame herda todas as operações tabulares do DataFrame
+            \end{itemize}
+        \end{column}
+        \begin{column}[t]{0.48\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.5\textwidth]{Python_oop/geopandas}
+            \end{figure}
+        \end{column}
+    \end{columns} 
+
+    \vspace{0.3cm}
+    
+    
+    
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo — CSV com lat, lon, height}
+    
+
+    
+    \begin{columns}[t]
+        \begin{column}[t]{0.6\textwidth}
+            \begin{minted}{python}
+import pandas as pd
+import geopandas as gpd
+from shapely.geometry import Point
+
+# Ler CSV
+df = pd.read_csv("pontos.csv")
+
+# Criar GeoDataFrame
+gdf = gpd.GeoDataFrame(df,
+    geometry=gpd.points_from_xy(
+    df.lon, df.lat),
+    crs="EPSG:4326"
+)
+
+print(gdf.head())
+            \end{minted}
+        \end{column}
+        \begin{column}[t]{0.4\textwidth}
+            \textbf{CSV exemplo:}
+        
+            \begin{verbatim}
+lat,lon,height
+-15.78,-47.93,1100
+-22.90,-43.20,5
+            \end{verbatim}
+        \end{column}
+    \end{columns}   
+    
+
+    
+\end{frame}
+
+\begin{frame}{Conceitos Espaciais Importantes}
+    
+    \textbf{1. CRS}
+    \begin{itemize}
+        \item Define sistema de coordenadas
+        \item Reprojeção via \texttt{to\_crs()}
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{2. Operações Espaciais}
+    \begin{itemize}
+        \item Buffer
+        \item Interseção
+        \item Spatial Join
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{3. Integração}
+    \begin{itemize}
+        \item Funciona naturalmente com Pandas
+        \item Exporta para Shapefile, GeoPackage, Parquet
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    GeoPandas é ideal para:
+    \begin{itemize}
+        \item Análise exploratória espacial
+        \item Prototipagem rápida
+        \item Ciência de dados geoespacial
+    \end{itemize}
+    
+\end{frame}
+
 
 \begin{frame}[fragile]{Exercícios - Downloader}
   \begin{columns}[t]
@@ -468,6 +695,7 @@ class Downloader:
     \end{minted}
 
 \end{frame}
+
 
 \begin{frame}[fragile]{Exercícios - Downloader}
     \textbf{Utilizando a classe:}

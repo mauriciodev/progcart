@@ -1,0 +1,33 @@
+
+@startuml
+skinparam classAttributeIconSize 0
+
+class DataFrame {
+    +columns : Index
+    +index : Index
+    +shape : (rows, cols)
+    --
+    +loc()
+    +iloc()
+    +groupby()
+}
+
+class GeoDataFrame {
+    +geometry : GeoSeries
+    +crs : CRS
+    --
+    +to_crs()
+    +plot()
+    +buffer()
+}
+
+class GeoSeries {
+    +dtype : geometry
+    +area
+    +length
+}
+
+DataFrame <|-- GeoDataFrame
+GeoDataFrame --> GeoSeries : geometry column
+
+@enduml
