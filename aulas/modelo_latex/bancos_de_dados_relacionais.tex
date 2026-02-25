@@ -6,376 +6,376 @@
 \date{\today}
 
 \begin{document}
-	
+    
 \input{capa}
 
 \begin{frame}{Conceitos Fundamentais}
-	\textbf{Banco de Dados Relacional (BDR)}:
-	
-	\begin{itemize}
-		\item Dados organizados em tabelas (relações)
-		\item Linhas → tuplas
-		\item Colunas → atributos
-		\item Chaves primárias e estrangeiras
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Modelo baseado em:
-	\begin{itemize}
-		\item Álgebra relacional
-		\item SQL (Structured Query Language)
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Exemplo de SGBD:
-	\begin{itemize}
-		\item \textbf{{PostgreSQL} {database system}} 
-		\item \textbf{{MySQL} {database system}}
-	\end{itemize}
+    \textbf{Banco de Dados Relacional (BDR)}:
+    
+    \begin{itemize}
+        \item Dados organizados em tabelas (relações)
+        \item Linhas → tuplas
+        \item Colunas → atributos
+        \item Chaves primárias e estrangeiras
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Modelo baseado em:
+    \begin{itemize}
+        \item Álgebra relacional
+        \item SQL (Structured Query Language)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Exemplo de SGBD:
+    \begin{itemize}
+        \item \textbf{{PostgreSQL} {database system}} 
+        \item \textbf{{MySQL} {database system}}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Extensão Espacial}
-	BDRs podem ser estendidos para armazenar geometrias.
-	
-	\vspace{0.4cm}
-	
-	Exemplo:
-	\begin{itemize}
-		\item \textbf{PostGIS} extensão do PostgreSQL
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Novo tipo de dado:
-	\begin{itemize}
-		\item GEOMETRY
-		\item GEOGRAPHY
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Permite armazenar:
-	\begin{itemize}
-		\item Pontos
-		\item Linhas
-		\item Polígonos
-	\end{itemize}
-	E executar consultas espaciais.
+    BDRs podem ser estendidos para armazenar geometrias.
+    
+    \vspace{0.4cm}
+    
+    Exemplo:
+    \begin{itemize}
+        \item \textbf{PostGIS} extensão do PostgreSQL
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Novo tipo de dado:
+    \begin{itemize}
+        \item GEOMETRY
+        \item GEOGRAPHY
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Permite armazenar:
+    \begin{itemize}
+        \item Pontos
+        \item Linhas
+        \item Polígonos
+    \end{itemize}
+    E executar consultas espaciais.
 \end{frame}
 
 \begin{frame}{Shapefile vs PostgreSQL/PostGIS vs DuckDB Spatial}
-	
-	\resizebox{\textwidth}{!}{
-		\begin{tabular}{l|c|c|c}
-			& Shapefile & PostgreSQL + PostGIS & DuckDB + Spatial \\
-			\hline
-			Multiusuário & Não & Sim & Limitado \\
-			Transações ACID & Não & Sim & Sim \\
-			Cliente–Servidor & Não & Sim & Não \\
-			Instalação & Simples & Servidor dedicado & Arquivo único \\
-			Índice Espacial & .qix & GiST / SP-GiST & R-Tree \\
-			SQL Completo & Não & Sim & Sim \\
-			Escalabilidade & Baixa & Alta & Média \\
-		\end{tabular}
-	}
-	\vspace{0.4cm}
-	
-	\textbf{Posicionamento:}
-	
-	Shapefile → formato legado de troca.  
-	
-	PostgreSQL + PostGIS → infraestrutura robusta multiusuário.  
-	
-	DuckDB Spatial → banco analítico leve e embarcado.
+    
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l|c|c|c}
+            & Shapefile & PostgreSQL + PostGIS & DuckDB + Spatial \\
+            \hline
+            Multiusuário & Não & Sim & Limitado \\
+            Transações ACID & Não & Sim & Sim \\
+            Cliente–Servidor & Não & Sim & Não \\
+            Instalação & Simples & Servidor dedicado & Arquivo único \\
+            Índice Espacial & .qix & GiST / SP-GiST & R-Tree \\
+            SQL Completo & Não & Sim & Sim \\
+            Escalabilidade & Baixa & Alta & Média \\
+        \end{tabular}
+    }
+    \vspace{0.4cm}
+    
+    \textbf{Posicionamento:}
+    
+    Shapefile → formato legado de troca.  
+    
+    PostgreSQL + PostGIS → infraestrutura robusta multiusuário.  
+    
+    DuckDB Spatial → banco analítico leve e embarcado.
 \end{frame}
 
 \begin{frame}{Modelo Espacial}
-	Cada feição espacial é composta por:
-	
-	\begin{itemize}
-		\item Atributos (campos tabulares)
-		\item Geometria (coluna espacial)
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Estrutura típica:
-	
-	\begin{center}
-		\texttt{id | nome | area | geom}\\
-		\texttt{1  | Rio de Janeiro | 43,696 | MULTIPOLYGON(...)}
-	\end{center}
-	
-	\vspace{0.4cm}
-	
-	A coluna \texttt{geom} armazena objetos como:
-	
-	\begin{itemize}
-		\item POINT
-		\item LINESTRING
-		\item POLYGON
-	\end{itemize}
+    Cada feição espacial é composta por:
+    
+    \begin{itemize}
+        \item Atributos (campos tabulares)
+        \item Geometria (coluna espacial)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Estrutura típica:
+    
+    \begin{center}
+        \texttt{id | nome | area | geom}\\
+        \texttt{1  | Rio de Janeiro | 43,696 | MULTIPOLYGON(...)}
+    \end{center}
+    
+    \vspace{0.4cm}
+    
+    A coluna \texttt{geom} armazena objetos como:
+    
+    \begin{itemize}
+        \item POINT
+        \item LINESTRING
+        \item POLYGON
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Consultas Espaciais}
-	Além de consultas tradicionais:
-	
-	\begin{itemize}
-		\item SELECT
-		\item JOIN
-		\item GROUP BY
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Existem funções espaciais:
-	
-	\begin{itemize}
-		\item \text{ST\_Buffer()}
-		\item ST\_Intersects()
-		\item ST\_Contains()
-		\item ST\_Area()
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Exemplo conceitual:
-	\begin{center}
-		Selecionar municípios que intersectam um rio.
-	\end{center}
+    Além de consultas tradicionais:
+    
+    \begin{itemize}
+        \item SELECT
+        \item JOIN
+        \item GROUP BY
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Existem funções espaciais:
+    
+    \begin{itemize}
+        \item \text{ST\_Buffer()}
+        \item ST\_Intersects()
+        \item ST\_Contains()
+        \item ST\_Area()
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Exemplo conceitual:
+    \begin{center}
+        Selecionar municípios que intersectam um rio.
+    \end{center}
 \end{frame}
 
 \begin{frame}{Índices Espaciais}
-	Consultas espaciais são custosas.
-	
-	\vspace{0.4cm}
-	
-	Solução: Índices espaciais.
-	
-	\begin{itemize}
-		\item R-Tree
-		\item GiST (PostgreSQL)
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Benefícios:
-	\begin{itemize}
-		\item Redução drástica de tempo de consulta
-		\item Filtragem por bounding box
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Sem índice → varredura completa da tabela.
+    Consultas espaciais são custosas.
+    
+    \vspace{0.4cm}
+    
+    Solução: Índices espaciais.
+    
+    \begin{itemize}
+        \item R-Tree
+        \item GiST (PostgreSQL)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Benefícios:
+    \begin{itemize}
+        \item Redução drástica de tempo de consulta
+        \item Filtragem por bounding box
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Sem índice → varredura completa da tabela.
 \end{frame}
 
 \begin{frame}{PostgreSQL + PostGIS — Visão Geral}
-	
-	\textbf{PostgreSQL}:
-	\begin{itemize}
-		\item SGBD relacional cliente–servidor
-		\item ACID completo
-		\item Controle de concorrência (MVCC)
-		\item Extensível
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	\textbf{PostGIS}:
-	\begin{itemize}
-		\item Extensão espacial do PostgreSQL
-		\item Adiciona tipos GEOMETRY e GEOGRAPHY
-		\item Implementa padrões OGC Simple Features
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Resultado:
-	\begin{center}
-		Banco relacional + engine espacial robusta
-	\end{center}
-	
+    
+    \textbf{PostgreSQL}:
+    \begin{itemize}
+        \item SGBD relacional cliente–servidor
+        \item ACID completo
+        \item Controle de concorrência (MVCC)
+        \item Extensível
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{PostGIS}:
+    \begin{itemize}
+        \item Extensão espacial do PostgreSQL
+        \item Adiciona tipos GEOMETRY e GEOGRAPHY
+        \item Implementa padrões OGC Simple Features
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Resultado:
+    \begin{center}
+        Banco relacional + engine espacial robusta
+    \end{center}
+    
 \end{frame}
 
 \begin{frame}{Conceitos Fundamentais do PostGIS}
-	
-	\textbf{1. Tipo GEOMETRY}
-	\begin{itemize}
-		\item Armazena POINT, LINESTRING, POLYGON, etc.
-		\item Associado a um SRID (sistema de referência)
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{2. Funções Espaciais}
-	
-	\vspace{0.3cm}
-	
-	\textbf{3. Índices Espaciais}
-	\begin{itemize}
-		\item GiST (Generalized Search Tree)
-		\item Filtragem por bounding box
-		\item Otimização de ST\_Intersects, ST\_Within, etc.
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{4. Modelo Cliente–Servidor}
-	\begin{itemize}
-		\item Multiusuário
-		\item Controle transacional
-		\item Ideal para produção
-	\end{itemize}
-	
+    
+    \textbf{1. Tipo GEOMETRY}
+    \begin{itemize}
+        \item Armazena POINT, LINESTRING, POLYGON, etc.
+        \item Associado a um SRID (sistema de referência)
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{2. Funções Espaciais}
+    
+    \vspace{0.3cm}
+    
+    \textbf{3. Índices Espaciais}
+    \begin{itemize}
+        \item GiST (Generalized Search Tree)
+        \item Filtragem por bounding box
+        \item Otimização de ST\_Intersects, ST\_Within, etc.
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{4. Modelo Cliente–Servidor}
+    \begin{itemize}
+        \item Multiusuário
+        \item Controle transacional
+        \item Ideal para produção
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Consultas Espaciais — Exemplos SQL (PostGIS)}
-	
-	\textbf{1️⃣ Criar tabela espacial}
-	
-	\begin{minted}{sql}
+    
+    \textbf{1️⃣ Criar tabela espacial}
+    
+    \begin{minted}{sql}
 CREATE TABLE municipios (
 id SERIAL PRIMARY KEY,
 nome TEXT,
 populacao INTEGER,
 geom GEOMETRY(MULTIPOLYGON, 4674)
 );
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{2️⃣ Criar índice espacial}
-	
-	\begin{minted}{sql}
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{2️⃣ Criar índice espacial}
+    
+    \begin{minted}{sql}
 CREATE INDEX idx_municipios_geom
 ON municipios
 USING GIST (geom);
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}{Exercícios PostGIS}
 \begin{enumerate}
-	\item Instalar o PostGIS (Docker recomendado)
-	\item Criar um banco de dados
-	\item Acessar pelo QGIS
-	\item Abrir o DB Manager.
-	\item Criar uma tabela.
-	\item Importar um ShapeFile para o PostGIS.
+    \item Instalar o PostGIS (Docker recomendado)
+    \item Criar um banco de dados
+    \item Acessar pelo QGIS
+    \item Abrir o DB Manager.
+    \item Criar uma tabela.
+    \item Importar um ShapeFile para o PostGIS.
 \end{enumerate}
-	
+    
 \end{frame}
 
 \begin{frame}[fragile]{Modelo ER Espacial}
 % TODO: \usepackage{graphicx} required
 \begin{center}
-	\includegraphics[height=0.7\textheight]{bancos_de_dados_relacionais_figs/exemplo_municipios}
+    \includegraphics[height=0.7\textheight]{bancos_de_dados_relacionais_figs/exemplo_municipios}
 \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Consultas Espaciais — Exemplos SQL}
-	
-	\textbf{3️⃣ Municípios que intersectam um rio}
-	
-	\begin{minted}{sql}
+    
+    \textbf{3️⃣ Municípios que intersectam um rio}
+    
+    \begin{minted}{sql}
 SELECT m.nome
 FROM municipios m
 JOIN rios r
 ON ST_Intersects(m.geom, r.geom)
 WHERE r.nome = 'Rio X';
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{4️⃣ Área em km²}
-	
-	\begin{minted}{sql}
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{4️⃣ Área em km²}
+    
+    \begin{minted}{sql}
 SELECT nome,
 ST_Area(geom) / 1000000 AS area_km2
 FROM municipios;
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}{O que é DuckDB?}
-	
-	\textbf{DuckDB} é um banco de dados analítico embutido (embedded OLAP).
-	
-	\vspace{0.4cm}
-	
-	Características principais:
-	
-	\begin{itemize}
-		\item Arquivo único (.duckdb)
-		\item Sem servidor (in-process)
-		\item Execução vetorizada (vectorized engine)
-		\item Otimizado para leitura intensiva (OLAP)
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Casos de uso típicos:
-	
-	\begin{itemize}
-		\item Análise local de grandes datasets
-		\item Ciência de dados
-		\item Processamento de Parquet
-		\item Integração com Python / R
-	\end{itemize}
-	
+    
+    \textbf{DuckDB} é um banco de dados analítico embutido (embedded OLAP).
+    
+    \vspace{0.4cm}
+    
+    Características principais:
+    
+    \begin{itemize}
+        \item Arquivo único (.duckdb)
+        \item Sem servidor (in-process)
+        \item Execução vetorizada (vectorized engine)
+        \item Otimizado para leitura intensiva (OLAP)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Casos de uso típicos:
+    
+    \begin{itemize}
+        \item Análise local de grandes datasets
+        \item Ciência de dados
+        \item Processamento de Parquet
+        \item Integração com Python / R
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Conceitos Arquiteturais Fundamentais}
-	
-	\textbf{1. Embedded Database}
-	\begin{itemize}
-		\item Executa dentro do processo Python
-		\item Não há daemon ou serviço separado
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{2. Columnar Storage}
-	\begin{itemize}
-		\item Armazenamento orientado a colunas
-		\item Ideal para agregações e scans analíticos
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{3. Integração com formatos modernos}
-	\begin{itemize}
-		\item Parquet (leitura direta)
-		\item CSV
-		\item Arrow
-		\item Extensão Spatial (tipos GEOMETRY)
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{4. OLAP vs OLTP}
-	\begin{itemize}
-		\item Excelente para consultas analíticas
-		\item Não projetado para alta concorrência transacional
-	\end{itemize}
-	
+    
+    \textbf{1. Embedded Database}
+    \begin{itemize}
+        \item Executa dentro do processo Python
+        \item Não há daemon ou serviço separado
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{2. Columnar Storage}
+    \begin{itemize}
+        \item Armazenamento orientado a colunas
+        \item Ideal para agregações e scans analíticos
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{3. Integração com formatos modernos}
+    \begin{itemize}
+        \item Parquet (leitura direta)
+        \item CSV
+        \item Arrow
+        \item Extensão Spatial (tipos GEOMETRY)
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{4. OLAP vs OLTP}
+    \begin{itemize}
+        \item Excelente para consultas analíticas
+        \item Não projetado para alta concorrência transacional
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo — DuckDB + Spatial em Python}
-	
-	\textbf{Instalação (uma vez):}
-	\begin{minted}{bash}
+    
+    \textbf{Instalação (uma vez):}
+    \begin{minted}{bash}
 pixi add duckdb
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Exemplo em Python (parte 1):}
-	
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Exemplo em Python (parte 1):}
+    
+    \begin{minted}{python}
 import duckdb
 
 # conecta (arquivo será criado se não existir)
@@ -384,37 +384,37 @@ con = duckdb.connect("dados.duckdb")
 # instala e carrega extensão espacial
 con.execute("INSTALL spatial;")
 con.execute("LOAD spatial;")
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo — DuckDB + Spatial em Python}
-	\begin{minted}{python}
+    \begin{minted}{python}
 # cria tabela espacial
 con.execute("""
-	CREATE TABLE municipios AS
-	SELECT
-		1 AS id,
-		'Municipio A' AS nome,
-		ST_GeomFromText(
-			'POLYGON((-48 -15, -48 -16, -47 -16, -47 -15, -48 -15))'
-		) AS geom;
+    CREATE TABLE municipios AS
+    SELECT
+        1 AS id,
+        'Municipio A' AS nome,
+        ST_GeomFromText(
+            'POLYGON((-48 -15, -48 -16, -47 -16, -47 -15, -48 -15))'
+        ) AS geom;
 """)
 
 # consulta área
 result = con.execute("""
-	SELECT nome,
-	ST_Area(geom) AS area
-	FROM municipios;
+    SELECT nome,
+    ST_Area(geom) AS area
+    FROM municipios;
 """).fetchall()
 
 print(result)
-	\end{minted}
+    \end{minted}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo — Download de Shapefile + DuckDB Spatial}
-	
-	\begin{minted}{python}
+    
+    \begin{minted}{python}
 import requests, zipfile, io
 import duckdb
 
@@ -425,38 +425,38 @@ response.raise_for_status()
 
 # 2️⃣ Extrai zip em memória
 with zipfile.ZipFile(io.BytesIO(response.content)) as z:
-	z.extractall("ne_countries")
+    z.extractall("ne_countries")
 
 # 3️⃣ Conecta ao DuckDB
 con = duckdb.connect("world.duckdb")
 con.execute("INSTALL spatial;")
 con.execute("LOAD spatial;")
-		
-	\end{minted}
-	
+        
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo — Download de Shapefile + DuckDB Spatial}
-	
-	\begin{minted}{python}
+    
+    \begin{minted}{python}
 # 4️⃣ Lê shapefile direto via GDAL
 con.execute("""
-	CREATE TABLE countries AS
-	SELECT * FROM ST_Read(
-	'ne_countries/ne_110m_admin_0_countries.shp');
+    CREATE TABLE countries AS
+    SELECT * FROM ST_Read(
+    'ne_countries/ne_110m_admin_0_countries.shp');
 """)
 
 # 5️⃣ Calcula área (m² — CRS 4326->3857)
 result = con.execute("""
-	SELECT NAME,
-	ST_Area(ST_Transform(geom, 3857)) AS area
-	FROM countries
-	ORDER BY area DESC
-	LIMIT 5;
+    SELECT NAME,
+    ST_Area(ST_Transform(geom, 3857)) AS area
+    FROM countries
+    ORDER BY area DESC
+    LIMIT 5;
 """).fetchall()
 
 for row in result:
-	print(row)
+    print(row)
 \end{minted}
 
 \end{frame}

@@ -6,531 +6,531 @@
 \date{\today}
 
 \begin{document}
-	
+    
 \input{capa}
 
 \begin{frame}{Python (em 2026?)}
-	\begin{figure}
-		\includegraphics[width=0.7\textwidth]{./introducao_figs/python2025.jpeg}
-	\end{figure}
+    \begin{figure}
+        \includegraphics[width=0.7\textwidth]{./introducao_figs/python2025.jpeg}
+    \end{figure}
 \end{frame}
 
 \begin{frame}{Bibliotecas úteis}
-	
-	\begin{tabular}{p{4cm} p{7cm}}
-		\toprule
-		\textbf{Área} & \textbf{Bibliotecas Python} \\
-		\midrule
-		
-		Matemática &
-		NumPy, SciPy \\
-		
-		Interface gráfica (GUI) &
-		PyQt5, Tkinter, Kivys \\
-		
-		Análises em SIG &
-		PyQGIS, OGR, whitebox \\
-		
-		Dados raster geográficos &
-		GDAL, Fiona, Rasterio \\
-		
-		Dataframes (tabelas) &
-		Pandas, GeoPandas, Polars \\
-		
-		Gráficos científicos &
-		Matplotlib, Plotly \\
-		
-		Backend Web &
-		FastAPI, Flask, Django \\
-		
-		Backend com interface &
-		Taipy, Streamlit, Dash \\
-		
-		Aprendizado de máquina &
-		Scikit-learn, Keras, PyTorch, TensorFlow, JAX \\
-		
-		Aprendizado profundo para geoinformação & torchgeo, rastervision, geoai-py \\
-		
-		\bottomrule
-	\end{tabular}
-	
+    
+    \begin{tabular}{p{4cm} p{7cm}}
+        \toprule
+        \textbf{Área} & \textbf{Bibliotecas Python} \\
+        \midrule
+        
+        Matemática &
+        NumPy, SciPy \\
+        
+        Interface gráfica (GUI) &
+        PyQt5, Tkinter, Kivys \\
+        
+        Análises em SIG &
+        PyQGIS, OGR, whitebox \\
+        
+        Dados raster geográficos &
+        GDAL, Fiona, Rasterio \\
+        
+        Dataframes (tabelas) &
+        Pandas, GeoPandas, Polars \\
+        
+        Gráficos científicos &
+        Matplotlib, Plotly \\
+        
+        Backend Web &
+        FastAPI, Flask, Django \\
+        
+        Backend com interface &
+        Taipy, Streamlit, Dash \\
+        
+        Aprendizado de máquina &
+        Scikit-learn, Keras, PyTorch, TensorFlow, JAX \\
+        
+        Aprendizado profundo para geoinformação & torchgeo, rastervision, geoai-py \\
+        
+        \bottomrule
+    \end{tabular}
+    
 \end{frame}
 
 \begin{frame}{Projetos}
-	\begin{itemize}
-		\item Plugin Hello Map
-		\\ Carregar dados matriciais e vetoriais no QGIS (GDAL opcional)
-		\item Abrir coordenadas da rede de monitoramento SIRGAS e converter para um arquivo vetorial
-		\\ Baixar e manipular dados tabulados com Pandas e escrever com Geopandas.
-		\item Processing Plugin de extrair cotas de um Modelo Digital de Superfícies
-		\\ Manipular dados matriciais e vetoriais no QGIS
-		\item Operações topológicas
-		\\ Processing Plugin com model builder para resolver um problema de geoprocessamento.
-		\item Opcionais (não valem nota)
-		\begin{itemize}
-			\item Classificação de imagens com RasterIO+Sklearn (XGBoost)
-			\item Interfaces web com Streamlit			
-			\item Geoagentes de IA
-		\end{itemize}
-		
-	\end{itemize}
+    \begin{itemize}
+        \item Plugin Hello Map
+        \\ Carregar dados matriciais e vetoriais no QGIS (GDAL opcional)
+        \item Abrir coordenadas da rede de monitoramento SIRGAS e converter para um arquivo vetorial
+        \\ Baixar e manipular dados tabulados com Pandas e escrever com Geopandas.
+        \item Processing Plugin de extrair cotas de um Modelo Digital de Superfícies
+        \\ Manipular dados matriciais e vetoriais no QGIS
+        \item Operações topológicas
+        \\ Processing Plugin com model builder para resolver um problema de geoprocessamento.
+        \item Opcionais (não valem nota)
+        \begin{itemize}
+            \item Classificação de imagens com RasterIO+Sklearn (XGBoost)
+            \item Interfaces web com Streamlit          
+            \item Geoagentes de IA
+        \end{itemize}
+        
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Estrutura dos projetos}
-	\begin{itemize}
-		\item /docs
-		\\ Diagrama de classes: Representa visualmente as principais classes que serão implementadas.
-		\\ Fluxogramas: Representa uma visão geral de um procedimento importante.
-		\item /src
-		\\ Exemplos de código
-		\item /tests 
-		\\ Testes unitários: Verificam partes do código utilizando entradas e saídas controladas.
-	\end{itemize}	
+    \begin{itemize}
+        \item /docs
+        \\ Diagrama de classes: Representa visualmente as principais classes que serão implementadas.
+        \\ Fluxogramas: Representa uma visão geral de um procedimento importante.
+        \item /src
+        \\ Exemplos de código
+        \item /tests 
+        \\ Testes unitários: Verificam partes do código utilizando entradas e saídas controladas.
+    \end{itemize}   
 \end{frame}
 
 \begin{frame}{Avaliação}
-	\begin{itemize}
-		\item 	6 – Implementação 
-		\\ Entrega no github. Colocar o link para o repositório no Classroom.
-		\\ 	Em pares.
-		\item 	3 – Apresentação oral do código (no computador)
-		\\ Alternado entre os dos dois membros do par.
-		\\ Os alunos explicam o que cada parte do código está fazendo e as decisões tomadas. 
-		\item 	1 – Inovação
-		\\ 	Ponto para ideias interessantes que o par tiver. 
-	\end{itemize}
+    \begin{itemize}
+        \item   6 – Implementação 
+        \\ Entrega no github. Colocar o link para o repositório no Classroom.
+        \\  Em pares.
+        \item   3 – Apresentação oral do código (no computador)
+        \\ Alternado entre os dos dois membros do par.
+        \\ Os alunos explicam o que cada parte do código está fazendo e as decisões tomadas. 
+        \item   1 – Inovação
+        \\  Ponto para ideias interessantes que o par tiver. 
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Ciclos de desenvolvimento em pares}
-	\begin{itemize}
-		\item Desenvolvimento ágil em ciclos de 2 semanas
-		\item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
-		\item Programação em pares (Xtreme programming - XP)
-	\end{itemize}
-	\begin{figure}
-		\includegraphics[width=\textwidth]{./introducao_figs/xp.png}
-	\end{figure}
+    \begin{itemize}
+        \item Desenvolvimento ágil em ciclos de 2 semanas
+        \item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
+        \item Programação em pares (Xtreme programming - XP)
+    \end{itemize}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{./introducao_figs/xp.png}
+    \end{figure}
 \end{frame}
 
 
 \begin{frame}{Instalação do Python (com ambientes virtuais)}
 Ambiente virtuais em Python: 
 \begin{itemize}
-	\item Isolamento de dependências entre projetos
-	\item Evita conflitos de versões de bibliotecas
-	\item Permite usar diferentes versões do Python no mesmo sistema
-	\item Facilita a reprodução do ambiente em outros computadores
-	\item Reduz riscos de quebrar aplicações existentes ao instalar novos pacotes
+    \item Isolamento de dependências entre projetos
+    \item Evita conflitos de versões de bibliotecas
+    \item Permite usar diferentes versões do Python no mesmo sistema
+    \item Facilita a reprodução do ambiente em outros computadores
+    \item Reduz riscos de quebrar aplicações existentes ao instalar novos pacotes
 \end{itemize}
 \textbf{Principal objetivo}: instalar GDAL e QGIS
 \end{frame}
 
 \begin{frame}{Instalação do Python (com ambientes virtuais)}
-	Gerenciadores de ambientes:
-	\begin{tabular}{p{2cm} p{2.5cm} p{2.8cm} p{3cm}}
-		\toprule
-		\textbf{Ferramenta} &
-		\textbf{Descrição} &
-		\textbf{Ambiente} &
-		\textbf{Observações} \\
-		\midrule
-		
-		pip + venv &
-		Pacotes Python &
-		Virtual no projeto &
-		Padrão do Python \\ \midrule
-		
-		uv &
-		pip + venv rápido &
-		Ambientes e projetos &
-		Alto desempenho \\ \midrule
-		
-		Conda &
-		Pacotes diversos &
-		Estrutura Conda &
-		Ciência de dados \\ \midrule
-		
-		Pixi &
-		Alternativa ao Conda &
-		Estilo Conda &
-		Substituto moderno \\
-		
-		\bottomrule
-	\end{tabular}
-	\begin{itemize}
-		\item GDAL e QGIS: Pixi (recomendado) ou miniforge (conda).
-		\item Deep learning: uv para pytorch, tensorflow, etc.
-	\end{itemize}
+    Gerenciadores de ambientes:
+    \begin{tabular}{p{2cm} p{2.5cm} p{2.8cm} p{3cm}}
+        \toprule
+        \textbf{Ferramenta} &
+        \textbf{Descrição} &
+        \textbf{Ambiente} &
+        \textbf{Observações} \\
+        \midrule
+        
+        pip + venv &
+        Pacotes Python &
+        Virtual no projeto &
+        Padrão do Python \\ \midrule
+        
+        uv &
+        pip + venv rápido &
+        Ambientes e projetos &
+        Alto desempenho \\ \midrule
+        
+        Conda &
+        Pacotes diversos &
+        Estrutura Conda &
+        Ciência de dados \\ \midrule
+        
+        Pixi &
+        Alternativa ao Conda &
+        Estilo Conda &
+        Substituto moderno \\
+        
+        \bottomrule
+    \end{tabular}
+    \begin{itemize}
+        \item GDAL e QGIS: Pixi (recomendado) ou miniforge (conda).
+        \item Deep learning: uv para pytorch, tensorflow, etc.
+    \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}{Pixi: visão geral}
-	
-	\textbf{Pixi} é uma ferramenta moderna para:
-	\begin{itemize}
-		\item Gerenciar \textbf{ambientes} de desenvolvimento
-		\item Gerenciar \textbf{dependências} de projetos
-		\item Reproduzir projetos de forma consistente
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Principais características:}
-	\begin{itemize}
-		\item Baseado no ecossistema Conda
-		\item Rápido e determinístico
-		\item Um projeto = um ambiente
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Ideia central:}  
-	Cada projeto Python possui seu próprio ambiente isolado.
-	
+    
+    \textbf{Pixi} é uma ferramenta moderna para:
+    \begin{itemize}
+        \item Gerenciar \textbf{ambientes} de desenvolvimento
+        \item Gerenciar \textbf{dependências} de projetos
+        \item Reproduzir projetos de forma consistente
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Principais características:}
+    \begin{itemize}
+        \item Baseado no ecossistema Conda
+        \item Rápido e determinístico
+        \item Um projeto = um ambiente
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Ideia central:}  
+    Cada projeto Python possui seu próprio ambiente isolado.
+    
 \end{frame}
 
 \begin{frame}[fragile]{Pixi: Criando um projeto Pixi}
-	
-	\textbf{Passo 1: criar o projeto}
-	
-	\begin{minted}{bash}
+    
+    \textbf{Passo 1: criar o projeto}
+    
+    \begin{minted}{bash}
 pixi init meu_projeto
-	\end{minted}
-	
-	Isso cria:
-	\begin{itemize}
-		\item Uma pasta do projeto
-		\item O arquivo \texttt{pixi.toml}
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Arquivo central: \texttt{pixi.toml}}
-	\begin{itemize}
-		\item Lista dependências
-		\item Define versões
-		\item Descreve o ambiente
-	\end{itemize}
-	
+    \end{minted}
+    
+    Isso cria:
+    \begin{itemize}
+        \item Uma pasta do projeto
+        \item O arquivo \texttt{pixi.toml}
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Arquivo central: \texttt{pixi.toml}}
+    \begin{itemize}
+        \item Lista dependências
+        \item Define versões
+        \item Descreve o ambiente
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Pixi: Adicionando dependências}
-	
-	\textbf{Passo 2: adicionar pacotes ao projeto}
-	
-	\begin{minted}{bash}
+    
+    \textbf{Passo 2: adicionar pacotes ao projeto}
+    
+    \begin{minted}{bash}
 pixi add python numpy pandas qgis
-	\end{minted}
-	
-	O Pixi:
-	\begin{itemize}
-		\item Resolve dependências automaticamente
-		\item Cria o ambiente isolado
-		\item Atualiza o \texttt{pixi.toml}
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Importante:}
-	\begin{itemize}
-		\item Não use \texttt{pip install} diretamente
-		\item As dependências ficam documentadas no projeto
-	\end{itemize}
-	
+    \end{minted}
+    
+    O Pixi:
+    \begin{itemize}
+        \item Resolve dependências automaticamente
+        \item Cria o ambiente isolado
+        \item Atualiza o \texttt{pixi.toml}
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Importante:}
+    \begin{itemize}
+        \item Não use \texttt{pip install} diretamente
+        \item As dependências ficam documentadas no projeto
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Pixi: Executando código no ambiente}
-	
-	\textbf{Passo 3: usar o ambiente Pixi}
-	
-	\begin{minted}{bash}
+    
+    \textbf{Passo 3: usar o ambiente Pixi}
+    
+    \begin{minted}{bash}
 pixi shell
-	\end{minted}
-	
-	Entra em um shell com o ambiente ativo.
-	
-	\vspace{0.3cm}
-	
-	Ou execute comandos diretamente:
-	
-	\begin{minted}{bash}
+    \end{minted}
+    
+    Entra em um shell com o ambiente ativo.
+    
+    \vspace{0.3cm}
+    
+    Ou execute comandos diretamente:
+    
+    \begin{minted}{bash}
 pixi run python main.py
 pixi run qgis
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Benefícios:}
-	\begin{itemize}
-		\item Mesmo ambiente para todos os usuários
-		\item Menos erros de “funciona na minha máquina”
-		\item Projeto mais organizado e reproduzível
-	\end{itemize}
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Benefícios:}
+    \begin{itemize}
+        \item Mesmo ambiente para todos os usuários
+        \item Menos erros de “funciona na minha máquina”
+        \item Projeto mais organizado e reproduzível
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Inicialização de ambiente com UV}
-	
-	\textbf{O que é o UV?}  
-	Gerenciador moderno de:
-	\begin{itemize}
-		\item ambientes virtuais
-		\item dependências Python
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Criando um novo projeto:}
-	
-	\begin{minted}{bash}
+    
+    \textbf{O que é o UV?}  
+    Gerenciador moderno de:
+    \begin{itemize}
+        \item ambientes virtuais
+        \item dependências Python
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Criando um novo projeto:}
+    
+    \begin{minted}{bash}
 uv init projeto_geo
 cd projeto_geo
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{O que o UV cria automaticamente:}
-	\begin{itemize}
-		\item Arquivo \texttt{pyproject.toml}
-		\item Ambiente virtual isolado
-		\item Estrutura básica do projeto
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Ativação do ambiente:}  
-	O UV ativa o ambiente automaticamente ao executar comandos.
-	
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{O que o UV cria automaticamente:}
+    \begin{itemize}
+        \item Arquivo \texttt{pyproject.toml}
+        \item Ambiente virtual isolado
+        \item Estrutura básica do projeto
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Ativação do ambiente:}  
+    O UV ativa o ambiente automaticamente ao executar comandos.
+    
 \end{frame}
 
 \begin{frame}[fragile]{Instalação do GeoPandas com UV}
-	
-	\textbf{Instalando o GeoPandas:}
-	
-	\begin{minted}{bash}
+    
+    \textbf{Instalando o GeoPandas:}
+    
+    \begin{minted}{bash}
 uv add geopandas
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{O que acontece nesse passo:}
-	\begin{itemize}
-		\item GeoPandas é adicionado ao \texttt{pyproject.toml}
-		\item Dependências são resolvidas automaticamente
-		\item O ambiente fica reproduzível
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Testando a instalação:}
-	
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{O que acontece nesse passo:}
+    \begin{itemize}
+        \item GeoPandas é adicionado ao \texttt{pyproject.toml}
+        \item Dependências são resolvidas automaticamente
+        \item O ambiente fica reproduzível
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Testando a instalação:}
+    
+    \begin{minted}{python}
 import geopandas as gpd
 print(gpd.__version__)
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Boa prática:}  
-	Sempre versionar o arquivo \texttt{pyproject.toml} no Git.
-	
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Boa prática:}  
+    Sempre versionar o arquivo \texttt{pyproject.toml} no Git.
+    
 \end{frame}
 
 
 
 \begin{frame}{Interface de desenvolvimento}
-	\textbf{Integrated Development Environment (IDE)}
-	\textbf{VSCodium}: \url{https://vscodium.com/}
-	\begin{columns}[t]
-		\begin{column}[t]{0.48\textwidth}
+    \textbf{Integrated Development Environment (IDE)}
+    \textbf{VSCodium}: \url{https://vscodium.com/}
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
 
-			Versão \textbf{código aberto} do VS Code.
-			
-			\textbf{Usaremos para:}
-			\begin{itemize}
-				\item Escrever código Python
-				\item Depuração (Debug)
-				\item Controle de versões de código (Git)
-				\item Cadernos Jupyter
-				\item Desenhar diagramas
-				\begin{itemize}
-					\item Fluxogramas
-					\item UML: Classes
-				\end{itemize}
-			\end{itemize}
-		\end{column}
-		
-		\begin{column}[t]{0.48\textwidth}
-			\colimage{./introducao_figs/ides.png}
-		\end{column}
-	\end{columns}	
+            Versão \textbf{código aberto} do VS Code.
+            
+            \textbf{Usaremos para:}
+            \begin{itemize}
+                \item Escrever código Python
+                \item Depuração (Debug)
+                \item Controle de versões de código (Git)
+                \item Cadernos Jupyter
+                \item Desenhar diagramas
+                \begin{itemize}
+                    \item Fluxogramas
+                    \item UML: Classes
+                \end{itemize}
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}[t]{0.48\textwidth}
+            \colimage{./introducao_figs/ides.png}
+        \end{column}
+    \end{columns}   
 \end{frame}
 
 \begin{frame}[fragile]{Interface de desenvolvimento}
-	Caso ainda não tenha instalado, essa é a hora de instalar o VSCodium.
-	Acessar \url{https://github.com/VSCodium/vscodium/releases}
-	\begin{itemize}
-		\item Windows: Baixar o arquivo VSCodiumUserSetup-x64-1.108.20787.exe e executar.
-		\item Linux: Baixar o arquivo .deb e instalar com: 
-		\\ \begin{minted}{bash}
+    Caso ainda não tenha instalado, essa é a hora de instalar o VSCodium.
+    Acessar \url{https://github.com/VSCodium/vscodium/releases}
+    \begin{itemize}
+        \item Windows: Baixar o arquivo VSCodiumUserSetup-x64-1.108.20787.exe e executar.
+        \item Linux: Baixar o arquivo .deb e instalar com: 
+        \\ \begin{minted}{bash}
 dpkg -i codium_1.108.20787_amd64.deb
-		\end{minted}
-			
-			
-	\end{itemize}
+        \end{minted}
+            
+            
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Copilotos de desenvolvimento}
-	Origem: StackOverflow \url{https://stackoverflow.com/}
-	
-	\begin{itemize}
-		
-		\item ChatGPT \url{https://chatgpt.com/}
-		\item Github Copilot \url{https://github.com/features/copilot}
-		\item Gemini \url{https://gemini.google.com}
-		\item Llama: \url{https://www.meta.ai/} (pesos e código abertos)
-		\item \textbf{Instalação local}: Ollama \url{https://ollama.com/} 
-	\end{itemize}
-	Entre outros, alguns especialistas. 
-	
-	\espaco
-	Não confie cegamente no trabalho de outra pessoa.  
-	
-	\espaco
-	\centering
-	\textbf{\Large{Muito menos de uma IA.}}
+    Origem: StackOverflow \url{https://stackoverflow.com/}
+    
+    \begin{itemize}
+        
+        \item ChatGPT \url{https://chatgpt.com/}
+        \item Github Copilot \url{https://github.com/features/copilot}
+        \item Gemini \url{https://gemini.google.com}
+        \item Llama: \url{https://www.meta.ai/} (pesos e código abertos)
+        \item \textbf{Instalação local}: Ollama \url{https://ollama.com/} 
+    \end{itemize}
+    Entre outros, alguns especialistas. 
+    
+    \espaco
+    Não confie cegamente no trabalho de outra pessoa.  
+    
+    \espaco
+    \centering
+    \textbf{\Large{Muito menos de uma IA.}}
 \end{frame}
 
 \begin{frame}{VSCodium: Copilotos de desenvolvimento}
-	Extensões disponíveis no VSCode/VSCodium:
-	\begin{itemize}
-		\item Github Copilot (nativo)
-		\item Gemini 
-		\item Codegpt
-		\item Continue.dev + Ollama \textbf{Instalação local}		
-	\end{itemize}
-	\espaco
-	Cuidados:
-	\begin{itemize}
-		\item Seu código é compartilhado com o dono do serviço (exceto se o serviço for seu).
-		\item É fácil consumir todos os limites de uso das versões gratúitas.
-	\end{itemize}
+    Extensões disponíveis no VSCode/VSCodium:
+    \begin{itemize}
+        \item Github Copilot (nativo)
+        \item Gemini 
+        \item Codegpt
+        \item Continue.dev + Ollama \textbf{Instalação local}     
+    \end{itemize}
+    \espaco
+    Cuidados:
+    \begin{itemize}
+        \item Seu código é compartilhado com o dono do serviço (exceto se o serviço for seu).
+        \item É fácil consumir todos os limites de uso das versões gratúitas.
+    \end{itemize}
 \end{frame}
 
 
 \begin{frame}{VSCodium: Fluxograma}
-	\begin{columns}[t]
-		\begin{column}[t]{0.48\textwidth}
-			
-			\begin{itemize}
-				\item Pasta: \url{projeto/docs/fluxograma.drawio}	
-				\item Abrir com: \url{https://www.drawio.com/}			
-				\item VSCodium Draw.io Integration (Author: Hediet)
-				\item Tutorial de edição: \url{https://www.drawio.com/doc/getting-started-basic-flow-chart}
-			\end{itemize}
-		\end{column}
-		
-		\begin{column}[t]{0.48\textwidth}
-			\colimage{./introducao_figs/fluxograma.png}
-		\end{column}
-	\end{columns}	
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            
+            \begin{itemize}
+                \item Pasta: \url{projeto/docs/fluxograma.drawio}   
+                \item Abrir com: \url{https://www.drawio.com/}          
+                \item VSCodium Draw.io Integration (Author: Hediet)
+                \item Tutorial de edição: \url{https://www.drawio.com/doc/getting-started-basic-flow-chart}
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}[t]{0.48\textwidth}
+            \colimage{./introducao_figs/fluxograma.png}
+        \end{column}
+    \end{columns}   
 \end{frame}
 
 
 \begin{frame}{VSCodium: Diagramas de classes (UML)}
-	\begin{columns}[t]
-		\begin{column}[t]{0.48\textwidth}
-			\begin{itemize}
-				\item Pasta: \url{projeto/docs/diagrama_de_classes.drawio}	
-				\item Abrir com: \url{https://www.drawio.com/}			
-				\item VSCodium Draw.io Integration (Author: Hediet)
-				\item Tutorial de edição: \url{https://www.drawio.com/blog/uml-class-diagrams}s
-			\end{itemize}
-		\end{column}
-		
-		\begin{column}[t]{0.48\textwidth}
-			\colimage{./introducao_figs/classes.png}
-		\end{column}
-	\end{columns}	
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            \begin{itemize}
+                \item Pasta: \url{projeto/docs/diagrama_de_classes.drawio}  
+                \item Abrir com: \url{https://www.drawio.com/}          
+                \item VSCodium Draw.io Integration (Author: Hediet)
+                \item Tutorial de edição: \url{https://www.drawio.com/blog/uml-class-diagrams}s
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}[t]{0.48\textwidth}
+            \colimage{./introducao_figs/classes.png}
+        \end{column}
+    \end{columns}   
 \end{frame}
 
 \begin{frame}{VSCodium: Depuração (Debug)}
-	
-	O \textbf{debug} permite executar o programa passo a passo,
-	inspecionando valores e o fluxo do código.
-	
-	\vspace{0.3cm}
-	
-	\textbf{Passos básicos:}
-	\begin{itemize}
-		\item Abrir o arquivo Python no VSCodium
-		\item Definir \textbf{breakpoints} (clique à esquerda da linha)
-		\item Iniciar o modo Debug
-	\end{itemize}
-	
-	\textbf{Durante o debug, é possível:}
-	\begin{itemize}
-		\item Executar linha a linha (\textit{Step Over / Step Into})
-		\item Ver valores das variáveis em tempo real
-		\item Avaliar expressões
-		\item Identificar erros de lógica
-	\end{itemize}
+    
+    O \textbf{debug} permite executar o programa passo a passo,
+    inspecionando valores e o fluxo do código.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Passos básicos:}
+    \begin{itemize}
+        \item Abrir o arquivo Python no VSCodium
+        \item Definir \textbf{breakpoints} (clique à esquerda da linha)
+        \item Iniciar o modo Debug
+    \end{itemize}
+    
+    \textbf{Durante o debug, é possível:}
+    \begin{itemize}
+        \item Executar linha a linha (\textit{Step Over / Step Into})
+        \item Ver valores das variáveis em tempo real
+        \item Avaliar expressões
+        \item Identificar erros de lógica
+    \end{itemize}
 
-	%\textbf{Vantagem principal:}  Entender \textbf{como} o programa executa, não apenas o resultado final.\\
-	\textbf{Alterar as configurações do VSCodium devido a um bug do Pixi}
-	\begin{itemize}
-		\item File - Preferences - Settings
-		\item Python - Terminal: Activate Environment - Disable
-	\end{itemize}
+    %\textbf{Vantagem principal:}  Entender \textbf{como} o programa executa, não apenas o resultado final.\\
+    \textbf{Alterar as configurações do VSCodium devido a um bug do Pixi}
+    \begin{itemize}
+        \item File - Preferences - Settings
+        \item Python - Terminal: Activate Environment - Disable
+    \end{itemize}
 
-	
+    
 \end{frame}
 
 \begin{frame}[fragile]{VSCodium: Debug com Pixi}
-	
-	\textbf{Objetivo:}  
-	Depurar um código Python usando o \textbf{ambiente Pixi} dentro do VSCodium.
-	
-	\vspace{0.3cm}
-	
-	\textbf{Passo 1 — Abrir o projeto Pixi}
-	\begin{itemize}
-		\item Abra a pasta do projeto no VSCodium
-		\item O arquivo \texttt{pixi.toml} deve estar na raiz
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Passo 2 — Ativar o ambiente Pixi no terminal}
-	\begin{minted}{bash}
+    
+    \textbf{Objetivo:}  
+    Depurar um código Python usando o \textbf{ambiente Pixi} dentro do VSCodium.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Passo 1 — Abrir o projeto Pixi}
+    \begin{itemize}
+        \item Abra a pasta do projeto no VSCodium
+        \item O arquivo \texttt{pixi.toml} deve estar na raiz
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Passo 2 — Ativar o ambiente Pixi no terminal}
+    \begin{minted}{bash}
 pixi shell
-	\end{minted}
-	
-	Isso garante que o Python e as dependências corretas estejam ativas.
-	
-	\vspace{0.3cm}
-	
-	\textbf{Passo 3 — Configurar o Debug}
-	No menu \textit{Run and Debug}, escolha:
-	\begin{itemize}
-		\item \textbf{Python File}
-		\item O VSCodium usará o Python do ambiente Pixi
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Passo 4 — Depurar}
-	\begin{itemize}
-		\item Coloque breakpoints no código
-		\item Inicie o Debug
-		\item Use \textit{Step Over / Step Into}
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Resultado:}  
-	Código executado no \textbf{ambiente isolado do Pixi}, com depuração completa.
-	
+    \end{minted}
+    
+    Isso garante que o Python e as dependências corretas estejam ativas.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Passo 3 — Configurar o Debug}
+    No menu \textit{Run and Debug}, escolha:
+    \begin{itemize}
+        \item \textbf{Python File}
+        \item O VSCodium usará o Python do ambiente Pixi
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Passo 4 — Depurar}
+    \begin{itemize}
+        \item Coloque breakpoints no código
+        \item Inicie o Debug
+        \item Use \textit{Step Over / Step Into}
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Resultado:}  
+    Código executado no \textbf{ambiente isolado do Pixi}, com depuração completa.
+    
 \end{frame}
 
 
@@ -540,19 +540,19 @@ pixi shell
 
 
 %\begin{frame}{Cronograma de aulas}
-%	
+%   
 %\end{frame}
 
 
 %\begin{frame}{titulo}
-%	
+%   
 %\end{frame}
 
 %\begin{frame}[fragile]{Código Python}
-%	\begin{minted}{python}
-%	def soma(a, b):
+%   \begin{minted}{python}
+%   def soma(a, b):
 %  return a + b
-%	\end{minted}
+%   \end{minted}
 %\end{frame}
 
 

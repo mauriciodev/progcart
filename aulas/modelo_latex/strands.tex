@@ -6,411 +6,411 @@
 \date{\today}
 
 \begin{document}
-	
+    
 \input{capa}
 
 \begin{frame}{Strands Agents}
-	
-	\textbf{Strands Agents} é um framework para:
-	\begin{itemize}
-		\item Construir agentes baseados em LLMs
-		\item Orquestrar raciocínio, ferramentas e memória
-		\item Criar aplicações de IA orientadas a tarefas
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Ideia central:}  
-	Um agente que pensa, decide e age de forma estruturada.
-	
+    
+    \textbf{Strands Agents} é um framework para:
+    \begin{itemize}
+        \item Construir agentes baseados em LLMs
+        \item Orquestrar raciocínio, ferramentas e memória
+        \item Criar aplicações de IA orientadas a tarefas
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Ideia central:}  
+    Um agente que pensa, decide e age de forma estruturada.
+    
 \end{frame}
 
 \begin{frame}{Agentes de IA}
-	
-	Um \textbf{agente} é um sistema que:
-	\begin{itemize}
-		\item Recebe um objetivo
-		\item Observa o contexto
-		\item Decide ações
-		\item Executa ferramentas
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Diferença para um chatbot simples:}
-	\begin{itemize}
-		\item Chatbot: responde mensagens
-		\item Agente: resolve tarefas
-	\end{itemize}
-	
+    
+    Um \textbf{agente} é um sistema que:
+    \begin{itemize}
+        \item Recebe um objetivo
+        \item Observa o contexto
+        \item Decide ações
+        \item Executa ferramentas
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Diferença para um chatbot simples:}
+    \begin{itemize}
+        \item Chatbot: responde mensagens
+        \item Agente: resolve tarefas
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Por que Strands Agents?}
-	
-	Sem um framework:
-	\begin{itemize}
-		\item Lógica de decisão fica espalhada
-		\item Código difícil de manter
-		\item Pouca reutilização
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	Strands fornece:
-	\begin{itemize}
-		\item Estrutura clara para agentes
-		\item Separação de responsabilidades
-		\item Orquestração padronizada
-	\end{itemize}
-	
+    
+    Sem um framework:
+    \begin{itemize}
+        \item Lógica de decisão fica espalhada
+        \item Código difícil de manter
+        \item Pouca reutilização
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    Strands fornece:
+    \begin{itemize}
+        \item Estrutura clara para agentes
+        \item Separação de responsabilidades
+        \item Orquestração padronizada
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Componentes de um Strands Agent}
-	
-	Um agente é composto por:
-	\begin{itemize}
-		\item \textbf{Modelo (LLM)}: raciocínio e decisões
-		\item \textbf{Ferramentas (Tools)}: ações externas
-		\item \textbf{Memória}: contexto e histórico
-		\item \textbf{Objetivo}: o que deve ser resolvido
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	Cada componente tem um papel bem definido.
-	
+    
+    Um agente é composto por:
+    \begin{itemize}
+        \item \textbf{Modelo (LLM)}: raciocínio e decisões
+        \item \textbf{Ferramentas (Tools)}: ações externas
+        \item \textbf{Memória}: contexto e histórico
+        \item \textbf{Objetivo}: o que deve ser resolvido
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    Cada componente tem um papel bem definido.
+    
 \end{frame}
 
 \begin{frame}{Ferramentas em Strands Agents}
-	
-	Ferramentas permitem ao agente:
-	\begin{itemize}
-		\item Executar código
-		\item Consultar APIs
-		\item Acessar bancos de dados
-		\item Ler e escrever arquivos
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Importante:}
-	\begin{itemize}
-		\item O LLM decide \textit{quando} usar a ferramenta
-		\item O código define \textit{o que} a ferramenta faz
-	\end{itemize}
-	
+    
+    Ferramentas permitem ao agente:
+    \begin{itemize}
+        \item Executar código
+        \item Consultar APIs
+        \item Acessar bancos de dados
+        \item Ler e escrever arquivos
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Importante:}
+    \begin{itemize}
+        \item O LLM decide \textit{quando} usar a ferramenta
+        \item O código define \textit{o que} a ferramenta faz
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Memória do agente}
-	
-	A memória permite:
-	\begin{itemize}
-		\item Manter contexto da conversa
-		\item Lembrar decisões anteriores
-		\item Trabalhar em tarefas longas
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	Tipos comuns:
-	\begin{itemize}
-		\item Memória de curto prazo
-		\item Memória persistente
-	\end{itemize}
-	
+    
+    A memória permite:
+    \begin{itemize}
+        \item Manter contexto da conversa
+        \item Lembrar decisões anteriores
+        \item Trabalhar em tarefas longas
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    Tipos comuns:
+    \begin{itemize}
+        \item Memória de curto prazo
+        \item Memória persistente
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Fluxo de execução}
-	
-	Fluxo típico de um Strands Agent:
-	\begin{enumerate}
-		\item Recebe um objetivo
-		\item Analisa o contexto
-		\item Planeja ações
-		\item Executa ferramentas
-		\item Avalia o resultado
-	\end{enumerate}
-	
-	\vspace{0.3cm}
-	
-	Esse ciclo pode se repetir até o objetivo ser atingido.
-	
+    
+    Fluxo típico de um Strands Agent:
+    \begin{enumerate}
+        \item Recebe um objetivo
+        \item Analisa o contexto
+        \item Planeja ações
+        \item Executa ferramentas
+        \item Avalia o resultado
+    \end{enumerate}
+    
+    \vspace{0.3cm}
+    
+    Esse ciclo pode se repetir até o objetivo ser atingido.
+    
 \end{frame}
 
 \begin{frame}{Casos de uso}
-	
-	Strands Agents podem ser usados para:
-	\begin{itemize}
-		\item Assistentes inteligentes
-		\item Automação de tarefas
-		\item Análise de dados guiada por IA
-		\item Agentes de suporte técnico
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Ideais para tarefas complexas e multi-etapas.}
-	
+    
+    Strands Agents podem ser usados para:
+    \begin{itemize}
+        \item Assistentes inteligentes
+        \item Automação de tarefas
+        \item Análise de dados guiada por IA
+        \item Agentes de suporte técnico
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Ideais para tarefas complexas e multi-etapas.}
+    
 \end{frame}
 
 \begin{frame}{Resumo}
-	
-	\begin{itemize}
-		\item Strands Agents estruturam agentes de IA
-		\item Integram LLMs, ferramentas e memória
-		\item Facilitam aplicações orientadas a objetivos
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Mensagem-chave:}  
-	Strands não é apenas IA conversacional —  
-	é IA \textbf{agente e operacional}.
-	
+    
+    \begin{itemize}
+        \item Strands Agents estruturam agentes de IA
+        \item Integram LLMs, ferramentas e memória
+        \item Facilitam aplicações orientadas a objetivos
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Mensagem-chave:}  
+    Strands não é apenas IA conversacional —  
+    é IA \textbf{agente e operacional}.
+    
 \end{frame}
 
 
 
 \begin{frame}[fragile]{Exemplo — Estrutura de um agente}
-	
-	\textbf{Ideia:}  
-	O agente recebe uma pergunta, decide o que fazer e executa ações.
-	
-	\begin{minted}{python}
+    
+    \textbf{Ideia:}  
+    O agente recebe uma pergunta, decide o que fazer e executa ações.
+    
+    \begin{minted}{python}
 class AgenteSimples:
-	def __init__(self):
-		self.memoria = {}
+    def __init__(self):
+        self.memoria = {}
 
-	def responder(self, pergunta: str) -> str:
-		# Decide o que fazer com base na pergunta
-		if self._eh_calculo(pergunta):
-			return self._resolver_calculo(pergunta)
-		else:
-			return self._responder_texto(pergunta)
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Conceitos envolvidos:}
-	\begin{itemize}
-		\item Agente encapsula lógica de decisão
-		\item Não executa tudo diretamente
-	\end{itemize}
-	
+    def responder(self, pergunta: str) -> str:
+        # Decide o que fazer com base na pergunta
+        if self._eh_calculo(pergunta):
+            return self._resolver_calculo(pergunta)
+        else:
+            return self._responder_texto(pergunta)
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Conceitos envolvidos:}
+    \begin{itemize}
+        \item Agente encapsula lógica de decisão
+        \item Não executa tudo diretamente
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo — Decisão e ferramentas}
-	
-	\begin{minted}{python}
+    
+    \begin{minted}{python}
 def _eh_calculo(self, pergunta: str) -> bool:
-	return any(op in pergunta for op in ["+", "*", "/"])
+    return any(op in pergunta for op in ["+", "*", "/"])
 
 def _resolver_calculo(self, pergunta: str) -> str:
-	# Exemplo simplificado
-	resultado = calcular(2, 3, "soma")
-	registrar_log("Cálculo executado")
-	return f"Resultado: {resultado}"
+    # Exemplo simplificado
+    resultado = calcular(2, 3, "soma")
+    registrar_log("Cálculo executado")
+    return f"Resultado: {resultado}"
 
 def _responder_texto(self, pergunta: str) -> str:
-	resposta = buscar_informacao(pergunta)
-	salvar_memoria("ultima_pergunta", pergunta)
-	return resposta
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Fluxo do agente:}
-	\begin{enumerate}
-		\item Analisa a pergunta
-		\item Decide usar (ou não) uma ferramenta
-		\item Retorna a resposta
-	\end{enumerate}
-	
+    resposta = buscar_informacao(pergunta)
+    salvar_memoria("ultima_pergunta", pergunta)
+    return resposta
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Fluxo do agente:}
+    \begin{enumerate}
+        \item Analisa a pergunta
+        \item Decide usar (ou não) uma ferramenta
+        \item Retorna a resposta
+    \end{enumerate}
+    
 \end{frame}
 
 
 \begin{frame}[fragile]{Ferramenta — Cálculo numérico}
-	
-	\textbf{Objetivo:}  
-	Executar cálculos quando o agente precisar de resultados exatos.
-	
-	\begin{minted}{python}
+    
+    \textbf{Objetivo:}  
+    Executar cálculos quando o agente precisar de resultados exatos.
+    
+    \begin{minted}{python}
 def calcular(a: float, b: float, operacao: str) -> float:
-	if operacao == "soma":
-		return a + b
-	elif operacao == "multiplicacao":
-		return a * b
-	elif operacao == "divisao":
-		if b == 0:
-			raise ValueError("Divisão por zero")
-			return a / b
-		else:
-			raise ValueError("Operação inválida")
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Uso pelo agente:}
-	\begin{itemize}
-		\item Quando a pergunta envolver números
-		\item Quando precisão for necessária
-	\end{itemize}
-	
+    if operacao == "soma":
+        return a + b
+    elif operacao == "multiplicacao":
+        return a * b
+    elif operacao == "divisao":
+        if b == 0:
+            raise ValueError("Divisão por zero")
+            return a / b
+        else:
+            raise ValueError("Operação inválida")
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Uso pelo agente:}
+    \begin{itemize}
+        \item Quando a pergunta envolver números
+        \item Quando precisão for necessária
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Ferramenta — Busca de informações}
-	
-	\textbf{Objetivo:}  
-	Simular uma busca de informações externas.
-	
-	\begin{minted}{python}
+    
+    \textbf{Objetivo:}  
+    Simular uma busca de informações externas.
+    
+    \begin{minted}{python}
 def buscar_informacao(tema: str) -> str:
-	base_conhecimento = {
-		"python": "Python é uma linguagem de programação.",
-		"git": "Git é um sistema de controle de versão.",
-		"github": "GitHub hospeda repositórios Git."
-	}
-	return base_conhecimento.get(
-		tema.lower(),
-		"Informação não encontrada."
-	)
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Uso pelo agente:}
-	\begin{itemize}
-		\item Perguntas factuais
-		\item Consultas repetíveis
-	\end{itemize}
-	
+    base_conhecimento = {
+        "python": "Python é uma linguagem de programação.",
+        "git": "Git é um sistema de controle de versão.",
+        "github": "GitHub hospeda repositórios Git."
+    }
+    return base_conhecimento.get(
+        tema.lower(),
+        "Informação não encontrada."
+    )
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Uso pelo agente:}
+    \begin{itemize}
+        \item Perguntas factuais
+        \item Consultas repetíveis
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Ferramenta — Registro de ações}
-	
-	\textbf{Objetivo:}  
-	Registrar ações executadas pelo agente.
-	
-	\begin{minted}{python}
+    
+    \textbf{Objetivo:}  
+    Registrar ações executadas pelo agente.
+    
+    \begin{minted}{python}
 def registrar_log(mensagem: str) -> None:
-	with open("log_agente.txt", "a") as arquivo:
-		arquivo.write(mensagem + "\n")
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Exemplos de uso:}
-	\begin{itemize}
-		\item Registrar decisões do agente
-		\item Acompanhar execução
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Importante:}  
-	Ferramentas podem causar efeitos fora do agente.
-	
+    with open("log_agente.txt", "a") as arquivo:
+        arquivo.write(mensagem + "\n")
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Exemplos de uso:}
+    \begin{itemize}
+        \item Registrar decisões do agente
+        \item Acompanhar execução
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Importante:}  
+    Ferramentas podem causar efeitos fora do agente.
+    
 \end{frame}
 
 \begin{frame}[fragile]{Ferramenta — Memória simples}
-	
-	\textbf{Objetivo:}  
-	Armazenar e recuperar informações entre interações.
-	
-	\begin{minted}{python}
+    
+    \textbf{Objetivo:}  
+    Armazenar e recuperar informações entre interações.
+    
+    \begin{minted}{python}
 memoria = {}
 
 def salvar_memoria(chave: str, valor: str) -> None:
-	memoria[chave] = valor
+    memoria[chave] = valor
 
 def ler_memoria(chave: str) -> str:
-	return memoria.get(chave, "Nada armazenado")
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Uso pelo agente:}
-	\begin{itemize}
-		\item Lembrar perguntas anteriores
-		\item Manter contexto
-	\end{itemize}
-	
+    return memoria.get(chave, "Nada armazenado")
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Uso pelo agente:}
+    \begin{itemize}
+        \item Lembrar perguntas anteriores
+        \item Manter contexto
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Exercício — Strands Agent básico}
-	
-	\textbf{Objetivo do exercício:}  
-	Compreender como estruturar um agente usando Strands.
-	
-	\vspace{0.3cm}
-	
-	\textbf{Cenário:}  
-	Você deve criar um agente que ajude um usuário a:
-	\begin{itemize}
-		\item Receber uma pergunta
-		\item Decidir se precisa usar uma ferramenta
-		\item Retornar uma resposta adequada
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Tarefas:}
-	\begin{enumerate}
-		\item Defina o \textbf{objetivo} do agente
-		\item Liste quais \textbf{ferramentas} ele pode usar
-		\item Descreva como o agente decide usar uma ferramenta
-	\end{enumerate}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Ferramentas sugeridas:}
-	\begin{itemize}
-		\item Uma função para calcular valores numéricos
-		\item Uma função para buscar informações simuladas
-	\end{itemize}
-	
+    
+    \textbf{Objetivo do exercício:}  
+    Compreender como estruturar um agente usando Strands.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Cenário:}  
+    Você deve criar um agente que ajude um usuário a:
+    \begin{itemize}
+        \item Receber uma pergunta
+        \item Decidir se precisa usar uma ferramenta
+        \item Retornar uma resposta adequada
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Tarefas:}
+    \begin{enumerate}
+        \item Defina o \textbf{objetivo} do agente
+        \item Liste quais \textbf{ferramentas} ele pode usar
+        \item Descreva como o agente decide usar uma ferramenta
+    \end{enumerate}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Ferramentas sugeridas:}
+    \begin{itemize}
+        \item Uma função para calcular valores numéricos
+        \item Uma função para buscar informações simuladas
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Exercício — Orientação}
-	
-	\textbf{Dicas:}
-	\begin{itemize}
-		\item Pense no agente como um \textbf{resolvedor de tarefas}
-		\item Separe claramente:
-		\begin{itemize}
-			\item Raciocínio (LLM)
-			\item Ação (ferramentas)
-		\end{itemize}
-		\item O agente não deve executar tudo sozinho
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Pergunta para reflexão:}
-	\begin{itemize}
-		\item Em quais situações o agente deve usar ferramentas?
-		\item Quando apenas responder com texto é suficiente?
-	\end{itemize}
-	
+    
+    \textbf{Dicas:}
+    \begin{itemize}
+        \item Pense no agente como um \textbf{resolvedor de tarefas}
+        \item Separe claramente:
+        \begin{itemize}
+            \item Raciocínio (LLM)
+            \item Ação (ferramentas)
+        \end{itemize}
+        \item O agente não deve executar tudo sozinho
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Pergunta para reflexão:}
+    \begin{itemize}
+        \item Em quais situações o agente deve usar ferramentas?
+        \item Quando apenas responder com texto é suficiente?
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}{Desafio extra — Strands Agent}
-	
-	\textbf{Desafio:}
-	\begin{itemize}
-		\item Adicione \textbf{memória} ao agente
-		\item Faça com que ele:
-		\begin{itemize}
-			\item Lembre a última pergunta do usuário
-			\item Use essa informação na próxima resposta
-		\end{itemize}
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Objetivo pedagógico:}  
-	Entender a diferença entre respostas isoladas e agentes com contexto.
-	
+    
+    \textbf{Desafio:}
+    \begin{itemize}
+        \item Adicione \textbf{memória} ao agente
+        \item Faça com que ele:
+        \begin{itemize}
+            \item Lembre a última pergunta do usuário
+            \item Use essa informação na próxima resposta
+        \end{itemize}
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Objetivo pedagógico:}  
+    Entender a diferença entre respostas isoladas e agentes com contexto.
+    
 \end{frame}
 
 \end{document}

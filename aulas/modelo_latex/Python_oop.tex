@@ -417,10 +417,10 @@ imprimir_area(p)
 \begin{frame}[fragile]{Exercícios - Downloader}
   \begin{columns}[t]
     \begin{column}[t]{0.6\textwidth}
-		\begin{itemize}
-		  \item Implementem uma classe que baixe dados de um servidor.
-		  \item Para criar um objeto “Downloader” devem ser passados o endereço de download e uma pasta de destino. 
-		\end{itemize}
+        \begin{itemize}
+          \item Implementem uma classe que baixe dados de um servidor.
+          \item Para criar um objeto “Downloader” devem ser passados o endereço de download e uma pasta de destino. 
+        \end{itemize}
     \end{column}
     
     \begin{column}[t]{0.4\textwidth}
@@ -428,71 +428,71 @@ imprimir_area(p)
 
     \end{column}
   \end{columns}
-	\href{https://www.geeksforgeeks.org/how-to-download-files-from-urls-with-python/}{Link da dica}\\
-	O endereço de uma folha no geoftp do IBGE é: \\
-	\url{https://geoftp.ibge.gov.br/cartas_e_mapas/folhas_topograficas/vetoriais/escala_1000mil/shapefile/g04_na19.zip} \\
-	Exemplo:
-	
-	\begin{minted}[fontsize=\scriptsize]{python}
+    \href{https://www.geeksforgeeks.org/how-to-download-files-from-urls-with-python/}{Link da dica}\\
+    O endereço de uma folha no geoftp do IBGE é: \\
+    \url{https://geoftp.ibge.gov.br/cartas_e_mapas/folhas_topograficas/vetoriais/escala_1000mil/shapefile/g04_na19.zip} \\
+    Exemplo:
+    
+    \begin{minted}[fontsize=\scriptsize]{python}
 parte1 = ”https://geoftp.ibge.gov.br/cartas_e_mapas/folhas_topograficas/”
 parte2 = f"vetoriais/escala_1000mil/shapefile/{name}.zip"
 server_url_format = parte1 + parte2
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Exercícios - Downloader}
-	\begin{minted}[fontsize=\scriptsize]{python}
+    \begin{minted}[fontsize=\scriptsize]{python}
 import requests, os 
 
 class Downloader:
-	def __init__(self, server_url_format, destination_folder):
-		# Inicialização dos atributos da classe
-		self.server_url_format = server_url_format
-		self.destination_folder = destination_folder
-		#verifica se a pasta existe, se não existe, cria.
-		os.makedirs(self.destination_folder, exist_ok=True)
+    def __init__(self, server_url_format, destination_folder):
+        # Inicialização dos atributos da classe
+        self.server_url_format = server_url_format
+        self.destination_folder = destination_folder
+        #verifica se a pasta existe, se não existe, cria.
+        os.makedirs(self.destination_folder, exist_ok=True)
 
-	def download_file(self, name):
-		# Esta não é a melhor forma de fazer isso. É um exemplo.
-		url = self.server_url_format.format(name)
-		response = requests.get(url)
-		file_Path = f'{self.destination_folder}/{name}.zip'
-	
-		if response.status_code == 200:
-			with open(file_Path, 'wb') as file:
-				file.write(response.content)
-				print('File downloaded successfully')
-			else:
-				print('Failed to download file')
-	\end{minted}
+    def download_file(self, name):
+        # Esta não é a melhor forma de fazer isso. É um exemplo.
+        url = self.server_url_format.format(name)
+        response = requests.get(url)
+        file_Path = f'{self.destination_folder}/{name}.zip'
+    
+        if response.status_code == 200:
+            with open(file_Path, 'wb') as file:
+                file.write(response.content)
+                print('File downloaded successfully')
+            else:
+                print('Failed to download file')
+    \end{minted}
 
 \end{frame}
 
 \begin{frame}[fragile]{Exercícios - Downloader}
-	\textbf{Utilizando a classe:}
-	\begin{minted}[fontsize=\scriptsize]{python}
+    \textbf{Utilizando a classe:}
+    \begin{minted}[fontsize=\scriptsize]{python}
 # Esta parte do código só será executada se este for o arquivo principal.
 # Ou seja: python downloader.py
 if __name__=="__main__": 
-	# Cria o objeto da classe Downloader
-	obj_teste = Downloader( \
-	"https://geoftp.ibge.gov.br/cartas_e_mapas/folhas_topograficas/vetoriais/escala_1000mil/shapefile/{}.zip", \
-	"/home/mauricio/Desktop/progcart/aulas" )
-	
-	# Lista os atributos e métodos do objeto.
-	print(dir(obj_teste))
-	
-	# Chama uma função do objeto criado.
-	obj_teste.download_file("g04_na19")
-	\end{minted}
+    # Cria o objeto da classe Downloader
+    obj_teste = Downloader( \
+    "https://geoftp.ibge.gov.br/cartas_e_mapas/folhas_topograficas/vetoriais/escala_1000mil/shapefile/{}.zip", \
+    "/home/mauricio/Desktop/progcart/aulas" )
+    
+    # Lista os atributos e métodos do objeto.
+    print(dir(obj_teste))
+    
+    # Chama uma função do objeto criado.
+    obj_teste.download_file("g04_na19")
+    \end{minted}
 
 \end{frame}
 
 \begin{frame}[fragile]{Mais exercícios}
-	Exercícios para o pessoal que quiser praticar orientação a objetos:
-	
-	\url{https://www.w3resource.com/python-exercises/oop/index.php}
+    Exercícios para o pessoal que quiser praticar orientação a objetos:
+    
+    \url{https://www.w3resource.com/python-exercises/oop/index.php}
 \end{frame}
 
 \end{document}

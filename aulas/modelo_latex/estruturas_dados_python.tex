@@ -5,144 +5,144 @@
 \date{\today}
 
 \begin{document}
-	
+    
 \begin{frame}
-	\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
 \begin{itemize}
-	\item Aprender a formatar strings em Python.
-	\item Aprender as estruturas de dados mais usadas.
-	\item Aprender a usar funções para organizar o código.
+    \item Aprender a formatar strings em Python.
+    \item Aprender as estruturas de dados mais usadas.
+    \item Aprender a usar funções para organizar o código.
 \end{itemize}
 \end{frame}
-	
+    
 \begin{frame}[fragile]{Formatação de strings em Python}
-	
-	Existem três formas principais de formatar strings em Python:
-	
-	\vspace{0.3cm}
-	
-	\textbf{1. Operador \% (legado – evitar)}
-	\begin{minted}{python}
+    
+    Existem três formas principais de formatar strings em Python:
+    
+    \vspace{0.3cm}
+    
+    \textbf{1. Operador \% (legado – evitar)}
+    \begin{minted}{python}
 nome = "Ana"
 idade = 20
 msg = "Nome: %s, Idade: %d" % (nome, idade)
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{2. Método \texttt{str.format()}}
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{2. Método \texttt{str.format()}}
+    \begin{minted}{python}
 msg = "Nome: {}, Idade: {}".format(nome, idade)
 msg = "Nome: {n}, Idade: {i}".format(n=nome, i=idade)
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{3. f-strings (recomendado, Python $\ge$ 3.6)}
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{3. f-strings (recomendado, Python $\ge$ 3.6)}
+    \begin{minted}{python}
 msg = f"Nome: {nome}, Idade: {idade}"
-	\end{minted}
-	
-	\textbf{Vantagens das f-strings:}
-	\begin{itemize}
-		\item Mais legíveis
-		\item Mais concisas
-		\item Permitem expressões: \texttt{f"\{x + y\}"}
-	\end{itemize}
-	
+    \end{minted}
+    
+    \textbf{Vantagens das f-strings:}
+    \begin{itemize}
+        \item Mais legíveis
+        \item Mais concisas
+        \item Permitem expressões: \texttt{f"\{x + y\}"}
+    \end{itemize}
+    
 \end{frame}
 
-	
-	
+    
+    
 \begin{frame}[fragile]{Listas em Python}
-		
-	\textbf{Listas} são estruturas que armazenam uma sequência de valores,
-	podendo conter elementos de tipos diferentes.
-	
-	\vspace{0.3cm}
-	
-	\textbf{Criação de listas}
-	\begin{minted}{python}
+        
+    \textbf{Listas} são estruturas que armazenam uma sequência de valores,
+    podendo conter elementos de tipos diferentes.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Criação de listas}
+    \begin{minted}{python}
 numeros = [1, 2, 3, 4]
 nomes = ["Ana", "João", "Maria"]
 mistura = [10, "texto", 3.14]
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{Acesso aos elementos (indexação começa em 0)}
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{Acesso aos elementos (indexação começa em 0)}
+    \begin{minted}{python}
 print(numeros[0])   # 1
 print(nomes[2])     # Maria
 print(numeros[-1])  # último elemento
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{Operações comuns}
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{Operações comuns}
+    \begin{minted}{python}
 numeros.append(5)      # adiciona no final
 numeros.remove(2)      # remove o valor 2
 tamanho = len(numeros) # quantidade de elementos
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
-	
-	
+    
+    
 \begin{frame}[fragile]{Matrizes com NumPy}
-	
-	O \textbf{NumPy} fornece o tipo \texttt{ndarray}, usado para trabalhar
-	com vetores e matrizes de forma eficiente.
-	
-	\vspace{0.3cm}
-	
-	\textbf{Importação e criação}
-	\begin{minted}{python}
+    
+    O \textbf{NumPy} fornece o tipo \texttt{ndarray}, usado para trabalhar
+    com vetores e matrizes de forma eficiente.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Importação e criação}
+    \begin{minted}{python}
 import numpy as np
 
 A = np.array([
-	[1, 2, 3],
-	[4, 5, 6]
+    [1, 2, 3],
+    [4, 5, 6]
 ])
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{Dimensões e acesso}
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{Dimensões e acesso}
+    \begin{minted}{python}
 print(A.shape)     # (2, 3)
 print(A[0, 1])     # elemento da 1ª linha, 2ª coluna
-	\end{minted}
+    \end{minted}
 \end{frame}
 
-	
+    
 \begin{frame}[fragile]{Operações com Matrizes}
-	\textbf{Criação rápida}
-	\begin{minted}{python}
+    \textbf{Criação rápida}
+    \begin{minted}{python}
 Z = np.zeros((3, 3))
 I = np.eye(3)
-	\end{minted}
+    \end{minted}
 
-	\textbf{Operações comuns}
-	\begin{minted}{python}
+    \textbf{Operações comuns}
+    \begin{minted}{python}
 B = A * 2  # operação elemento a elemento
 C = A.T    # transposta
-	\end{minted}
+    \end{minted}
 
-	\textbf{Percorrendo a matriz com for}
-	\begin{minted}{python}
+    \textbf{Percorrendo a matriz com for}
+    \begin{minted}{python}
 for i in range(len(matriz)):
-	for j in range(len(matriz[i])):
-		print(matriz[i][j])
-	\end{minted}
+    for j in range(len(matriz[i])):
+        print(matriz[i][j])
+    \end{minted}
 \end{frame}
-	
+    
 \begin{frame}[fragile]{Principais Funções de numpy.linalg}
-	\begin{minted}[fontsize=\scriptsize]{python}
+    \begin{minted}[fontsize=\scriptsize]{python}
 import numpy as np
 
 # Vetor e matriz de exemplo
@@ -159,42 +159,42 @@ np.linalg.det(A)              # Determinante
 np.linalg.inv(A)              # Inversa (evitar se possível; prefira solve)
 
 vals, vecs = np.linalg.eig(A) # Autovalores e autovetores
-	\end{minted}
-	
-	\textbf{Observações importantes:}
-	\begin{itemize}
-		\item \texttt{norm} calcula magnitude (L2 por padrão; pode usar \texttt{ord=1}, \texttt{ord=np.inf}, etc.).
-		\item \texttt{solve} é numericamente mais estável que usar \texttt{inv(A) @ b}.
-		\item Evite calcular a inversa explicitamente quando for resolver sistemas lineares.
-	\end{itemize}
+    \end{minted}
+    
+    \textbf{Observações importantes:}
+    \begin{itemize}
+        \item \texttt{norm} calcula magnitude (L2 por padrão; pode usar \texttt{ord=1}, \texttt{ord=np.inf}, etc.).
+        \item \texttt{solve} é numericamente mais estável que usar \texttt{inv(A) @ b}.
+        \item Evite calcular a inversa explicitamente quando for resolver sistemas lineares.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Mínimos Quadrados (Least Squares)}
-	
-	\begin{columns}[t]
-		\begin{column}[t]{0.48\textwidth}
-			\textbf{Problema:}
-			
-			Resolver um sistema sobredeterminado \\
-			$ A x \approx b $ \\
-			minimizando o erro: \\
-			
-			$\min_x \|Ax - b\|_2$
-			
-		\end{column}
-		\begin{column}[t]{0.48\textwidth}
-			\textbf{Saídas da função:}
-			\begin{itemize}
-				\item \texttt{coef} → solução ótima
-				\item \texttt{residuals} → soma dos erros quadráticos
-				\item \texttt{rank} → posto de $A$
-				\item \texttt{s} → valores singulares
-			\end{itemize}
-		\end{column}
-	\end{columns}	
-	
-	
-	\begin{minted}[fontsize=\scriptsize]{python}
+    
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            \textbf{Problema:}
+            
+            Resolver um sistema sobredeterminado \\
+            $ A x \approx b $ \\
+            minimizando o erro: \\
+            
+            $\min_x \|Ax - b\|_2$
+            
+        \end{column}
+        \begin{column}[t]{0.48\textwidth}
+            \textbf{Saídas da função:}
+            \begin{itemize}
+                \item \texttt{coef} → solução ótima
+                \item \texttt{residuals} → soma dos erros quadráticos
+                \item \texttt{rank} → posto de $A$
+                \item \texttt{s} → valores singulares
+            \end{itemize}
+        \end{column}
+    \end{columns}    
+    
+    
+    \begin{minted}[fontsize=\scriptsize]{python}
 import numpy as np
 # Ajuste linear y = ax + b
 x_data = np.array([1, 2, 3, 4])
@@ -208,430 +208,466 @@ coef, residuals, rank, s = np.linalg.lstsq(A, y_data, rcond=None)
 
 a, b = coef
 print("Coeficientes:", a, b)
-	\end{minted}
-	
+    \end{minted}
+    
 
-	
+    
 
-	
+    
 \end{frame}
 
 
 \begin{frame}[fragile]{Dicionários em Python}
-	
-	\textbf{Dicionários} armazenam pares \textbf{chave → valor}, permitindo
-	acesso rápido aos dados por meio da chave.
-	
-	\vspace{0.3cm}
-	
-	\textbf{Criação de dicionários}
-	\begin{minted}{python}
+    
+    \textbf{Dicionários} armazenam pares \textbf{chave → valor}, permitindo
+    acesso rápido aos dados por meio da chave.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Criação de dicionários}
+    \begin{minted}{python}
 aluno = {
-	"nome": "Ana",
-	"idade": 20,
-	"curso": "Eng. Cartográfica"
+    "nome": "Ana",
+    "idade": 20,
+    "curso": "Eng. Cartográfica"
 }
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{Acesso aos valores}
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{Acesso aos valores}
+    \begin{minted}{python}
 print(aluno["nome"])    # Ana
 print(aluno["idade"])   # 20
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{Inserção e modificação}
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{Inserção e modificação}
+    \begin{minted}{python}
 aluno["matricula"] = "20231234"
 aluno["idade"] = 21
-	\end{minted}
-	
-	\vspace{0.2cm}
-	
-	\textbf{Operações comuns}
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{Operações comuns}
+    \begin{minted}{python}
 chaves = aluno.keys()
 valores = aluno.values()
 pares = aluno.items()
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
-	
+    
 \begin{frame}{Exercícios}
-	\begin{itemize}
-		\item Criar uma lista e calcular a média
-		\item Somar todos os elementos de uma matriz
-		\item Criar um dicionário de que relaciona o nome do aluno à sua nota.
-	\end{itemize}
+    \begin{itemize}
+        \item Criar uma lista e calcular a média
+        \item Somar todos os elementos de uma matriz
+        \item Criar um dicionário de que relaciona o nome do aluno à sua nota.
+    \end{itemize}
 \end{frame}
 
 
 \begin{frame}[c]
-	
-	\begin{center}
-		\Large Utilizando funções para organizar o código.
-	\end{center}
-	
+    
+    \begin{center}
+        \Large Utilizando funções para organizar o código.
+    \end{center}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Código sem funções}
-	
-	Considere um programa que calcula a média de notas de um aluno:
-	
-	\vspace{0.3cm}
-	
-	\begin{minted}{python}
+    
+    Considere um programa que calcula a média de notas de um aluno:
+    
+    \vspace{0.3cm}
+    
+    \begin{minted}{python}
 notas = [7.0, 8.5, 6.0, 9.0]
 
 soma = 0
 for n in notas:
-	soma += n
+    soma += n
 
 media = soma / len(notas)
 
 if media >= 7:
-	print("Aprovado")
+    print("Aprovado")
 else:
-	print("Reprovado")
-	\end{minted}
-	
+    print("Reprovado")
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}{Problemas do código sem funções}
-	
-	Embora o código funcione, ele apresenta limitações:
-	
-	\begin{itemize}
-		\item Tudo está misturado em um único bloco
-		\item Difícil de reutilizar em outro programa
-		\item Difícil de testar partes específicas
-		\item Pouca clareza sobre \textbf{o que} cada parte faz
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Problema central:} tarefas diferentes não estão separadas.
-	\vspace{0.3cm}
-	
-	Problemas complexos devem ser divididos em problemas menores, com soluções \textbf{reusáveis}.
-	\vspace{0.3cm}
-	
-	Bônus: Podemos dividir tarefas e cada aluno implementar uma parte do problema?
-	
+    
+    Embora o código funcione, ele apresenta limitações:
+    
+    \begin{itemize}
+        \item Tudo está misturado em um único bloco
+        \item Difícil de reutilizar em outro programa
+        \item Difícil de testar partes específicas
+        \item Pouca clareza sobre \textbf{o que} cada parte faz
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Problema central:} tarefas diferentes não estão separadas.
+    \vspace{0.3cm}
+    
+    Problemas complexos devem ser divididos em problemas menores, com soluções \textbf{reusáveis}.
+    \vspace{0.3cm}
+    
+    Bônus: Podemos dividir tarefas e cada aluno implementar uma parte do problema?
+    
 \end{frame}
 
 \begin{frame}[fragile]{Código com funções}
-	
-	Agora o mesmo programa dividido em funções:
-	
-	\vspace{0.3cm}
-	
-	\begin{minted}{python}
+    
+    Agora o mesmo programa dividido em funções:
+    
+    \vspace{0.3cm}
+    
+    \begin{minted}{python}
 def calcula_media(notas):
-	soma = 0
-	for n in notas:
-		soma += n
-	return soma / len(notas)
+    soma = 0
+    for n in notas:
+        soma += n
+    return soma / len(notas)
 
 def resultado(media):
-	if media >= 7:
-		return "Aprovado"
-	else:
-		return "Reprovado"
+    if media >= 7:
+        return "Aprovado"
+    else:
+        return "Reprovado"
 
 notas = [7.0, 8.5, 6.0, 9.0]
 media = calcula_media(notas)
 print(resultado(media))
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
 
 \begin{frame}[fragile]{Boas Práticas ao Escrever Funções}
-	\textbf{1. Funções devem ter responsabilidade única}
-	\begin{itemize}
-		\item Faça uma coisa — e faça bem.
-	\end{itemize}
-	
-	
-	\textbf{2. Use nomes claros e descritivos}
-	\begin{itemize}
-		\item Evite: \texttt{def calc(x):}
-		\item Prefira: \texttt{def calcular\_area\_poligono(vertices):}
-	\end{itemize}
-	
-	
-	\textbf{3. Tipagem explícita (quando possível)}
-	\begin{minted}[fontsize=\scriptsize]{python}
+    \textbf{1. Funções devem ter responsabilidade única}
+    \begin{itemize}
+        \item Faça uma coisa — e faça bem.
+    \end{itemize}
+    
+    
+    \textbf{2. Use nomes claros e descritivos}
+    \begin{itemize}
+        \item Evite: \texttt{def calc(x):}
+        \item Prefira: \texttt{def calcular\_area\_poligono(vertices):}
+    \end{itemize}
+    
+    
+    \textbf{3. Tipagem explícita (quando possível)}
+    \begin{minted}[fontsize=\scriptsize]{python}
 def area_triangulo(base: float, altura: float) -> float:
-	return (base * altura) / 2
-	\end{minted}
-	
-	
-	\textbf{4. Evite efeitos colaterais}
-	\begin{itemize}
-		\item Não modifique variáveis globais
-		\item Prefira retorno explícito
-	\end{itemize}
-	
-	\textbf{5. Documente comportamento e contratos}
-	\begin{minted}[fontsize=\scriptsize]{python}
+    return (base * altura) / 2
+    \end{minted}
+    
+    
+    \textbf{4. Evite efeitos colaterais}
+    \begin{itemize}
+        \item Não modifique variáveis globais
+        \item Prefira retorno explícito
+    \end{itemize}
+    
+    \textbf{5. Documente comportamento e contratos}
+    \begin{minted}[fontsize=\scriptsize]{python}
 def normalizar(v: np.ndarray) -> np.ndarray:
-	"""Retorna vetor normalizado (norma L2 = 1)."""
-	return v / np.linalg.norm(v)
-	\end{minted}
-	
+    """Retorna vetor normalizado (norma L2 = 1)."""
+    return v / np.linalg.norm(v)
+    \end{minted}
+    
 \end{frame}
 
 
 \begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
-	
-	\begin{minted}[fontsize=\scriptsize]{python}
+    
+    \begin{minted}[fontsize=\scriptsize]{python}
 import matplotlib.pyplot as plt
 
 def plotar_grafico_barras(dados, titulo="Gráfico de Barras",
-	xlabel="Categorias", ylabel="Valores", 
-	rotacao_labels=0, salvar_em="plot.png"):
-	
-	# Separando chaves e valores
-	labels = list(dados.keys())
-	valores = list(dados.values())
-	
-	# Plot
-	plt.figure() # Inicializa área de desenho.
-	plt.bar(labels, valores) # Gráfico de barras.
-	plt.xlabel(xlabel) # Descrição do eixo x.
-	plt.ylabel(ylabel) # Descrição do eixo y.
-	plt.title(titulo) #Título do plot.
-	plt.xticks(rotation=rotacao_labels) # Textos do eixo X.
-	plt.tight_layout() # Reduz espaços
-	plt.savefig(salvar_em) # Salva o gráfico em um arquivo.
-	plt.show() # Abre a janela interativa.
-	\end{minted}
-		
+    xlabel="Categorias", ylabel="Valores", 
+    rotacao_labels=0, salvar_em="plot.png"):
+    
+    # Separando chaves e valores
+    labels = list(dados.keys())
+    valores = list(dados.values())
+    
+    # Plot
+    plt.figure() # Inicializa área de desenho.
+    plt.bar(labels, valores) # Gráfico de barras.
+    plt.xlabel(xlabel) # Descrição do eixo x.
+    plt.ylabel(ylabel) # Descrição do eixo y.
+    plt.title(titulo) #Título do plot.
+    plt.xticks(rotation=rotacao_labels) # Textos do eixo X.
+    plt.tight_layout() # Reduz espaços
+    plt.savefig(salvar_em) # Salva o gráfico em um arquivo.
+    plt.show() # Abre a janela interativa.
+    \end{minted}
+        
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
-	
-	\begin{minted}[fontsize=\scriptsize, linenos]{python}
+    
+    \begin{minted}[fontsize=\scriptsize, linenos]{python}
 dados = {
-	"Aprendizado profundo": 10,
-	"GNSS": 9,
-	"Sensoriamento remoto": 6,
-	"Fotogrametria": 5,
-	"SIG": 7,
-	"Programação desktop": 7,
-	"Programação web backend": 8,
-	"Programação web frontend": 5,
-	"Produção cartográfica": 6,
-	"Batimetria": 2
+    "Aprendizado profundo": 10,
+    "GNSS": 9,
+    "Sensoriamento remoto": 6,
+    "Fotogrametria": 5,
+    "SIG": 7,
+    "Programação desktop": 7,
+    "Programação web backend": 8,
+    "Programação web frontend": 5,
+    "Produção cartográfica": 6,
+    "Batimetria": 2
 }
 
 plotar_grafico_barras(dados, titulo="Habilidades do Maurício",
 xlabel="Habilidades", ylabel="Pontuação", 
 rotacao_labels=90, salvar_em="plot.png")
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Gráfico de Barras a partir de um Dicionário}
-	% TODO: \usepackage{graphicx} required
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.7\linewidth]{estruturas_dados_python_figs/plot}
-		\caption{Gráfico das habilidades}
-		\label{fig:plot}
-	\end{figure}
+    % TODO: \usepackage{graphicx} required
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\linewidth]{estruturas_dados_python_figs/plot}
+        \caption{Gráfico das habilidades}
+        \label{fig:plot}
+    \end{figure}
 \end{frame}
 
 \begin{frame}{Rasterio }
-	
-	\textbf{Rasterio} é uma biblioteca Python para leitura e escrita de dados raster geoespaciais.
-	
-	\vspace{0.4cm}
-	
-	Baseada em:
-	\begin{itemize}
-		\item GDAL
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Principais capacidades:
-	\begin{itemize}
-		\item Leitura e escrita de GeoTIFF
-		\item Acesso a metadados (CRS, transform)
-		\item Operações matriciais com NumPy
-		\item Recorte (mask) e reprojeção
-	\end{itemize}
-	
+    
+    \textbf{Rasterio} é uma biblioteca Python para leitura e escrita de dados raster geoespaciais.
+    
+    \vspace{0.4cm}
+    
+    Baseada em:
+    \begin{itemize}
+        \item GDAL
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Principais capacidades:
+    \begin{itemize}
+        \item Leitura e escrita de GeoTIFF
+        \item Acesso a metadados (CRS, transform)
+        \item Operações matriciais com NumPy
+        \item Recorte (mask) e reprojeção
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Rasterio: Leitura e Escrita de Raster}
-	
-	\textbf{Leitura:}
-	
-	\begin{minted}{python}
+    
+    \textbf{Leitura:}
+    
+    \begin{minted}{python}
 import rasterio
 
 with rasterio.open("imagem.tif") as src:
-	banda = src.read(1)
-	print(src.crs)
-	print(src.transform)
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Escrita:}
-	
-	\begin{minted}{python}
+    banda = src.read(1)
+    print(src.crs)
+    print(src.transform)
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Escrita:}
+    
+    \begin{minted}{python}
 with rasterio.open(
-	"saida.tif", "w", driver="GTiff",
-	height=banda.shape[0], width=banda.shape[1],
-	count=1, 
-	dtype=banda.dtype,
-	crs=src.crs,
-	transform=src.transform,
+    "saida.tif", "w", driver="GTiff",
+    height=banda.shape[0], width=banda.shape[1],
+    count=1, 
+    dtype=banda.dtype,
+    crs=src.crs,
+    transform=src.transform,
 ) as dst:
-	dst.write(banda, 1)
-	\end{minted}
-	
+    dst.write(banda, 1)
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}{Rasterio: Metadados e Georreferenciamento}
-	
-	Elementos fundamentais:
-	
-	\begin{itemize}
-		\item CRS (Coordinate Reference System)
-		\item Transform (Affine/Afim)
-		\item Bounds
-		\item Resolução espacial
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	A transformação afim define:
-	
-	\begin{center}
-		(linha, coluna) → (x, y)
-	\end{center}
-	
-	\vspace{0.4cm}
-	
-	Rasterio integra diretamente com:
-	\begin{itemize}
-		\item NumPy
-		\item Shapely (via mask)
-	\end{itemize}
-	
+    
+    Elementos fundamentais:
+    
+    \begin{itemize}
+        \item CRS (Coordinate Reference System)
+        \item Transform (Affine/Afim)
+        \item Bounds
+        \item Resolução espacial
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    A transformação afim define:
+    
+    \begin{center}
+        (linha, coluna) → (x, y)
+    \end{center}
+    
+    \vspace{0.4cm}
+    
+    Rasterio integra diretamente com:
+    \begin{itemize}
+        \item NumPy
+        \item Shapely (via mask)
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Rasterio: Operações Comuns}
-	
-	\textbf{Recorte por polígono:}
-	
-	\begin{minted}{python}
+    
+    \textbf{Recorte por polígono:}
+    
+    \begin{minted}{python}
 from rasterio.mask import mask
 
 out_image, out_transform = mask(
-	src,
-	shapes=[geom],
-	crop=True
+    src,
+    shapes=[geom],
+    crop=True
 )
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Reprojeção:}
-	
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Reprojeção:}
+    
+    \begin{minted}{python}
 from rasterio.warp import calculate_default_transform, reproject
 
 reproject(...)
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Leitura por janela (window):}
-	
-	\begin{minted}{python}
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Leitura por janela (window):}
+    
+    \begin{minted}{python}
 window = rasterio.windows.Window(0, 0, 512, 512)
 data = src.read(1, window=window)
-	\end{minted}
-	
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo — Leitura em Janela (Windowed Reading)}
-	
-	\textbf{Objetivo:} Ler apenas parte de um GeoTIFF (melhora performance).
-	
-	\begin{minted}[fontsize=\scriptsize]{python}
+    
+    \textbf{Objetivo:} Ler apenas parte de um GeoTIFF (melhora performance).
+    
+    \begin{minted}[fontsize=\scriptsize]{python}
 import rasterio
 from rasterio.windows import Window
-
 with rasterio.open("imagem.tif") as src:
 
-	# define janela: coluna inicial, linha inicial, largura, altura
-	window = Window(col_off=1000, row_off=2000, width=512, height=512)
-	
-	# lê somente a banda 1 nessa janela
-	data = src.read(1, window=window)
-	
-	print("Shape:", data.shape)
-	print("CRS:", src.crs)
-	
-	# transforma coordenadas da janela
-	transform = src.window_transform(window)
-	print("Transform da janela:", transform)
-	\end{minted}
-	
-	\textbf{Aplicação:}
-	\begin{itemize}
-		\item Processamento em blocos
-		\item Trabalhar com rasters grandes
-		\item Paralelização
-	\end{itemize}
-	
+    # define janela: coluna inicial, linha inicial, largura, altura
+    window = Window(col_off=1000, row_off=2000, width=512, height=512)
+    
+    # lê somente a banda 1 nessa janela
+    data = src.read(1, window=window)
+    
+    print("Shape:", data.shape)
+    print("CRS:", src.crs)
+    
+    # transforma coordenadas da janela
+    transform = src.window_transform(window)
+    print("Transform da janela:", transform)
+    \end{minted}
+    
+    \textbf{Aplicação:}
+    \begin{itemize}
+        \item Processamento em blocos
+        \item Trabalhar com rasters grandes
+        \item Paralelização
+    \end{itemize}
+    
 \end{frame}
 
 \begin{frame}[fragile]{Leitura Automática por Blocos (Block Windows)}
-	
-	\textbf{Objetivo:} Processar raster grande sem carregar tudo na memória.
-	
-	\begin{minted}{python}
-		import rasterio
-		
-		with rasterio.open("imagem.tif") as src:
-		
-		# Itera automaticamente pelos blocos internos do arquivo
-		for idx, window in src.block_windows(1):
-		
-		# lê somente o bloco atual (banda 1)
-		data = src.read(1, window=window)
-		
-		# exemplo: calcular média do bloco
-		media = data.mean()
-		
-		print(f"Bloco {idx} - média: {media}")
-		
-		# obter transform específico do bloco
-		transform = src.window_transform(window)
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{Vantagens:}
-	\begin{itemize}
-		\item Uso eficiente de memória
-		\item Respeita estrutura interna do GeoTIFF (tiling)
-		\item Ideal para processamento paralelo
-	\end{itemize}
-	
+    
+    \textbf{Objetivo:} Processar raster grande sem carregar tudo na memória.
+    
+    \begin{minted}{python}
+import rasterio
+with rasterio.open("imagem.tif") as src:
+    # Itera automaticamente pelos blocos internos do arquivo
+    for idx, window in src.block_windows(1):
+        # lê somente o bloco atual (banda 1)
+        data = src.read(1, window=window)
+        
+        # exemplo: calcular média do bloco
+        media = data.mean()
+        
+        print(f"Bloco {idx} - média: {media}")
+        
+        # obter transform específico do bloco
+        transform = src.window_transform(window)
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Vantagens:}
+    \begin{itemize}
+        \item Uso eficiente de memória
+        \item Respeita estrutura interna do GeoTIFF (tiling)
+        \item Ideal para processamento paralelo
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Rasterio — Reprojeção}
+    
+    \begin{minted}{python}
+import rasterio
+from rasterio.warp import calculate_default_transform, reproject, Resampling
+
+src_path = "entrada.tif"
+dst_path = "saida_3857.tif"
+
+with rasterio.open(src_path) as src:
+
+    # Define novo CRS (Web Mercator)
+    dst_crs = "EPSG:3857"
+    
+    # Calcula nova transformação e dimensões
+    transform, width, height = calculate_default_transform(
+    src.crs, dst_crs, src.width, src.height, *src.bounds )
+    
+    profile = src.profile
+    profile.update({
+        "crs": dst_crs,
+        "transform": transform,
+        "width": width,
+        "height": height
+    })
+    
+    with rasterio.open(dst_path, "w", **profile) as dst:
+        reproject(
+            source=rasterio.band(src, 1),
+            destination=rasterio.band(dst, 1),
+            src_transform=src.transform,
+            src_crs=src.crs,
+            dst_transform=transform,
+            dst_crs=dst_crs,
+            resampling=Resampling.nearest
+        )
+    \end{minted}
+    
 \end{frame}
 
 \end{document}

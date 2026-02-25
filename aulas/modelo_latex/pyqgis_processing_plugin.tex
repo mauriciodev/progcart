@@ -6,453 +6,453 @@
 \date{\today}
 
 \begin{document}
-	
+    
 \input{capa}
 
 \begin{frame}{Objetivos}
-	\begin{itemize}
-		\item Ilustrar operações de geoprocessamento
-		\item Trabalhar com dados Matriciais (Raster) e Vetoriais (Vector)
-	\end{itemize}
-	% TODO: \usepackage{graphicx} required
-	\begin{figure}
-		\centering
-		\includegraphics[width=\linewidth]{pyqgis_processing_plugin_figs/toolbox}
-		\caption{Exemplo: Ferramentas de geoprocessamento no QGIS (processing toolbox).}
-	\end{figure}
-	
+    \begin{itemize}
+        \item Ilustrar operações de geoprocessamento
+        \item Trabalhar com dados Matriciais (Raster) e Vetoriais (Vector)
+    \end{itemize}
+    % TODO: \usepackage{graphicx} required
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{pyqgis_processing_plugin_figs/toolbox}
+        \caption{Exemplo: Ferramentas de geoprocessamento no QGIS (processing toolbox).}
+    \end{figure}
+    
 \end{frame}
 
 \begin{frame}{Sistema de Processing no QGIS}
-	\centering
-	\Large Sistema de Processing no QGIS
+    \centering
+    \Large Sistema de Processing no QGIS
 \end{frame}
 
 \begin{frame}{Sistema de Processing no QGIS}
-	\textbf{Processing} é o framework de execução de algoritmos do QGIS.
-	
-	\vspace{0.4cm}
-	
-	Permite:
-	\begin{itemize}
-		\item Executar algoritmos nativos
-		\item Executar algoritmos do GDAL, GRASS, SAGA
-		\item Criar algoritmos customizados
-		\item Automatizar fluxos de geoprocessamento
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	A API é acessível via PyQGIS.
+    \textbf{Processing} é o framework de execução de algoritmos do QGIS.
+    
+    \vspace{0.4cm}
+    
+    Permite:
+    \begin{itemize}
+        \item Executar algoritmos nativos
+        \item Executar algoritmos do GDAL, GRASS, SAGA
+        \item Criar algoritmos customizados
+        \item Automatizar fluxos de geoprocessamento
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    A API é acessível via PyQGIS.
 \end{frame}
 
 \begin{frame}[fragile]{Executando Algoritmos via Python}
-	\begin{minted}{python}
-		import processing
-		
-		params = {
-			"INPUT": layer,
-			"DISTANCE": 100,
-			"SEGMENTS": 8,
-			"OUTPUT": "memory:"
-		}
-		
-		result = processing.run("native:buffer", params)
-	\end{minted}
-	
-	\vspace{0.4cm}
-	
-	\textbf{Formato:}
-	\begin{center}
-		\texttt{processing.run("provider:algorithm", parametros)}
-	\end{center}
+    \begin{minted}{python}
+        import processing
+        
+        params = {
+            "INPUT": layer,
+            "DISTANCE": 100,
+            "SEGMENTS": 8,
+            "OUTPUT": "memory:"
+        }
+        
+        result = processing.run("native:buffer", params)
+    \end{minted}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Formato:}
+    \begin{center}
+        \texttt{processing.run("provider:algorithm", parametros)}
+    \end{center}
 \end{frame}
 
 \begin{frame}{Estrutura de um Algoritmo Customizado}
-	Todo algoritmo herda de:
-	
-	\begin{center}
-		\texttt{QgsProcessingAlgorithm}
-	\end{center}
-	
-	\vspace{0.4cm}
-	
-	Métodos principais:
-	\begin{itemize}
-		\item \texttt{initAlgorithm()} → define parâmetros
-		\item \texttt{processAlgorithm()} → lógica principal
-		\item \texttt{name()}, \texttt{displayName()}
-	\end{itemize}
+    Todo algoritmo herda de:
+    
+    \begin{center}
+        \texttt{QgsProcessingAlgorithm}
+    \end{center}
+    
+    \vspace{0.4cm}
+    
+    Métodos principais:
+    \begin{itemize}
+        \item \texttt{initAlgorithm()} → define parâmetros
+        \item \texttt{processAlgorithm()} → lógica principal
+        \item \texttt{name()}, \texttt{displayName()}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Definindo Parâmetros}
-	\begin{minted}{python}
-		self.addParameter(
-		QgsProcessingParameterVectorLayer(
-		"INPUT",
-		"Camada de entrada"
-		)
-		)
-		
-		self.addParameter(
-		QgsProcessingParameterNumber(
-		"DIST",
-		"Distância",
-		type=QgsProcessingParameterNumber.Double
-		)
-		)
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	Tipos comuns:
-	\begin{itemize}
-		\item VectorLayer
-		\item RasterLayer
-		\item Number
-		\item FeatureSink (saída)
-	\end{itemize}
+    \begin{minted}{python}
+        self.addParameter(
+        QgsProcessingParameterVectorLayer(
+        "INPUT",
+        "Camada de entrada"
+        )
+        )
+        
+        self.addParameter(
+        QgsProcessingParameterNumber(
+        "DIST",
+        "Distância",
+        type=QgsProcessingParameterNumber.Double
+        )
+        )
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    Tipos comuns:
+    \begin{itemize}
+        \item VectorLayer
+        \item RasterLayer
+        \item Number
+        \item FeatureSink (saída)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Lógica do processAlgorithm()}
-	\begin{minted}{python}
-		def processAlgorithm(self, parameters, context, feedback):
-		layer = self.parameterAsVectorLayer(
-		parameters, "INPUT", context
-		)
-		
-		dist = self.parameterAsDouble(
-		parameters, "DIST", context
-		)
-		
-		for feat in layer.getFeatures():
-		if feedback.isCanceled():
-		break
-		
-		geom = feat.geometry()
-		new_geom = geom.buffer(dist, 8)
-		
-		return {}
-	\end{minted}
-	
-	\vspace{0.3cm}
-	
-	\textbf{feedback} permite:
-	\begin{itemize}
-		\item Cancelamento
-		\item Barra de progresso
-	\end{itemize}
+    \begin{minted}{python}
+        def processAlgorithm(self, parameters, context, feedback):
+        layer = self.parameterAsVectorLayer(
+        parameters, "INPUT", context
+        )
+        
+        dist = self.parameterAsDouble(
+        parameters, "DIST", context
+        )
+        
+        for feat in layer.getFeatures():
+        if feedback.isCanceled():
+        break
+        
+        geom = feat.geometry()
+        new_geom = geom.buffer(dist, 8)
+        
+        return {}
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{feedback} permite:
+    \begin{itemize}
+        \item Cancelamento
+        \item Barra de progresso
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Saídas com FeatureSink}
-	Para gerar nova camada:
-	
-	\begin{itemize}
-		\item Usar \texttt{QgsProcessingParameterFeatureSink}
-		\item Criar feições
-		\item Adicionar ao sink
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Vantagens:
-	\begin{itemize}
-		\item Integração automática com o projeto
-		\item Suporte a arquivos ou memória
-	\end{itemize}
+    Para gerar nova camada:
+    
+    \begin{itemize}
+        \item Usar \texttt{QgsProcessingParameterFeatureSink}
+        \item Criar feições
+        \item Adicionar ao sink
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Vantagens:
+    \begin{itemize}
+        \item Integração automática com o projeto
+        \item Suporte a arquivos ou memória
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Model Builder e Exportação}
-	Alternativa prática:
-	
-	\begin{itemize}
-		\item Criar fluxo no Model Builder
-		\item Exportar para Python
-		\item Adaptar o código
-	\end{itemize}
-	
-	\vspace{0.4cm}
-	
-	Útil para:
-	\begin{itemize}
-		\item Prototipagem rápida
-		\item Aprender estrutura interna
-		\item Construir plugins Processing
-	\end{itemize}
+    Alternativa prática:
+    
+    \begin{itemize}
+        \item Criar fluxo no Model Builder
+        \item Exportar para Python
+        \item Adaptar o código
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Útil para:
+    \begin{itemize}
+        \item Prototipagem rápida
+        \item Aprender estrutura interna
+        \item Construir plugins Processing
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Exercício 1 — Executar Buffer via Python}
-	\textbf{Objetivo:} executar algoritmo nativo via console.
-	
-	\begin{enumerate}
-		\item Abrir o console Python do QGIS
-		\item Selecionar uma camada vetorial ativa
-		\item Executar:
-	\end{enumerate}
-	
-	\begin{minted}{python}
-		import processing
-		
-		layer = iface.activeLayer()
-		
-		params = {
-			"INPUT": layer,
-			"DISTANCE": 100,
-			"SEGMENTS": 8,
-			"OUTPUT": "memory:"
-		}
-		
-		result = processing.run("native:buffer", params)
-	\end{minted}
-	
-	\textbf{Pergunta:}
-	Onde está armazenada a camada resultante?
+    \textbf{Objetivo:} executar algoritmo nativo via console.
+    
+    \begin{enumerate}
+        \item Abrir o console Python do QGIS
+        \item Selecionar uma camada vetorial ativa
+        \item Executar:
+    \end{enumerate}
+    
+    \begin{minted}{python}
+        import processing
+        
+        layer = iface.activeLayer()
+        
+        params = {
+            "INPUT": layer,
+            "DISTANCE": 100,
+            "SEGMENTS": 8,
+            "OUTPUT": "memory:"
+        }
+        
+        result = processing.run("native:buffer", params)
+    \end{minted}
+    
+    \textbf{Pergunta:}
+    Onde está armazenada a camada resultante?
 \end{frame}
 
 \begin{frame}[fragile]{Exercício 2 — Buffer Parametrizado}
-	\textbf{Objetivo:} usar valor da seleção do usuário.
-	
-	\begin{minted}{python}
-		layer = iface.activeLayer()
-		selected = layer.selectedFeatures()
-		
-		processing.run("native:buffer", {
-			"INPUT": selected,
-			"DISTANCE": 50,
-			"OUTPUT": "memory:"
-		})
-	\end{minted}
-	
-	\textbf{Desafio:}
-	Modifique para usar distância diferente por atributo.
+    \textbf{Objetivo:} usar valor da seleção do usuário.
+    
+    \begin{minted}{python}
+        layer = iface.activeLayer()
+        selected = layer.selectedFeatures()
+        
+        processing.run("native:buffer", {
+            "INPUT": selected,
+            "DISTANCE": 50,
+            "OUTPUT": "memory:"
+        })
+    \end{minted}
+    
+    \textbf{Desafio:}
+    Modifique para usar distância diferente por atributo.
 \end{frame}
 
 \begin{frame}[fragile]{Exercício 3 — Encadeando Algoritmos}
-	\textbf{Objetivo:} criar fluxo Buffer → Dissolve
-	
-	\begin{minted}{python}
-		buffered = processing.run("native:buffer", {
-			"INPUT": layer,
-			"DISTANCE": 100,
-			"OUTPUT": "memory:"
-		})
-		
-		dissolved = processing.run("native:dissolve", {
-			"INPUT": buffered["OUTPUT"],
-			"OUTPUT": "memory:"
-		})
-	\end{minted}
-	
-	\textbf{Pergunta:}
-	Como evitar criar camadas intermediárias visíveis?
+    \textbf{Objetivo:} criar fluxo Buffer → Dissolve
+    
+    \begin{minted}{python}
+        buffered = processing.run("native:buffer", {
+            "INPUT": layer,
+            "DISTANCE": 100,
+            "OUTPUT": "memory:"
+        })
+        
+        dissolved = processing.run("native:dissolve", {
+            "INPUT": buffered["OUTPUT"],
+            "OUTPUT": "memory:"
+        })
+    \end{minted}
+    
+    \textbf{Pergunta:}
+    Como evitar criar camadas intermediárias visíveis?
 \end{frame}
 
 \begin{frame}[fragile]{Exercício 4 — Criar Algoritmo Simples}
-	\textbf{Objetivo:} criar algoritmo próprio.
-	
-	Passos:
-	\begin{enumerate}
-		\item Criar classe herdando de QgsProcessingAlgorithm
-		\item Definir parâmetros
-		\item Implementar processAlgorithm()
-	\end{enumerate}
-	
-	\textbf{Tarefa:}
-	Criar algoritmo que:
-	\begin{itemize}
-		\item Recebe camada vetorial
-		\item Cria campo "area\_calc"
-		\item Calcula área geométrica
-	\end{itemize}
+    \textbf{Objetivo:} criar algoritmo próprio.
+    
+    Passos:
+    \begin{enumerate}
+        \item Criar classe herdando de QgsProcessingAlgorithm
+        \item Definir parâmetros
+        \item Implementar processAlgorithm()
+    \end{enumerate}
+    
+    \textbf{Tarefa:}
+    Criar algoritmo que:
+    \begin{itemize}
+        \item Recebe camada vetorial
+        \item Cria campo "area\_calc"
+        \item Calcula área geométrica
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Exercício 5 — Feedback e Performance}
-	\textbf{Objetivo:} usar feedback corretamente.
-	
-	\begin{minted}{python}
-		for i, feat in enumerate(layer.getFeatures()):
-		if feedback.isCanceled():
-		break
-		
-		feedback.setProgress(i * 100 / layer.featureCount())
-	\end{minted}
-	
-	\textbf{Discussão:}
-	\begin{itemize}
-		\item Quando evitar loops Python?
-		\item Quando delegar para algoritmo nativo?
-	\end{itemize}
+    \textbf{Objetivo:} usar feedback corretamente.
+    
+    \begin{minted}{python}
+        for i, feat in enumerate(layer.getFeatures()):
+        if feedback.isCanceled():
+        break
+        
+        feedback.setProgress(i * 100 / layer.featureCount())
+    \end{minted}
+    
+    \textbf{Discussão:}
+    \begin{itemize}
+        \item Quando evitar loops Python?
+        \item Quando delegar para algoritmo nativo?
+    \end{itemize}
 \end{frame}
 
 % Slide 2
 \begin{frame}{Executando Algoritmos pelo Console}
-	O QGIS permite executar algoritmos diretamente via console Python.
-	
-	\vspace{0.3cm}
-	
-	Documentação oficial:
-	
-	\url{https://docs.qgis.org/3.40/en/docs/user_manual/processing/console.html}
-	
-	\vspace{0.3cm}
-	
-	Exemplo:
-	\begin{itemize}
-		\item \texttt{processing.run("native:buffer", \{...\})}
-	\end{itemize}
-	% TODO: \usepackage{graphicx} required
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.7\linewidth]{pyqgis_processing_plugin_figs/script}
-	\end{figure}
+    O QGIS permite executar algoritmos diretamente via console Python.
+    
+    \vspace{0.3cm}
+    
+    Documentação oficial:
+    
+    \url{https://docs.qgis.org/3.40/en/docs/user_manual/processing/console.html}
+    
+    \vspace{0.3cm}
+    
+    Exemplo:
+    \begin{itemize}
+        \item \texttt{processing.run("native:buffer", \{...\})}
+    \end{itemize}
+    % TODO: \usepackage{graphicx} required
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\linewidth]{pyqgis_processing_plugin_figs/script}
+    \end{figure}
 \end{frame}
 
 % Slide 3
 \begin{frame}{Construindo um Script com Model Builder}
-	\begin{columns}[t]
-		\begin{column}[t]{0.48\textwidth}
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
 Estratégia recomendada:
 
-			\begin{enumerate}
-				\item Abrir o \textbf{Model Builder}
-				\item Criar um modelo com as entradas do plugin
-				\item Inserir processos que serão utilizados
-				\item Testar o fluxo
-				\item Exportar para Python:
-				\begin{itemize}
-					\item Model → Export → Export as Python Script
-				\end{itemize}
-			\end{enumerate}
-		\end{column}
-		
-		\begin{column}[t]{0.48\textwidth}
-			\colimage{pyqgis_processing_plugin_figs/model_builder}
-		\end{column}
-	\end{columns}	
-	
+            \begin{enumerate}
+                \item Abrir o \textbf{Model Builder}
+                \item Criar um modelo com as entradas do plugin
+                \item Inserir processos que serão utilizados
+                \item Testar o fluxo
+                \item Exportar para Python:
+                \begin{itemize}
+                    \item Model → Export → Export as Python Script
+                \end{itemize}
+            \end{enumerate}
+        \end{column}
+        
+        \begin{column}[t]{0.48\textwidth}
+            \colimage{pyqgis_processing_plugin_figs/model_builder}
+        \end{column}
+    \end{columns}   
+    
 \end{frame}
 
 \begin{frame}{Plugin Builder}
-	Criar um plugin do tipo \textbf{Processing Provider}
+    Criar um plugin do tipo \textbf{Processing Provider}
 
-	Passos:
-	\begin{itemize}
-		\item Gerar estrutura do plugin pelo Plugin Builder
-		\item Copiar para pasta de plugins do QGIS
-		\item Ativar no Instalador de Plugins
-	\end{itemize}
-	
-	\begin{columns}[t]
-		\begin{column}[t]{0.48\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[width=\textwidth]{pyqgis_processing_plugin_figs/plugin_builder2}
-			\end{figure}
-		\end{column}
-		\begin{column}[t]{0.48\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[width=\textwidth]{pyqgis_processing_plugin_figs/plugin_builder2}
-			\end{figure}
-			
-		\end{column}
-	\end{columns}	
+    Passos:
+    \begin{itemize}
+        \item Gerar estrutura do plugin pelo Plugin Builder
+        \item Copiar para pasta de plugins do QGIS
+        \item Ativar no Instalador de Plugins
+    \end{itemize}
+    
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{pyqgis_processing_plugin_figs/plugin_builder2}
+            \end{figure}
+        \end{column}
+        \begin{column}[t]{0.48\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{pyqgis_processing_plugin_figs/plugin_builder2}
+            \end{figure}
+            
+        \end{column}
+    \end{columns}   
 \end{frame}
 
 % Slide 5
 \begin{frame}{Adicionar o Script ao Plugin}
-	\begin{itemize}
-		\item Copiar o arquivo exportado pelo Model Builder
-		\item Inserir na pasta do plugin
-		\item Adicionar o import no provider
-		
-	% TODO: \usepackage{graphicx} required
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.7\linewidth]{pyqgis_processing_plugin_figs/adicionar_script}
-	\end{figure}
+    \begin{itemize}
+        \item Copiar o arquivo exportado pelo Model Builder
+        \item Inserir na pasta do plugin
+        \item Adicionar o import no provider
+        
+    % TODO: \usepackage{graphicx} required
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\linewidth]{pyqgis_processing_plugin_figs/adicionar_script}
+    \end{figure}
 
-	\end{itemize}
+    \end{itemize}
 \end{frame}
 
 % Slide 6
 \begin{frame}{Processing Scripts no QGIS}
-	Referência essencial: \\
-	\url{https://docs.qgis.org/3.40/en/docs/user_manual/processing/scripts.html}
+    Referência essencial: \\
+    \url{https://docs.qgis.org/3.40/en/docs/user_manual/processing/scripts.html}
 
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.6\linewidth]{pyqgis_processing_plugin_figs/acessando_feicoes}
-	\end{figure}
-	Leitura interessante: \\
-	\url{https://qgis-tuts-wu.readthedocs.io/en/latest/land_degradation_development/scripts/rasterizing.html}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\linewidth]{pyqgis_processing_plugin_figs/acessando_feicoes}
+    \end{figure}
+    Leitura interessante: \\
+    \url{https://qgis-tuts-wu.readthedocs.io/en/latest/land_degradation_development/scripts/rasterizing.html}
 \end{frame}
 
 
 
 % Slide 7
 \begin{frame}{Entradas e Saídas no Processing}
-	Principais tipos de parâmetros:
-	\begin{columns}[t]
-		\begin{column}[t]{0.48\textwidth}
-			\textbf{Entradas} \\
+    Principais tipos de parâmetros:
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            \textbf{Entradas} \\
 
-			QgsProcessingParameterRasterLayer
-			QgsProcessingParameterVectorLayer
-			QgsProcessingParameterNumber
-			QgsProcessingParameterNumber.Type.Double
+            QgsProcessingParameterRasterLayer
+            QgsProcessingParameterVectorLayer
+            QgsProcessingParameterNumber
+            QgsProcessingParameterNumber.Type.Double
 
-		\end{column}
-		
-		\begin{column}[t]{0.48\textwidth}
-			\textbf{Saídas}\\
+        \end{column}
+        
+        \begin{column}[t]{0.48\textwidth}
+            \textbf{Saídas}\\
 
-			QgsProcessingOutputNumber
-			QgsProcessingOutputVectorLayer
-			QgsProcessingOutputRasterLayer
+            QgsProcessingOutputNumber
+            QgsProcessingOutputVectorLayer
+            QgsProcessingOutputRasterLayer
 
-		\end{column}
-	\end{columns}	
-	\espaco
-	\centering
-	\href{https://docs.qgis.org/3.40/en/docs/user_manual/processing/parameters.html}{Link com parâmetros disponíveis no Processing.}
+        \end{column}
+    \end{columns}   
+    \espaco
+    \centering
+    \href{https://docs.qgis.org/3.40/en/docs/user_manual/processing/parameters.html}{Link com parâmetros disponíveis no Processing.}
 \end{frame}
 
 % Slide 8
 \begin{frame}[fragile]{Acessando as Feições do VectorLayer}
-	Dentro do método \texttt{processAlgorithm()}:
-	
-	\begin{itemize}
-		\item Recuperar camada:
-		\begin{itemize}
-			\item \texttt{self.parameterAsVectorLayer(...)}
-		\end{itemize}
-		\item Iterar feições:
-		\begin{itemize}
-			\item \texttt{for feat in layer.getFeatures():}
-		\end{itemize}
-		\item Acessar geometria:
-		\begin{itemize}
-			\item \texttt{feat.geometry()}
-		\end{itemize}
-	\end{itemize}
+    Dentro do método \texttt{processAlgorithm()}:
+    
+    \begin{itemize}
+        \item Recuperar camada:
+        \begin{itemize}
+            \item \texttt{self.parameterAsVectorLayer(...)}
+        \end{itemize}
+        \item Iterar feições:
+        \begin{itemize}
+            \item \texttt{for feat in layer.getFeatures():}
+        \end{itemize}
+        \item Acessar geometria:
+        \begin{itemize}
+            \item \texttt{feat.geometry()}
+        \end{itemize}
+    \end{itemize}
 % TODO: \usepackage{graphicx} required
 \end{frame}
 
 \begin{frame}[fragile]{Acessando as Feições do VectorLayer}
-	\begin{figure}
-		\centering
-		\includegraphics[width=\linewidth]{pyqgis_processing_plugin_figs/acessando_feicoes1}
-	\end{figure}
-	\begin{minted}{python}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{pyqgis_processing_plugin_figs/acessando_feicoes1}
+    \end{figure}
+    \begin{minted}{python}
 input_featuresource = self.parameterAsSource(parameters, 'camada_vetorial_a_ser_verificada', context)
 for feat in input_featuresource.getFeatures():
-	print(feat)
-	\end{minted}
+    print(feat)
+    \end{minted}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo de Algoritmo Processing (Buffer)}
-	\begin{minted}[fontsize=\scriptsize]{python}
+    \begin{minted}[fontsize=\scriptsize]{python}
 from qgis.core import (
 QgsProcessing,
 QgsProcessingAlgorithm,
@@ -521,7 +521,7 @@ new_feat.setAttributes(feat.attributes())
 sink.addFeature(new_feat)
 
 return {self.OUTPUT: dest_id}
-	\end{minted}
+    \end{minted}
 \end{frame}
 
 
