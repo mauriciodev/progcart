@@ -448,5 +448,190 @@ rotacao_labels=90, salvar_em="plot.png")
 	\end{figure}
 \end{frame}
 
+\begin{frame}{Rasterio }
+	
+	\textbf{Rasterio} é uma biblioteca Python para leitura e escrita de dados raster geoespaciais.
+	
+	\vspace{0.4cm}
+	
+	Baseada em:
+	\begin{itemize}
+		\item GDAL
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	Principais capacidades:
+	\begin{itemize}
+		\item Leitura e escrita de GeoTIFF
+		\item Acesso a metadados (CRS, transform)
+		\item Operações matriciais com NumPy
+		\item Recorte (mask) e reprojeção
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Rasterio: Leitura e Escrita de Raster}
+	
+	\textbf{Leitura:}
+	
+	\begin{minted}{python}
+import rasterio
+
+with rasterio.open("imagem.tif") as src:
+	banda = src.read(1)
+	print(src.crs)
+	print(src.transform)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Escrita:}
+	
+	\begin{minted}{python}
+with rasterio.open(
+	"saida.tif", "w", driver="GTiff",
+	height=banda.shape[0], width=banda.shape[1],
+	count=1, 
+	dtype=banda.dtype,
+	crs=src.crs,
+	transform=src.transform,
+) as dst:
+	dst.write(banda, 1)
+	\end{minted}
+	
+\end{frame}
+
+\begin{frame}{Rasterio: Metadados e Georreferenciamento}
+	
+	Elementos fundamentais:
+	
+	\begin{itemize}
+		\item CRS (Coordinate Reference System)
+		\item Transform (Affine/Afim)
+		\item Bounds
+		\item Resolução espacial
+	\end{itemize}
+	
+	\vspace{0.4cm}
+	
+	A transformação afim define:
+	
+	\begin{center}
+		(linha, coluna) → (x, y)
+	\end{center}
+	
+	\vspace{0.4cm}
+	
+	Rasterio integra diretamente com:
+	\begin{itemize}
+		\item NumPy
+		\item Shapely (via mask)
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Rasterio: Operações Comuns}
+	
+	\textbf{Recorte por polígono:}
+	
+	\begin{minted}{python}
+from rasterio.mask import mask
+
+out_image, out_transform = mask(
+	src,
+	shapes=[geom],
+	crop=True
+)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Reprojeção:}
+	
+	\begin{minted}{python}
+from rasterio.warp import calculate_default_transform, reproject
+
+reproject(...)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Leitura por janela (window):}
+	
+	\begin{minted}{python}
+window = rasterio.windows.Window(0, 0, 512, 512)
+data = src.read(1, window=window)
+	\end{minted}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo — Leitura em Janela (Windowed Reading)}
+	
+	\textbf{Objetivo:} Ler apenas parte de um GeoTIFF (melhora performance).
+	
+	\begin{minted}[fontsize=\scriptsize]{python}
+import rasterio
+from rasterio.windows import Window
+
+with rasterio.open("imagem.tif") as src:
+
+	# define janela: coluna inicial, linha inicial, largura, altura
+	window = Window(col_off=1000, row_off=2000, width=512, height=512)
+	
+	# lê somente a banda 1 nessa janela
+	data = src.read(1, window=window)
+	
+	print("Shape:", data.shape)
+	print("CRS:", src.crs)
+	
+	# transforma coordenadas da janela
+	transform = src.window_transform(window)
+	print("Transform da janela:", transform)
+	\end{minted}
+	
+	\textbf{Aplicação:}
+	\begin{itemize}
+		\item Processamento em blocos
+		\item Trabalhar com rasters grandes
+		\item Paralelização
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]{Leitura Automática por Blocos (Block Windows)}
+	
+	\textbf{Objetivo:} Processar raster grande sem carregar tudo na memória.
+	
+	\begin{minted}{python}
+		import rasterio
+		
+		with rasterio.open("imagem.tif") as src:
+		
+		# Itera automaticamente pelos blocos internos do arquivo
+		for idx, window in src.block_windows(1):
+		
+		# lê somente o bloco atual (banda 1)
+		data = src.read(1, window=window)
+		
+		# exemplo: calcular média do bloco
+		media = data.mean()
+		
+		print(f"Bloco {idx} - média: {media}")
+		
+		# obter transform específico do bloco
+		transform = src.window_transform(window)
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Vantagens:}
+	\begin{itemize}
+		\item Uso eficiente de memória
+		\item Respeita estrutura interna do GeoTIFF (tiling)
+		\item Ideal para processamento paralelo
+	\end{itemize}
+	
+\end{frame}
 
 \end{document}
