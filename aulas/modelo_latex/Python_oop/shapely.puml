@@ -1,0 +1,30 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+abstract class Geometry {
+  +area
+  +length
+  +bounds
+  +intersects()
+  +buffer()
+}
+
+class Point {
+  +x
+  +y
+}
+
+class LineString {
+  +coords
+}
+
+class Polygon {
+  +exterior
+  +interiors
+}
+
+Geometry <|-- Point
+Geometry <|-- LineString
+Geometry <|-- Polygon
+
+@enduml
