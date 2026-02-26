@@ -566,7 +566,7 @@ data = src.read(1, window=window)
     
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo — Leitura em Janela (Windowed Reading)}
+\begin{frame}[fragile]{Rasterio: Leitura em Janela (Windowed Reading)}
     
     \textbf{Objetivo:} Ler apenas parte de um GeoTIFF (melhora performance).
     
@@ -598,7 +598,7 @@ with rasterio.open("imagem.tif") as src:
     
 \end{frame}
 
-\begin{frame}[fragile]{Leitura Automática por Blocos (Block Windows)}
+\begin{frame}[fragile]{Rasterio: Leitura Automática por Blocos (Block Windows)}
     
     \textbf{Objetivo:} Processar raster grande sem carregar tudo na memória.
     
@@ -628,6 +628,37 @@ with rasterio.open("imagem.tif") as src:
         \item Ideal para processamento paralelo
     \end{itemize}
     
+\end{frame}
+
+\begin{frame}[fragile]{Rasterio: Leitura de Cloud Optimized Geotiffs}
+       
+    \begin{minted}{python}
+import boto3
+import rasterio
+import matplotlib.pyplot as plt
+
+from rasterio.plot import show
+
+cog_url = 's3://sentinel-cogs/sentinel-s2-l2a-cogs/12/R/UU/2024/4/S2A_12RUU_20240421_0_L2A/B02.tif'
+
+# Create an AWS session with unsigned requests enabled!
+aws_session = rasterio.session.AWSSession(boto3.Session(), aws_unsigned=True)
+
+with rasterio.Env(aws_session):
+    with rasterio.open(cog_url) as dataset:
+        overviews = dataset.overviews(1)
+        print(overviews)
+        print(f"Original shape:")
+        print(f"{dataset.width} x {dataset.height}")
+        top_overview = len(overviews)-1
+    with rasterio.open(cog_url, OVERVIEW_LEVEL=top_overview) as dataset:
+        print(f"Overview {top_overview} shape:")
+        print(f"{dataset.width} x {dataset.height}")
+        overview_data = dataset.read(1, out_shape=(512, 512))
+        show(overview_data)
+plt.show()
+    \end{minted}
+
 \end{frame}
 
 \begin{frame}[fragile]{Rasterio — Reprojeção}
