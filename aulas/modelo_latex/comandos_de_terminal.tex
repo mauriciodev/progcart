@@ -1,0 +1,121 @@
+\documentclass{beamer}
+
+%lembre-se de configurar o pdflatex com:
+%pdflatex -shell-escape -synctex=1 -interaction=nonstopmode  -output-directory=build  %.tex
+
+\usepackage{aula}
+
+\title{Comandos de terminal}
+\date{\today}
+
+\begin{document}
+    
+\input{capa}
+
+\begin{frame}[fragile]{Tópicos a abordar}
+
+\begin{itemize}
+    \item sys.argv: Recebimento de parâmetros
+    \item argparse: Recebimento de parâmetros
+    \item os: manipulação de 
+    \item shutil
+    \item pathlib
+    \item glob
+    \item subprocess
+    \item Hydra
+\end{itemize}
+\end{frame}
+
+\begin{frame}{subprocess: Conceitos}
+    
+    \textbf{subprocess} permite executar comandos externos a partir do Python.
+    
+    \vspace{0.4cm}
+    
+    Principais usos:
+    
+    \begin{itemize}
+        \item Executar scripts shell
+        \item Chamar programas externos (GDAL, QGIS, etc.)
+        \item Automatizar pipelines
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Função mais usada:
+    
+    \begin{itemize}
+        \item \texttt{subprocess.run()}
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Boa prática:
+    \begin{itemize}
+        \item Passar argumentos como lista
+        \item Evitar \texttt{shell=True} quando possível
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{subprocess: Executando comando com argumentos}
+    
+    \begin{minted}{python}
+import subprocess
+
+comando = [
+    "gdalinfo",
+    "imagem.tif"
+]
+
+resultado = subprocess.run(
+    comando,
+    capture_output=True,
+    text=True
+)
+
+print("STDOUT:")
+print(resultado.stdout)
+
+print("STDERR:")
+print(resultado.stderr)
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Parâmetros importantes:}
+    \begin{itemize}
+        \item capture\_output=True
+        \item text=True (retorna string)
+    \end{itemize}
+    
+\end{frame}
+\begin{frame}[fragile]{subprocess: Exemplo — Salvando stdout e stderr em log}
+    
+    \begin{minted}{python}
+import subprocess
+
+comando = ["ls", "-l", "/tmp"]
+
+with open("execucao.log", "w") as log:
+    processo = subprocess.run(
+        comando,
+        stdout=log,
+        stderr=log,
+        text=True
+    )
+
+print("Código de saída:", processo.returncode)
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{O que acontece:}
+    \begin{itemize}
+        \item stdout → escrito no arquivo
+        \item stderr → escrito no mesmo log
+        \item returncode → indica sucesso (0)
+    \end{itemize}
+    
+\end{frame}
+\end{document}
