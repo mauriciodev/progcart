@@ -16,5 +16,6 @@ https://py.geocompx.org/01-spatial-data
 https://drive.google.com/file/d/1x9_QKMC1RiGESCXSCmmUEdtg-oOd9kV7/view?usp=drive_link
 
 Extras:  
+- [Comandos de terminal](comandos_de_terminal.pdf) (Iniciado)
 - [Agentes de IA para geoinformação](strands.pdf) (Iniciado)
 - [Bancos de dados relacionais](bancos_de_dados_relacionais) (Iniciado)
