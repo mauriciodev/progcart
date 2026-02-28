@@ -9,6 +9,101 @@
     
 \input{capa}
 
+\begin{frame}{HTML Form → Flask (WSGI)}
+    
+    \textbf{Fluxo da aplicação:}
+    
+    \begin{enumerate}
+        \item Usuário preenche formulário HTML
+        \item Navegador envia requisição HTTP (POST)
+        \item Flask processa via rota (@app.route)
+        \item Servidor retorna HTML como resposta
+    \end{enumerate}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Flask:}
+    \begin{itemize}
+        \item Microframework web em Python
+        \item Baseado em WSGI
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Execução:
+    \begin{itemize}
+        \item \texttt{pixi add flask}
+        \item \texttt{pixi run python app.py}
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Streamlit}
+    \centering
+    Isso tudo é muito bacana, mas não parece prático. Tem algo mais prático? \pause
+    \huge{Backend e Frontend integrados:\\ Streamlit}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo — HTML}
+    
+    \begin{minted}{html}
+        <!DOCTYPE html>
+        <html>
+        <body>
+        
+        <form action="/" method="post">
+        
+        Nome:
+        <input type="text" name="nome"><br><br>
+        
+        Curso:
+        <select name="curso">
+        <option value="python">Python</option>
+        <option value="geoprocessamento">Geoprocessamento</option>
+        <option value="web">Web</option>
+        </select><br><br>
+        
+        <input type="submit" value="Enviar">
+        
+        </form>
+        
+        </body>
+        </html>
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo — Servidor Flask}
+    
+    \begin{minted}{python}
+from flask import Flask, request
+app = Flask(__name__)
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        nome = request.form.get("nome", "")
+        curso = request.form.get("curso", "")
+        return f"""<h2>Dados recebidos no servidor</h2>
+Nome: {nome}<br>
+Curso: {curso}
+        """
+    else: return """<form method="post">
+    Nome: <input type="text" name="nome"><br><br>
+    Curso:
+    <select name="curso">
+        <option value="python">Python</option>
+        <option value="geoprocessamento">Geoprocessamento</option>
+        <option value="web">Web</option>
+    </select><br><br>
+    <input type="submit" value="Enviar">
+</form>"""
+if __name__ == "__main__":
+    app.run(debug=True)
+    \end{minted}
+    
+\end{frame}
+
 % Slide 1
 \begin{frame}[fragile]{Introdução ao Streamlit}
     \begin{itemize}
