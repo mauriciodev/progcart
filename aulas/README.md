@@ -18,5 +18,5 @@ https://drive.google.com/file/d/1x9_QKMC1RiGESCXSCmmUEdtg-oOd9kV7/view?usp=drive
 Extras:  
 - [Comandos de terminal](comandos_de_terminal.pdf) (Iniciado)
 - [Agentes de IA para geoinformação](strands.pdf) (Iniciado)
-- [Bancos de dados relacionais](bancos_de_dados_relacionais) (Iniciado)
-- [Produção de conteúdo didático com latex e LLMs](latex_e_llms) (Iniciado)
+- [Bancos de dados relacionais](bancos_de_dados_relacionais.pdf) (Iniciado)
+- [Produção de conteúdo didático com latex e LLMs](latex_e_llms.pdf) (Iniciado)
