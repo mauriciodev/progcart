@@ -153,20 +153,49 @@
     
     %------------------------------------------------
     \begin{frame}{Geração de Equações}
+        Ex.: Produza um código com dados sintéticos exemplificando o método dos mínimos quadrados e um slide beamer que mostra as equações do método.
      
-     \[
-     L = 2h \tan\left(\frac{\theta}{2}\right)
-     \]
-     
-     \[
-     J = \sum_{i=1}^{n} \| x_i - \hat{x}_i \|^2
-     \]
-     
-     LLMs auxiliam na modelagem matemática formal.
+\textbf{Modelo linear:}
+
+\[
+y = X\beta + \varepsilon
+\]
+
+onde:
+\begin{itemize}
+    \item $y \in \mathbb{R}^n$
+    \item $X \in \mathbb{R}^{n \times p}$
+    \item $\beta \in \mathbb{R}^p$
+\end{itemize}
+
+\vspace{0.4cm}
+
+\textbf{Problema de otimização:}
+
+\[
+\hat{\beta} = \arg\min_{\beta} \| y - X\beta \|^2
+\]
+
+\vspace{0.4cm}
+
+\textbf{Solução fechada (equações normais):}
+
+\[
+X^T X \hat{\beta} = X^T y
+\]
+
+\[
+\boxed{
+    \hat{\beta} = (X^T X)^{-1} X^T y
+}
+\]
+
     \end{frame}
     
+    
+    
     %------------------------------------------------
-    \begin{frame}{7. Tabelas Técnicas}
+    \begin{frame}{Tabelas Técnicas}
      
      \begin{center}
          \begin{tabular}{lccc}
