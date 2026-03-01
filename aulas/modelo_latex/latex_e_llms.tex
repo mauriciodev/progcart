@@ -1,0 +1,230 @@
+\documentclass{beamer}
+
+%lembre-se de configurar o pdflatex com:
+%pdflatex -shell-escape -synctex=1 -interaction=nonstopmode  -output-directory=build  %.tex
+
+\usepackage{aula}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{calc}
+%\usepackage{plantuml}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\title{Uso de LLMs para Produção de Conteúdo em Beamer}
+\date{\today}
+
+\begin{document}
+    
+\input{capa}
+
+
+\begin{document}
+    
+    %------------------------------------------------
+    
+    %------------------------------------------------
+    \begin{frame}{Introdução}
+     \Large Modelos de linguagem são excelentes em traduzir conceitos para qualquer linguagem textual. \\
+     
+     Documentos baseados em texto simples são fáceis de editar e de submeter novamente ao modelo para correções. \\
+     
+    \end{frame}
+    
+    \begin{frame}{Introdução}
+     LLMs podem auxiliar na:
+     
+     \begin{itemize}
+        \item Geração automática de slides com beamer
+        \item Código LaTeX estruturado
+        \item Código Python com minted
+        \item Diagramas UML com plantuml
+        \item Estruturação de projetos (WBS) com plantuml
+        \end{itemize}
+    \end{frame}
+    
+    %------------------------------------------------
+    \begin{frame}[fragile]{Código Python com minted}
+     
+    Ex.: Produza de 1 a 3 slides com latex beamer, demonstrando os principais conceitos do pacoted minted com exemplos em python.
+     
+     \begin{minted}[fontsize=\small, linenos]{python}
+    import numpy as np
+    
+    def cobertura(h, theta):
+    return 2*h*np.tan(theta/2)
+    
+    print(cobertura(30, 0.7))
+     \end{minted}
+     
+     Requer compilação com:
+     \texttt{pdflatex -shell-escape}
+    \end{frame}
+    
+    %------------------------------------------------
+    \begin{frame}{Figura Vetorial com TikZ}
+     Ex.: Produza uma figura com latex TikZ que representa o plot da função X*x/2-1 no domínio de -2 a 2
+     \begin{center}
+         \begin{tikzpicture}[scale=0.8]
+             \draw[->] (-2,0) -- (2,0);
+             \draw[->] (0,-2) -- (0,2);
+             \draw[domain=-2:2, smooth, variable=\x, blue] 
+             plot ({\x}, {\x*\x/2 - 1});
+         \end{tikzpicture}
+     \end{center}
+     
+     Figura 100\% vetorial.
+    \end{frame}
+    
+    \begin{frame}{Figura Vetorial com TikZ}
+        Ex.: Produza uma figura tikz latex mostrando 4 drones sobre um campo de futebol. Represente a região imageada por cada drone. Utilize vista em perspectiva 3D.
+        \begin{center}
+            \input{latex_e_llms_figs/drones.tex}
+        \end{center}
+        
+        Figura 100\% vetorial.
+    \end{frame}
+    
+    
+    %------------------------------------------------
+    \begin{frame}[fragile]{UML gerado externamente com PlantUML}
+    Ex.: Produza um diagrama plantuml representando as classes do código python abaixo: (inserir código)
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            \begin{minted}{text}
+    @startuml
+    class Drone {
+    +id: int
+    +altitude: float
+    +capturarImagem()
+    }
+    
+    class Controlador {
+    +planejarMissao()
+    }
+    Drone --> Controlador
+    @enduml
+            \end{minted}
+        \end{column}
+        
+        \begin{column}[t]{0.48\textwidth}
+            
+           \begin{center}
+            \includegraphics[width=0.6\textwidth]{latex_e_llms_figs/uml_diagrama.png}
+            \end{center}
+        \end{column}
+    \end{columns}                   
+     Gerado via:
+     \texttt{plantuml -tpdf uml\_diagrama.puml} \\ ou \url{https://www.plantuml.com/}
+     
+    \end{frame}
+    
+    %------------------------------------------------
+    \begin{frame}[fragile]{WBS gerado externamente com PlantUML}
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            \begin{minted}{text}
+    @startwbs
+    * Projeto LLM + Beamer
+    ** Modelagem
+    *** Definir requisitos
+    *** Definir arquitetura
+    ** Implementação
+    *** Slides
+    *** Código
+    *** Diagramas
+    ** Validação
+    *** Revisão técnica
+    @endwbs
+            \end{minted}
+        \end{column}
+        
+        \begin{column}[t]{0.48\textwidth}
+            \begin{center}
+                \includegraphics[width=\linewidth]{latex_e_llms_figs/wbs_projeto.png}
+            \end{center}
+        \end{column}
+    \end{columns}  
+                     
+    Gerado via:
+    \texttt{plantuml -tpdf wbs\_projeto.puml} \\ ou \url{https://www.plantuml.com/}     
+     
+    \end{frame}
+    
+    %------------------------------------------------
+    \begin{frame}{Geração de Equações}
+     
+     \[
+     L = 2h \tan\left(\frac{\theta}{2}\right)
+     \]
+     
+     \[
+     J = \sum_{i=1}^{n} \| x_i - \hat{x}_i \|^2
+     \]
+     
+     LLMs auxiliam na modelagem matemática formal.
+    \end{frame}
+    
+    %------------------------------------------------
+    \begin{frame}{7. Tabelas Técnicas}
+     
+     \begin{center}
+         \begin{tabular}{lccc}
+             \toprule
+             Modelo & Parâmetros & Contexto & Uso \\
+             \midrule
+             GPT-4 & Alto & 128k & Pesquisa \\
+             LLama & Médio & 32k & Local \\
+             Mistral & Médio & 8k & Produção \\
+             \bottomrule
+         \end{tabular}
+     \end{center}
+     
+    \end{frame}
+    
+    %------------------------------------------------
+    \begin{frame}{8. Integração com Pipeline}
+     
+     Fluxo recomendado:
+     
+     \begin{enumerate}
+         \item Gerar código com LLM
+         \item Validar tecnicamente
+         \item Gerar diagramas com PlantUML
+         \item Compilar Beamer
+         \item Versionar no Git
+     \end{enumerate}
+     
+    \end{frame}
+    
+    %------------------------------------------------
+    \begin{frame}{9. Automação com Makefile}
+     
+     Exemplo de fluxo automatizado:
+     
+     \begin{itemize}
+         \item \texttt{make diagrams}
+         \item \texttt{make slides}
+         \item Integração CI/CD
+     \end{itemize}
+     
+    \end{frame}
+    
+    %------------------------------------------------
+    \begin{frame}{10. Conclusão}
+     
+     LLMs funcionam como:
+     
+     \begin{itemize}
+         \item Assistente técnico
+         \item Gerador de boilerplate
+         \item Ferramenta de prototipação
+         \item Copiloto acadêmico
+     \end{itemize}
+     
+     Validação humana permanece essencial.
+     
+    \end{frame}
+    
+    %------------------------------------------------
+\end{document} 

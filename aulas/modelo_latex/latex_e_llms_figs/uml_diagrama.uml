@@ -1,0 +1,13 @@
+@startuml
+class Drone {
+  +id: int
+  +altitude: float
+  +capturarImagem()
+}
+
+class Controlador {
+  +planejarMissao()
+}
+
+Drone --> Controlador
+@enduml

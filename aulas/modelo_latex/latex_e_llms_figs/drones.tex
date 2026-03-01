@@ -1,0 +1,84 @@
+
+    
+    % Ângulos da câmera (elevação, azimute)
+    \tdplotsetmaincoords{65}{115}
+    
+    \begin{tikzpicture}[tdplot_main_coords, scale=0.06]
+        
+        % ===============================
+        % Parâmetros
+        % ===============================
+        \def\L{105}      % comprimento do campo
+        \def\W{68}       % largura do campo
+        \def\h{35}       % altitude dos drones
+        \def\a{12}       % semi-largura do footprint
+        \def\b{8}        % semi-altura do footprint
+        
+        \tikzset{
+            drone/.style={
+                circle,
+                fill=black,
+                inner sep=2pt
+            }
+        }
+        
+        % ===============================
+        % Campo (plano z=0)
+        % ===============================
+        \draw[thick] (0,0,0) -- (\L,0,0) -- (\L,\W,0) -- (0,\W,0) -- cycle;
+        
+        % Linha central
+        \draw (0.5*\L,0,0) -- (0.5*\L,\W,0);
+        
+        % Círculo central
+        \draw (0.5*\L,0.5*\W,0) circle (9.15);
+        
+        % ===============================
+        % Função para desenhar drone + pirâmide
+        % ===============================
+        
+        \newcommand{\Drone}[4]{
+            % #1 = x
+            % #2 = y
+            % #3 = cor
+            % #4 = rótulo
+            
+            \coordinate (D) at (#1,#2,\h);
+            
+            % Footprint no solo
+            \coordinate (F1) at (#1-\a,#2-\b,0);
+            \coordinate (F2) at (#1+\a,#2-\b,0);
+            \coordinate (F3) at (#1+\a,#2+\b,0);
+            \coordinate (F4) at (#1-\a,#2+\b,0);
+            
+            % Desenho da região imageada
+            \filldraw[#3!25, opacity=0.5] (F1)--(F2)--(F3)--(F4)--cycle;
+            
+            % Faces laterais (pirâmide)
+            \filldraw[#3!20, opacity=0.4] (D)--(F1)--(F2)--cycle;
+            \filldraw[#3!20, opacity=0.4] (D)--(F2)--(F3)--cycle;
+            \filldraw[#3!20, opacity=0.4] (D)--(F3)--(F4)--cycle;
+            \filldraw[#3!20, opacity=0.4] (D)--(F4)--(F1)--cycle;
+            
+            % Drone
+            \node[drone] at (D) {};
+            \node[above] at (D) {#4};
+        }
+        
+        % ===============================
+        % Quatro drones
+        % ===============================
+        
+        \Drone{25}{50}{blue}{Drone 1}
+        \Drone{80}{50}{red}{Drone 2}
+        \Drone{25}{18}{green}{Drone 3}
+        \Drone{80}{18}{purple}{Drone 4}
+        
+        % ===============================
+        % Título
+        % ===============================
+        
+        \node at (0.5*\L, \W+10, 0) {\Large Monitoramento 3D com 4 Drones};
+        
+    \end{tikzpicture}
+

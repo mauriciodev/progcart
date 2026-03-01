@@ -1,0 +1,12 @@
+@startwbs
+* Projeto LLM + Beamer
+** Modelagem
+*** Definir requisitos
+*** Definir arquitetura
+** Implementação
+*** Slides
+*** Código
+*** Diagramas
+** Validação
+*** Revisão técnica
+@endwbs
