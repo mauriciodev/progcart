@@ -1,0 +1,180 @@
+\documentclass{beamer}
+
+\usepackage{aula}
+
+\title{Modelos de linguagem locais}
+\date{\today}
+
+\begin{document}
+    
+    \input{capa}
+
+% Slide 1
+\begin{frame}{O que é Ollama?}
+    \begin{itemize}
+        \item \textbf{Ollama} é uma plataforma para executar LLMs localmente.
+        \item Simplifica download, versionamento e execução de modelos.
+        \item Fornece API HTTP compatível com aplicações externas.
+        \item Foco em privacidade, controle e baixa latência.
+    \end{itemize}
+\end{frame}
+
+% Slide 2
+\begin{frame}{Por que executar LLMs localmente?}
+    \begin{itemize}
+        \item Privacidade de dados sensíveis.
+        \item Redução de custos com APIs externas.
+        \item Baixa latência.
+        \item Customização e fine-tuning local.
+        \item Uso offline.
+    \end{itemize}
+\end{frame}
+
+% Slide 3
+\begin{frame}{Arquitetura Simplificada}
+    \begin{itemize}
+        \item Cliente (CLI ou aplicação)
+        \item Servidor Ollama (API REST)
+        \item Modelo baixado (ex: llama3, mistral)
+        \item Execução via CPU ou GPU
+    \end{itemize}
+\end{frame}
+
+% Slide 4
+\begin{frame}{Pré-requisitos}
+    \begin{itemize}
+        \item Docker instalado
+        \item Mínimo recomendado:
+        \begin{itemize}
+            \item 16GB RAM
+            \item CPU moderna ou GPU compatível
+            \item Espaço em disco para modelos (4GB+)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% Slide 5
+\begin{frame}{Instalação com Docker}
+
+\end{frame}
+
+% Slide 6
+\begin{frame}{Baixando um Modelo}
+Após iniciar o container:
+
+\begin{verbatim}
+docker exec -it ollama ollama pull llama3
+\end{verbatim}
+
+Ou via API:
+\begin{verbatim}
+curl http://localhost:11434/api/pull \
+-d '{"name": "llama3"}'
+\end{verbatim}
+\textbf{1. Baixar a imagem oficial:}
+\begin{verbatim}
+    docker pull ollama/ollama
+\end{verbatim}
+
+\textbf{2. Executar o container:}
+\begin{verbatim}
+    docker run -d \
+    -v ollama:/root/.ollama \
+    -p 11434:11434 \
+    --name ollama \
+    ollama/ollama
+    \end{verbatim}\end{frame}
+
+% Slide 7
+\begin{frame}{Executando o Modelo}
+Via CLI:
+
+\begin{verbatim}
+docker exec -it ollama ollama run llama3
+\end{verbatim}
+
+Via API:
+
+\begin{verbatim}
+curl http://localhost:11434/api/generate \
+-d '{
+  "model": "llama3",
+  "prompt": "Explique LLMs"
+}'
+\end{verbatim}
+\end{frame}
+
+% Slide 8
+\begin{frame}{Integração com Aplicações}
+    \begin{itemize}
+        \item API REST disponível em:
+        \begin{center}
+        http://localhost:11434
+        \end{center}
+        \item Pode ser integrada com:
+        \begin{itemize}
+            \item Python
+            \item Node.js
+            \item Sistemas corporativos
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% Slide 9
+\begin{frame}{Gerenciamento de Modelos}
+    \begin{itemize}
+        \item Listar modelos:
+\begin{verbatim}
+ollama list
+\end{verbatim}
+        \item Remover modelo:
+\begin{verbatim}
+ollama rm llama3
+\end{verbatim}
+        \item Versionamento automático
+    \end{itemize}
+\end{frame}
+
+% Slide 10
+\begin{frame}{Boas Práticas}
+    \begin{itemize}
+        \item Monitorar uso de memória e CPU/GPU
+        \item Usar volumes Docker persistentes
+        \item Avaliar quantização de modelos
+        \item Restringir acesso externo à API
+        \item Testar modelos menores antes de escalar
+    \end{itemize}
+\end{frame}
+
+% Slide Extra
+\begin{frame}{Controle do Ollama com Open WebUI}
+    
+    \textbf{Arquitetura:}
+    \begin{itemize}
+        \item Navegador → Open WebUI
+        \item Open WebUI → API HTTP do Ollama
+        \item Ollama → Modelo local (ex: llama3)
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Executando Open WebUI com Docker:}
+    
+    \begin{verbatim}
+        docker run -d \
+        -p 3000:8080 \
+        -e OLLAMA_BASE_URL=http://host.docker.internal:11434 \
+        --name openwebui \
+        ghcr.io/open-webui/open-webui:main
+    \end{verbatim}
+    
+    \vspace{0.3cm}
+    
+    Acesse:
+    \begin{center}
+        http://localhost:3000
+    \end{center}
+    
+\end{frame}
+
+\end{document}
