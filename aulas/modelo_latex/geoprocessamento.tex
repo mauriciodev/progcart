@@ -9,29 +9,111 @@
     
 \input{capa}
 
-\begin{frame}[fragile]{Código Python}
-    \begin{minted}{python}
-    def soma(a, b):
-  return a + b
-    \end{minted}
+\begin{frame}{Índices Espaciais — Por que são importantes?}
+    
+    Problemas comuns em consultas espaciais:
+    
+    \begin{itemize}
+        \item Encontrar objetos que \textbf{intersectam} uma área
+        \item Selecionar feições \textbf{próximas}
+        \item Identificar objetos dentro de um \textbf{bounding box}
+    \end{itemize}
+    
+    \textbf{Sem índice espacial:}
+    
+    \begin{itemize}
+        \item Cada geometria precisa ser testada
+        \item Complexidade aproximada: $O(n)$
+    \end{itemize}
+    
+    \textbf{Com índice espacial:}
+    
+    \begin{itemize}
+        \item Estrutura hierárquica de envelopes
+        \item Redução drástica do número de testes geométricos
+        \item Complexidade aproximada: $O(\log n)$
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Ideia central:}
+    \begin{itemize}
+        \item Primeiro filtrar por \textbf{bounding boxes}
+        \item Depois aplicar a operação geométrica precisa
+    \end{itemize}
+    
 \end{frame}
 
-\begin{frame}[fragile]{Código Python}
-    \begin{columns}[t]
-        \begin{column}[t]{0.48\textwidth}
-            
-            Versão \textbf{código aberto} do VS Code.
-            
-            \textbf{Usaremos para:}
-            \begin{itemize}
-                \item teste
-            \end{itemize}
-        \end{column}
+\begin{frame}{Estrutura de um R-tree}
+    
+    \centering
+    
+    \begin{tikzpicture}[scale=0.9]
         
-        \begin{column}[t]{0.48\textwidth}
-            \colimage{./introducao_figs/ides.png}
-        \end{column}
-    \end{columns}   
+        % Espaço de dados
+        \draw[thick] (0,0) rectangle (6,6);
+        
+        % Objetos
+        \fill (1,1) circle (2pt);
+        \fill (1.5,1.2) circle (2pt);
+        \fill (4.5,1.5) circle (2pt);
+        \fill (4.8,1.8) circle (2pt);
+        \fill (2,4.5) circle (2pt);
+        \fill (2.3,4.7) circle (2pt);
+        
+        % Bounding boxes
+        \draw[red, thick] (0.7,0.8) rectangle (2.2,1.6);
+        \draw[blue, thick] (4.2,1.2) rectangle (5.3,2.2);
+        \draw[green!70!black, thick] (1.7,4.2) rectangle (2.8,5.2);
+        
+        % Nó superior
+        \draw[dashed, thick] (0.4,0.6) rectangle (5.5,5.5);
+        
+        \node at (3,-0.7) {Objetos agrupados em \textbf{Minimum Bounding Rectangles (MBR)}};
+        
+    \end{tikzpicture}
+    
+    \vspace{0.3cm}
+    
+    \begin{itemize}
+        \item Cada nó armazena o \textbf{retângulo mínimo} que cobre seus filhos
+        \item Consultas percorrem apenas ramos relevantes
+        \item Estrutura semelhante a uma árvore B para dados espaciais
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Índices Espaciais em Formatos Vetoriais}
+    
+    \begin{tabular}{p{3cm} p{3cm} p{5cm}}
+        \textbf{Formato} & \textbf{Tipo de índice} & \textbf{Observação} \\
+        \hline
+        Shapefile & Arquivo .qix ou .sbn/.sbx & Índice externo baseado em R-tree \\
+        
+        GeoPackage & R-tree interno (SQLite) & Tabelas auxiliares automáticas \\
+        
+        PostGIS & GiST / SP-GiST & Índices espaciais robustos para grandes bases \\
+    \end{tabular}
+    
+    \vspace{0.6cm}
+    
+    \textbf{Exemplo em PostGIS:}
+    
+    \begin{minted}{sql}
+CREATE INDEX idx_geom
+ON cidades
+USING GIST (geom);
+    \end{minted}
+    
+    \textbf{Benefícios:}
+    
+    \begin{itemize}
+        \item Consultas espaciais muito mais rápidas
+        \item Fundamental para bases grandes
+        \item Usado automaticamente em operações como:
+        \texttt{ST\_Intersects}, \texttt{ST\_DWithin}, \texttt{ST\_Contains}
+    \end{itemize}
+    
 \end{frame}
 
 \end{document}
