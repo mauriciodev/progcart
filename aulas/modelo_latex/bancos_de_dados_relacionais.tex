@@ -9,6 +9,8 @@
     
 \input{capa}
 
+
+
 \begin{frame}{Conceitos Fundamentais}
     \textbf{Banco de Dados Relacional (BDR)}:
     
@@ -35,6 +37,322 @@
         \item \textbf{{MySQL} {database system}}
     \end{itemize}
 \end{frame}
+
+\begin{frame}{SQL — Structured Query Language}
+    
+    \textbf{SQL} é a linguagem padrão para manipulação de bancos de dados relacionais.
+    
+    \vspace{0.4cm}
+    
+    Principais usos:
+    
+    \begin{itemize}
+        \item Consultar dados
+        \item Inserir novos registros
+        \item Atualizar registros existentes
+        \item Remover dados
+        \item Definir estrutura de tabelas
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Bancos que utilizam SQL:
+    
+    \begin{itemize}
+        \item PostgreSQL 
+        \item MySQL
+        \item SQLite (e Geopackage)
+        \item DuckDB
+        \item SQL Server
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Postgis no Docker}
+    
+    Recuperando nosso container de PostgreSQL+PostGIS da aula passada.
+    
+    \vspace{0.4cm}
+    Iniciando o container
+    \begin{minted}{bash}
+docker start postgis
+    \end{minted}
+    
+    Criando um banco novo
+    \begin{minted}{bash}
+docker exec -it postgis createdb geodb -U postgres
+    \end{minted}
+    
+    Conectando ao banco pelo terminal
+    \begin{minted}{bash}
+docker exec -it postgis psql -U postgres -d geodb
+    \end{minted}    
+
+\end{frame}
+
+\begin{frame}[fragile]{Estrutura básica de uma consulta}
+    
+    A operação mais comum em SQL é a consulta de dados usando \texttt{SELECT}.
+    
+    \begin{minted}{sql}
+SELECT coluna1, coluna2
+FROM tabela
+WHERE condicao;
+    \end{minted}
+    
+    Componentes:
+    
+    \begin{itemize}
+        \item \textbf{SELECT} — define as colunas retornadas
+        \item \textbf{FROM} — define a tabela consultada
+        \item \textbf{WHERE} — filtra os registros
+    \end{itemize}
+    
+    Exemplo:
+    
+    \begin{minted}{sql}
+SELECT nome, populacao
+FROM cidades
+WHERE populacao > 100000;
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Inserindo, atualizando e removendo dados}
+    
+    SQL também permite modificar os dados.
+    
+    \vspace{0.3cm}
+    
+    Inserir registros:
+    
+    \begin{minted}{sql}
+INSERT INTO cidades (nome, populacao)
+VALUES ('Campinas', 1214000);
+    \end{minted}
+    
+    Atualizar registros:
+    
+    \begin{minted}{sql}
+UPDATE cidades
+SET populacao = 1300000
+WHERE nome = 'Campinas';
+    \end{minted}
+    
+    Remover registros:
+    
+    \begin{minted}{sql}
+DELETE FROM cidades
+WHERE nome = 'Campinas';
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Operações de agregação}
+    
+    Funções de agregação resumem dados.
+    
+    \begin{minted}{sql}
+SELECT COUNT(*)
+FROM cidades;
+    \end{minted}
+    
+    Funções comuns:
+    
+    \begin{itemize}
+        \item \texttt{COUNT()} — número de registros
+        \item \texttt{SUM()} — soma
+        \item \texttt{AVG()} — média
+        \item \texttt{MIN()} — valor mínimo
+        \item \texttt{MAX()} — valor máximo
+    \end{itemize}
+    
+    Exemplo:
+    
+    \begin{minted}{sql}
+SELECT AVG(populacao)
+FROM cidades;
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Relacionando tabelas — JOIN}
+    
+    Bancos relacionais permitem combinar dados de várias tabelas.
+    
+    Exemplo de duas tabelas:
+    
+    \begin{itemize}
+        \item cidades
+        \item estados
+    \end{itemize}
+    
+    Consulta com \textbf{JOIN}:
+    
+    \begin{minted}{sql}
+SELECT c.nome, e.nome
+FROM cidades c
+JOIN estados e
+ON c.estado_id = e.id;
+    \end{minted}
+    
+    \textbf{JOIN} permite:
+    
+    \begin{itemize}
+        \item combinar informações
+        \item evitar duplicação de dados
+        \item modelar relações entre entidades
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Tabelas em bancos relacionais}
+    
+    Dados em bancos relacionais são organizados em \textbf{tabelas}.
+    
+    \begin{center}
+        
+        \begin{tikzpicture}
+            
+            \draw (0,0) rectangle (8,3);
+            
+            % linhas horizontais
+            \draw (0,2.5) -- (8,2.5);
+            \draw (0,2) -- (8,2);
+            \draw (0,1.5) -- (8,1.5);
+            \draw (0,1) -- (8,1);
+            
+            % colunas
+            \draw (2,0) -- (2,3);
+            \draw (5,0) -- (5,3);
+            
+            % cabeçalhos
+            \node at (1,2.75) {\textbf{id}};
+            \node at (3.5,2.75) {\textbf{nome}};
+            \node at (6.5,2.75) {\textbf{população}};
+            
+            % linhas
+            \node at (1,2.25) {1};
+            \node at (3.5,2.25) {Curitiba};
+            \node at (6.5,2.25) {1774000};
+            
+            \node at (1,1.75) {2};
+            \node at (3.5,1.75) {Campinas};
+            \node at (6.5,1.75) {1214000};
+            
+            \node at (1,1.25) {3};
+            \node at (3.5,1.25) {Recife};
+            \node at (6.5,1.25) {1490000};
+            
+        \end{tikzpicture}
+        
+    \end{center}
+    
+    \begin{itemize}
+        \item \textbf{Colunas} representam atributos
+        \item \textbf{Linhas} representam registros
+        \item Cada tabela normalmente possui uma \textbf{chave primária (ID)}
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Relacionamento entre tabelas (Modelo ER)}
+    
+    Bancos relacionais conectam tabelas usando \textbf{chaves estrangeiras}.
+    
+    \begin{center}
+        
+        \begin{tikzpicture}[node distance=4cm]
+            
+            \node[draw, rectangle, minimum width=3cm, minimum height=1.5cm] (estados)
+            {
+                \begin{tabular}{c}
+                    \textbf{estados}\\
+                    id (PK)\\
+                    nome
+                \end{tabular}
+            };
+            
+            \node[draw, rectangle, minimum width=3cm, minimum height=1.8cm, right of=estados]
+            (cidades)
+            {
+                \begin{tabular}{c}
+                    \textbf{cidades}\\
+                    id (PK)\\
+                    nome\\
+                    estado\_id (FK)
+                \end{tabular}
+            };
+            
+            \draw[->, thick] (cidades) -- (estados);
+            
+            \node at (2,-1.5) {cidade pertence a um estado};
+            
+        \end{tikzpicture}
+        
+    \end{center}
+    
+    Exemplo de consulta combinando tabelas:
+    
+    \begin{minted}{sql}
+SELECT c.nome, e.nome
+FROM cidades c
+JOIN estados e
+ON c.estado_id = e.id;
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Ordem de execução de uma consulta SQL}
+    
+    
+    \begin{columns}[t]
+        \begin{column}[t]{0.48\textwidth}
+            Embora a consulta seja escrita nesta ordem:
+            \begin{minted}{sql}
+SELECT nome, populacao
+FROM cidades
+WHERE populacao > 100000
+ORDER BY populacao DESC;
+            \end{minted}
+            \begin{itemize}
+                \item Primeiro o banco identifica a \textbf{tabela} (FROM)
+                \item Depois aplica \textbf{filtros} (WHERE)
+                \item Em seguida realiza \textbf{agrupamentos}
+                \item Só então seleciona as \textbf{colunas finais}
+                \item Por último ordena os resultados
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}[t]{0.48\textwidth}
+            O banco executa as operações aproximadamente nesta ordem:
+            \begin{center}
+                
+                \begin{tikzpicture}[
+                    node distance=1.0cm,
+                    block/.style={rectangle, draw, rounded corners, minimum width=1cm, minimum height=0.8cm}
+                    ]
+                    
+                    \node[block] (from) {FROM};
+                    \node[block, below of=from] (where) {WHERE};
+                    \node[block, below of=where] (group) {GROUP BY};
+                    \node[block, below of=group] (having) {HAVING};
+                    \node[block, below of=having] (select) {SELECT};
+                    \node[block, below of=select] (order) {ORDER BY};
+                    
+                    \draw[->] (from) -- (where);
+                    \draw[->] (where) -- (group);
+                    \draw[->] (group) -- (having);
+                    \draw[->] (having) -- (select);
+                    \draw[->] (select) -- (order);
+                    
+                \end{tikzpicture}
+                
+            \end{center}
+        \end{column}
+    \end{columns}   
+\end{frame}
+
 
 \begin{frame}{Extensão Espacial}
     BDRs podem ser estendidos para armazenar geometrias.
@@ -147,30 +465,6 @@
     \end{center}
 \end{frame}
 
-\begin{frame}{Índices Espaciais}
-    Consultas espaciais são custosas.
-    
-    \vspace{0.4cm}
-    
-    Solução: Índices espaciais.
-    
-    \begin{itemize}
-        \item R-Tree
-        \item GiST (PostgreSQL)
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    Benefícios:
-    \begin{itemize}
-        \item Redução drástica de tempo de consulta
-        \item Filtragem por bounding box
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    Sem índice → varredura completa da tabela.
-\end{frame}
 
 \begin{frame}{PostgreSQL + PostGIS — Visão Geral}
     
@@ -231,6 +525,141 @@
     \end{itemize}
     
 \end{frame}
+
+\begin{frame}{Índices Espaciais}
+    Consultas espaciais são custosas.
+    
+    \vspace{0.4cm}
+    
+    Solução: Índices espaciais.
+    
+    \begin{itemize}
+        \item R-Tree
+        \item GiST (PostgreSQL)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Benefícios:
+    \begin{itemize}
+        \item Redução drástica de tempo de consulta
+        \item Filtragem por bounding box
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Sem índice → varredura completa da tabela.
+\end{frame}
+
+
+
+\begin{frame}{Índices Espaciais: Por que são importantes?}
+    
+    Problemas comuns em consultas espaciais:
+    
+    \begin{itemize}
+        \item Encontrar objetos que \textbf{intersectam} uma área
+        \item Selecionar feições \textbf{próximas}
+        \item Identificar objetos dentro de um \textbf{bounding box}
+    \end{itemize}
+    
+    \textbf{Sem índice espacial:}
+    
+    \begin{itemize}
+        \item Cada geometria precisa ser testada
+        \item Complexidade aproximada: $O(n)$
+    \end{itemize}
+    
+    \textbf{Com índice espacial:}
+    
+    \begin{itemize}
+        \item Estrutura hierárquica de envelopes
+        \item Redução drástica do número de testes geométricos
+        \item Complexidade aproximada: $O(\log n)$
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Ideia central:}
+    \begin{itemize}
+        \item Primeiro filtrar por \textbf{bounding boxes}
+        \item Depois aplicar a operação geométrica precisa
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Índices espaciais: Estrutura de um R-tree}
+    
+    \centering
+    
+    \begin{tikzpicture}[scale=0.9]
+        
+        % Espaço de dados
+        \draw[thick] (0,0) rectangle (6,6);
+        
+        % Objetos
+        \fill (1,1) circle (2pt);
+        \fill (1.5,1.2) circle (2pt);
+        \fill (4.5,1.5) circle (2pt);
+        \fill (4.8,1.8) circle (2pt);
+        \fill (2,4.5) circle (2pt);
+        \fill (2.3,4.7) circle (2pt);
+        
+        % Bounding boxes
+        \draw[red, thick] (0.7,0.8) rectangle (2.2,1.6);
+        \draw[blue, thick] (4.2,1.2) rectangle (5.3,2.2);
+        \draw[green!70!black, thick] (1.7,4.2) rectangle (2.8,5.2);
+        
+        % Nó superior
+        \draw[dashed, thick] (0.4,0.6) rectangle (5.5,5.5);
+        
+        \node at (3,-0.7) {Objetos agrupados em \textbf{Minimum Bounding Rectangles (MBR)}};
+        
+    \end{tikzpicture}
+    
+    \vspace{0.3cm}
+    
+    \begin{itemize}
+        \item Cada nó armazena o \textbf{retângulo mínimo} que cobre seus filhos
+        \item Consultas percorrem apenas ramos relevantes
+        \item Estrutura semelhante a uma árvore B para dados espaciais
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Índices Espaciais em Formatos Vetoriais}
+    
+    \begin{tabular}{p{3cm} p{3cm} p{5cm}}
+        \textbf{Formato} & \textbf{Tipo de índice} & \textbf{Observação} \\
+        \hline
+        Shapefile & Arquivo .qix ou .sbn/.sbx & Índice externo baseado em R-tree \\
+        
+        GeoPackage & R-tree interno (SQLite) & Tabelas auxiliares automáticas \\
+        
+        PostGIS & GiST / SP-GiST & Índices espaciais robustos para grandes bases \\
+    \end{tabular}
+    
+    \vspace{0.6cm}
+    
+    \textbf{Exemplo em PostGIS:}
+    
+    \begin{minted}{sql}
+        CREATE INDEX idx_geom
+        ON cidades
+        USING GIST (geom);
+    \end{minted}
+    
+    \textbf{Benefícios:}
+    
+    \begin{itemize}
+        \item Consultas espaciais muito mais rápidas
+        \item Fundamental para bases grandes
+        \item Usado automaticamente em operações como:
+        \texttt{ST\_Intersects}, \texttt{ST\_DWithin}, \texttt{ST\_Contains}
+    \end{itemize}
+    
+\end{frame}
+
 
 \begin{frame}[fragile]{Consultas Espaciais — Exemplos SQL (PostGIS)}
     
@@ -300,6 +729,7 @@ FROM municipios;
     
 \end{frame}
 
+
 \begin{frame}{O que é DuckDB?}
     
     \textbf{DuckDB} é um banco de dados analítico embutido (embedded OLAP).
@@ -328,7 +758,7 @@ FROM municipios;
     
 \end{frame}
 
-\begin{frame}{Conceitos Arquiteturais Fundamentais}
+\begin{frame}{DuckDB: Conceitos Arquiteturais Fundamentais}
     
     \textbf{1. Embedded Database}
     \begin{itemize}
@@ -361,6 +791,78 @@ FROM municipios;
         \item Excelente para consultas analíticas
         \item Não projetado para alta concorrência transacional
     \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Instalando DuckDB CLI com Pixi}
+    
+    O \textbf{Pixi} permite criar ambientes isolados e instalar ferramentas rapidamente.
+    
+    \vspace{0.3cm}
+    
+    \textbf{1. Criar um novo projeto Pixi}
+    
+    \begin{minted}{bash}
+        pixi init pixi_env
+        cd pixi_env
+    \end{minted}
+    
+    \textbf{2. Instalar o DuckDB CLI}
+    
+    \begin{minted}{bash}
+        pixi add duckdb-cli
+    \end{minted}
+    
+    \textbf{3. Executar o DuckDB}
+    
+    \begin{minted}{bash}
+        pixi run duckdb
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Verificando a instalação}
+    
+    \begin{minted}{sql}
+        SELECT version();
+    \end{minted}
+    
+    \begin{itemize}
+        \item Ambiente reproduzível
+        \item Sem necessidade de instalar o banco globalmente
+        \item Ideal para aulas e projetos de análise de dados
+    \end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Usando DuckDB para consultar dados de cidades}
+    
+    \textbf{DuckDB} permite consultar dados diretamente de arquivos online usando SQL.
+    
+    \vspace{0.3cm}
+    
+    Exemplo usando um dataset público de cidades:
+    
+    \begin{minted}{sql}
+INSTALL httpfs;
+LOAD httpfs;
+
+CREATE TABLE cidades AS
+SELECT *
+FROM read_csv_auto(
+'https://raw.githubusercontent.com/datasets/world-cities/master/data/world-cities.csv'
+);
+    \end{minted}
+    
+    Agora podemos executar consultas SQL normalmente:
+    
+    \begin{minted}{sql}
+SELECT name, country
+FROM cidades
+WHERE country = 'Brazil'
+LIMIT 10;
+    \end{minted}
     
 \end{frame}
 
