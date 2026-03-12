@@ -1,0 +1,430 @@
+\documentclass{beamer}
+
+%lembre-se de configurar o pdflatex com:
+%pdflatex -shell-escape -synctex=1 -interaction=nonstopmode  -output-directory=build  %.tex
+
+\usepackage{aula}
+
+\title{Introdução a Algoritmos}
+\date{\today}
+
+\begin{document}
+    
+\input{capa}
+
+
+
+    %------------------------------------------------
+    
+    \begin{frame}{Regressão Linear}
+        
+        Modelo de regressão linear:
+        
+        \[
+        y = w^T x + b
+        \]
+        
+        onde
+        
+        \begin{itemize}
+            \item $x$ vetor de entrada
+            \item $w$ pesos
+            \item $b$ bias
+        \end{itemize}
+        
+        Objetivo: encontrar $w$ e $b$ que minimizam o erro de previsão.
+        
+    \end{frame}
+    
+    %------------------------------------------------
+    
+    \begin{frame}{Representação Gráfica}
+        
+        \centering
+        
+        \begin{tikzpicture}[>=Stealth]
+            
+            \node (x1) at (0,1) {$x_1$};
+            \node (x2) at (0,0) {$x_2$};
+            \node (x3) at (0,-1) {$x_3$};
+            
+            \node[circle,draw] (sum) at (3,0) {$\sum$};
+            
+            \node (y) at (5,0) {$y$};
+            
+            \draw[->] (x1) -- node[above] {$w_1$} (sum);
+            \draw[->] (x2) -- node[above] {$w_2$} (sum);
+            \draw[->] (x3) -- node[below] {$w_3$} (sum);
+            
+            \draw[->] (sum) -- (y);
+            
+            \node at (3,-1.5) {$+\,b$};
+            
+        \end{tikzpicture}
+        
+    \end{frame}
+    
+    %------------------------------------------------
+    
+    \begin{frame}{Neurônio Artificial}
+        
+        Um neurônio calcula
+        
+        \[
+        z = w^T x + b
+        \]
+        
+        e aplica uma função de ativação
+        
+        \[
+        y = \sigma(z)
+        \]
+        
+        onde $\sigma$ pode ser:
+        
+        \begin{itemize}
+            \item ReLU
+            \item sigmoid
+            \item tanh
+        \end{itemize}
+        
+    \end{frame}
+    
+    %------------------------------------------------
+    
+    \begin{frame}{Diagrama de um Neurônio}
+        
+        \centering
+        
+        \begin{tikzpicture}[>=Stealth]
+            
+            \node (x1) at (0,1) {$x_1$};
+            \node (x2) at (0,0) {$x_2$};
+            \node (x3) at (0,-1) {$x_3$};
+            
+            \node[circle,draw,minimum size=1.5cm] (neuron) at (3,0) {$\sigma$};
+            
+            \node (y) at (5,0) {$y$};
+            
+            \draw[->] (x1) -- node[above] {$w_1$} (neuron);
+            \draw[->] (x2) -- node[above] {$w_2$} (neuron);
+            \draw[->] (x3) -- node[below] {$w_3$} (neuron);
+            
+            \draw[->] (neuron) -- (y);
+            
+            \node at (3,-1.5) {$+\,b$};
+            
+        \end{tikzpicture}
+        
+    \end{frame}
+    
+    %------------------------------------------------
+    
+    \begin{frame}{Equivalência}
+        
+        Se removemos a função de ativação:
+        
+        \[
+        \sigma(z) = z
+        \]
+        
+        então
+        
+        \[
+        y = w^T x + b
+        \]
+        
+        que é exatamente o modelo de regressão linear.
+        
+    \end{frame}
+    
+    %------------------------------------------------
+    
+    \begin{frame}{Comparação Estrutural}
+        
+        \begin{center}
+            
+            \begin{tikzpicture}[>=Stealth]
+                
+                \node at (0,2) {\textbf{Regressão Linear}};
+                
+                \node (x1) at (-2,1) {$x_1$};
+                \node (x2) at (-2,0) {$x_2$};
+                \node (x3) at (-2,-1) {$x_3$};
+                
+                \node[circle,draw] (sum) at (0,0) {$\sum$};
+                
+                \node (y) at (2,0) {$y$};
+                
+                \draw[->] (x1) -- (sum);
+                \draw[->] (x2) -- (sum);
+                \draw[->] (x3) -- (sum);
+                
+                \draw[->] (sum) -- (y);
+                
+            \end{tikzpicture}
+            
+        \end{center}
+        
+        \vspace{0.5cm}
+        
+        \begin{itemize}
+            \item rede neural com 1 neurônio
+            \item sem ativação
+        \end{itemize}
+        
+    \end{frame}
+    
+    %------------------------------------------------
+    
+    \begin{frame}{Rede Neural Profunda}
+        
+        \centering
+        
+        \begin{tikzpicture}[>=Stealth]
+            
+            \node[circle,draw] (x1) at (0,1) {};
+            \node[circle,draw] (x2) at (0,0) {};
+            \node[circle,draw] (x3) at (0,-1) {};
+            
+            \node[circle,draw] (h1) at (2,1) {};
+            \node[circle,draw] (h2) at (2,0) {};
+            \node[circle,draw] (h3) at (2,-1) {};
+            
+            \node[circle,draw] (y) at (4,0) {};
+            
+            \draw[->] (x1) -- (h1);
+            \draw[->] (x1) -- (h2);
+            \draw[->] (x2) -- (h2);
+            \draw[->] (x3) -- (h3);
+            
+            \draw[->] (h1) -- (y);
+            \draw[->] (h2) -- (y);
+            \draw[->] (h3) -- (y);
+            
+        \end{tikzpicture}
+        
+    \end{frame}
+    
+    %------------------------------------------------
+    
+    \begin{frame}{Conclusão}
+        
+        \begin{itemize}
+            
+            \item Regressão linear pode ser vista como um neurônio artificial.
+            
+            \item Redes neurais são composições de transformações lineares e não lineares.
+            
+            \item Deep learning generaliza modelos lineares clássicos.
+            
+        \end{itemize}
+        
+    \end{frame}
+   
+\begin{frame}{Erro de Previsão}
+    Para cada ponto temos um erro:
+    
+    \[
+    e_i = y_i - \hat{y}_i
+    \]
+    
+    onde
+    
+    \[
+    \hat{y}_i = wx_i + b
+    \]
+    
+    Erro total precisa agregar os erros de todos os pontos.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Método dos Mínimos Quadrados}
+    A abordagem clássica é minimizar a soma dos erros ao quadrado.
+    
+    Função de custo:
+    
+    \[
+    J(w,b) =
+    \sum_{i=1}^{n}
+    (y_i - (wx_i + b))^2
+    \]
+    
+    Objetivo:
+    
+    \[
+    \min_{w,b} J(w,b)
+    \]
+    
+    Quadrados são usados para:
+    
+    \begin{itemize}
+        \item evitar cancelamento de erros positivos e negativos
+        \item penalizar erros grandes
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Forma Matricial}
+    Podemos escrever o modelo linear como:
+    
+    \[
+    y = X\beta
+    \]
+    
+    onde
+    
+    \[
+    \beta =
+    \begin{bmatrix}
+        b \\
+        w
+    \end{bmatrix}
+    \]
+    
+    A solução de mínimos quadrados é
+    
+    \[
+    \beta = (X^T X)^{-1} X^T y
+    \]
+    
+    Essa é uma solução analítica.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Otimização por Gradiente}
+    Nem sempre temos solução analítica.
+    
+    Podemos usar descida do gradiente:
+    
+    \[
+    \theta_{t+1}
+    =
+    \theta_t
+    -
+    \eta \nabla J(\theta)
+    \]
+    
+    onde
+    
+    \begin{itemize}
+        \item $\theta$ = parâmetros
+        \item $\eta$ = taxa de aprendizado
+        \item $\nabla J$ = gradiente da função de erro
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Redes Neurais}
+    Uma rede neural pode ser vista como uma composição de funções.
+    
+    Exemplo simples:
+    
+    \[
+    \hat{y} = f(wx + b)
+    \]
+    
+    com função de ativação $f$.
+    
+    O objetivo continua sendo minimizar uma função de erro:
+    
+    \[
+    J(y,\hat{y})
+    \]
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Erro Quadrático Médio}
+    Uma função de perda comum é o erro quadrático médio.
+    
+    \[
+    J = MSE = 
+    \sum (y - \hat{y})^2
+    \]
+    
+    Observe que esta é exatamente a mesma ideia
+    do método de mínimos quadrados.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Backpropagation}
+    Backpropagation é um algoritmo para calcular gradientes em redes neurais.
+    
+    Ele usa a regra da cadeia para calcular
+    
+    \[
+    \frac{\partial J}{\partial w}
+    \]
+    
+    para todos os pesos da rede.
+    
+    Depois disso, aplicamos gradiente descendente para atualizar os pesos.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Regra da Cadeia}
+    Considere
+    
+    \[
+    J = (y - \hat{y})^2
+    \]
+    
+    e
+    
+    \[
+    \hat{y} = f(wx+b)
+    \]
+    
+    O gradiente é calculado como
+    
+    \[
+    \frac{\partial J}{\partial w}
+    =
+    \frac{\partial J}{\partial \hat{y}}
+    \cdot
+    \frac{\partial \hat{y}}{\partial w}
+    \]
+    
+    Backpropagation aplica essa ideia camada por camada.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Relação entre os Conceitos}
+    
+    \begin{block}{Mínimos Quadrados}
+        Define a função de erro a ser minimizada.
+    \end{block}
+    
+    \begin{block}{Gradiente Descendente}
+        Método para minimizar a função de erro.
+    \end{block}
+    
+    \begin{block}{Backpropagation}
+        Algoritmo eficiente para calcular gradientes em redes profundas.
+    \end{block}
+    
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Resumo}
+    
+    \begin{itemize}
+        \item Regressão linear modela relações lineares entre variáveis.
+        \item Mínimos quadrados define uma função de erro baseada em erro quadrático.
+        \item Gradiente descendente pode ser usado para minimizar essa função.
+        \item Backpropagation calcula gradientes em redes neurais usando regra da cadeia.
+        \item Redes neurais frequentemente usam erro quadrático como função de perda.
+    \end{itemize}
+    
+\end{frame}
+
+\end{document}

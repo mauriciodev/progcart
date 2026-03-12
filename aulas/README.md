@@ -21,3 +21,4 @@ Extras:
 - [Comandos de terminal](comandos_de_terminal.pdf) (Iniciado)
 - [Agentes de IA para geoinformação](strands.pdf) (Iniciado)
 - [Produção de conteúdo didático com latex e LLMs](latex_e_llms.pdf) (Iniciado)
+- [Redes neurais - Introdução](redes_neurais.pdf) (Iniciado)
