@@ -98,14 +98,21 @@ sys.exit(app.exec())
         \vspace{0.3cm}
         
         \begin{minted}{python}
-from PyQt6.QtWidgets import QPushButton
+from PyQt6.QtWidgets import QApplication, QPushButton, QMessageBox
+import sys
+
+app = QApplication(sys.argv)
 
 botao = QPushButton("Clique aqui")
 
 def ao_clicar():
     print("Botão clicado!")
+    QMessageBox.information(botao, "Mensagem", "Botão clicado!")
 
-botao.clicked.connect(ao_clicar)
+botao.clicked.connect(ao_clicar) # Conecta sinal ao slot.
+botao.show()
+
+app.exec()
         \end{minted}
         
         \vspace{0.3cm}
