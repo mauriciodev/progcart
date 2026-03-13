@@ -343,6 +343,285 @@ def processar(self):
         
     \end{frame}
     
+    \begin{frame}[fragile]{QPushButton}
+        
+        Botão clicável.
+        \vspace{0.3cm}
+        
+        \begin{columns}
+            
+            \column{0.48\textwidth}
+            \textbf{Signals}
+            \begin{itemize}
+                \item \texttt{clicked()}
+                \item \texttt{pressed()}
+                \item \texttt{released()}
+            \end{itemize}
+            
+            \textbf{Properties}
+            
+            \begin{itemize}
+                \item \texttt{text}
+                \item \texttt{enabled}
+                \item \texttt{checkable}
+            \end{itemize}
+            
+            \column{0.48\textwidth}
+            \textbf{Slots}
+            \begin{itemize}
+                \item \texttt{setText(str)}
+                \item \texttt{setEnabled(bool)}
+            \end{itemize}
+            
+            \textbf{Exemplo:}
+            
+            \includegraphics[width=0.3\linewidth]{pyqt_figs/pushbutton}
+
+        \end{columns}
+        
+
+        
+        \begin{minted}{python}
+self.pushButton.clicked.connect(self.executar)
+        \end{minted}
+        
+    \end{frame}
+    
+    \begin{frame}[fragile]{QComboBox}
+        
+        Lista suspensa de opções.
+        
+        \begin{columns}
+            
+            \column{0.48\textwidth}
+            \textbf{Signals}
+            \begin{itemize}
+                \item \texttt{currentIndexChanged(int)}
+                \item \texttt{currentTextChanged(str)}
+            \end{itemize}
+            
+            \textbf{Properties}
+            
+            \begin{itemize}
+                \item \texttt{currentIndex}
+                \item \texttt{currentText}
+                \item \texttt{count}
+            \end{itemize}
+            
+            \column{0.48\textwidth}
+            \textbf{Slots}
+            \begin{itemize}
+                \item \texttt{addItem(str)}
+                \item \texttt{setCurrentIndex(int)}
+            \end{itemize}
+            
+            \textbf{Exemplo:}
+            
+            \includegraphics[width=0.4\linewidth]{pyqt_figs/combobox}
+        \end{columns}
+        
+
+        
+        \begin{minted}{python}
+texto = self.comboBox.currentText()
+        \end{minted}
+        
+    \end{frame}
+    
+    \begin{frame}[fragile]{QListWidget}
+        
+        Lista de itens selecionáveis.
+        
+        \begin{columns}
+            
+            \column[t]{0.48\textwidth}
+            \textbf{Signals}
+            \begin{itemize}
+                \item \texttt{itemClicked()}
+                \item \texttt{currentItemChanged()}
+            \end{itemize}
+            
+            \textbf{Properties}
+            
+            \begin{itemize}
+                \item \texttt{currentRow}
+                \item \texttt{count}
+            \end{itemize}
+            
+            \column[t]{0.48\textwidth}
+            \textbf{Slots}
+            \begin{itemize}
+                \item \texttt{addItem(str)}
+                \item \texttt{clear()}
+            \end{itemize}
+            \textbf{Exemplo:}
+            
+            \includegraphics[width=0.6\linewidth]{pyqt_figs/listwidget}
+        \end{columns}
+        
+
+        
+        \begin{minted}{python}
+item = self.listWidget.currentItem().text()
+        \end{minted}
+        
+    \end{frame}
+    
+    \begin{frame}[fragile]{QLineEdit}
+        
+        Campo de entrada de texto.
+        
+        \begin{columns}
+            
+            \column[t]{0.48\textwidth}
+            \textbf{Signals}
+            \begin{itemize}
+                \item \texttt{textChanged(str)}
+                \item \texttt{returnPressed()}
+                \item \texttt{editingFinished()}
+            \end{itemize}
+            \textbf{Properties}
+            
+            \begin{itemize}
+                \item \texttt{text}
+                \item \texttt{placeholderText}
+            \end{itemize}
+            
+            \column[t]{0.48\textwidth}
+            \textbf{Slots}
+            \begin{itemize}
+                \item \texttt{setText(str)}
+                \item \texttt{clear()}
+            \end{itemize}
+            
+            \textbf{Exemplo:}
+            
+            \includegraphics[width=0.6\linewidth]{pyqt_figs/lineedit}
+        \end{columns}
+        
+
+        
+        \begin{minted}{python}
+texto = self.lineEdit.text()
+        \end{minted}
+        
+    \end{frame}
+    
+    \begin{frame}[fragile]{QPlainTextEdit}
+        
+        Área de texto multilinha.
+        
+        \begin{columns}
+            
+            \column[t]{0.48\textwidth}
+            \textbf{Signals}
+            \begin{itemize}
+                \item \texttt{textChanged()}
+            \end{itemize}
+            
+            \textbf{Properties}
+            
+            \begin{itemize}
+                \item \texttt{plainText}
+                \item \texttt{readOnly}
+            \end{itemize}
+            
+            \column[t]{0.48\textwidth}
+            \textbf{Slots}
+            \begin{itemize}
+                \item \texttt{setPlainText(str)}
+                \item \texttt{appendPlainText(str)}
+                \item \texttt{clear()}
+            \end{itemize}
+            \textbf{Exemplo:}
+            
+            \includegraphics[width=0.6\linewidth]{pyqt_figs/textedit}
+        \end{columns}
+        
+        
+        
+        \begin{minted}{python}
+texto = self.plainTextEdit.toPlainText()
+        \end{minted}
+        
+    \end{frame}
+    
+    \begin{frame}[fragile]{QDateEdit}
+        
+        Seleção de datas.
+        
+        \begin{columns}
+            
+            \column[t]{0.48\textwidth}
+            \textbf{Signals}
+            \begin{itemize}
+                \item \texttt{dateChanged(QDate)}
+            \end{itemize}
+            
+             \textbf{Properties}
+            
+            \begin{itemize}
+                \item \texttt{date}
+                \item \texttt{minimumDate}
+                \item \texttt{maximumDate}
+            \end{itemize}
+            
+            \column[t]{0.48\textwidth}
+            \textbf{Slots}
+            \begin{itemize}
+                \item \texttt{setDate(QDate)}
+            \end{itemize}
+            \textbf{Exemplo:}
+            
+            \includegraphics[width=0.3\linewidth]{pyqt_figs/dateedit}
+        \end{columns}
+        
+       
+        
+        \begin{minted}{python}
+data = self.dateEdit.date()
+        \end{minted}
+        
+    \end{frame}
+    
+    \begin{frame}[fragile]{QDoubleSpinBox}
+        
+        Entrada numérica com incremento.
+        
+        \begin{columns}
+            
+            \column{0.48\textwidth}
+            \textbf{Signals}
+            \begin{itemize}
+                \item \texttt{valueChanged(float)}
+            \end{itemize}
+            \textbf{Properties}
+            
+            \begin{itemize}
+                \item \texttt{value}
+                \item \texttt{minimum}
+                \item \texttt{maximum}
+                \item \texttt{singleStep}
+            \end{itemize}
+            
+            \column{0.48\textwidth}
+            \textbf{Slots}
+            \begin{itemize}
+                \item \texttt{setValue(float)}
+                \item \texttt{setRange(min,max)}
+            \end{itemize}
+            \textbf{Exemplo:}
+            
+            \includegraphics[width=0.3\linewidth]{pyqt_figs/doublespinbox}
+        \end{columns}
+        
+
+        
+        \begin{minted}{python}
+valor = self.doubleSpinBox.value()
+        \end{minted}
+        
+    \end{frame}
 
 \begin{frame}[fragile]{Plots da MatPlotLib em PyQt}
     A MatPlotLib já tem widgets para PyQt prontas no backend qtagg.
