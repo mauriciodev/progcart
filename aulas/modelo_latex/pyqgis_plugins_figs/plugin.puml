@@ -1,0 +1,27 @@
+@startuml
+hide circle
+
+    class QGIS {
+        +loadPlugin()
+        +unloadPlugin()
+    }
+
+    class Plugin {
+        +__init__(iface)
+        +initGui()
+        +run()
+        +unload()
+    }
+
+    class QAction
+    class Dialog
+    class Resources
+    class Metadata
+
+    QGIS --> Plugin
+    Plugin --> QAction
+    Plugin --> Dialog
+    Plugin --> Resources
+    Plugin --> Metadata
+
+@enduml

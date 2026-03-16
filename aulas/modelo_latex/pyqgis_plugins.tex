@@ -77,6 +77,29 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Estrutura básica de um plugin QGIS}
+    
+    
+    \begin{columns}
+        \column[t]{0.48\textwidth}
+        Principais componentes de um plugin PyQGIS:
+        \begin{itemize}
+            \item Classe principal do plugin
+            \item Interface do QGIS (\texttt{iface})
+            \item Arquivo de metadados
+            \item Interface gráfica (Qt / .ui)
+        \end{itemize}
+        
+        \column[t]{0.48\textwidth}
+        
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{pyqgis_plugins_figs/plugin}
+        \end{figure}
+    \end{columns}
+    
+\end{frame}
+
 \begin{frame}{Criação de Plugin: Estrutura básica do plugin}
     \begin{itemize}
         \item \_\_init\_\_.py = The starting point of the plugin. It has to have the classFactory() method and may have any other initialisation code.

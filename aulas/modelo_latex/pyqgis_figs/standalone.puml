@@ -1,5 +1,7 @@
 @startuml
 skinparam classAttributeIconSize 0
+hide circle
+
 
 class QApplication
 class QgsApplication {

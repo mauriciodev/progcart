@@ -1,4 +1,5 @@
 @startuml
+hide circle
 hide stereotype
 skinparam classAttributeIconSize 0
 skinparam shadowing false
