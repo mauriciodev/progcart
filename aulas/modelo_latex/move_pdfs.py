@@ -8,6 +8,8 @@ root_dir = Path(__file__).resolve().parent
 build_dir = root_dir / "build"
 target_dir = root_dir.parent
 compilar = False
+gerar_uml = True
+
 
 def compilar_tex(root_dir: str = ".", build_dir: str = "build"):
     root = Path(root_dir)
@@ -35,11 +37,35 @@ def compilar_tex(root_dir: str = ".", build_dir: str = "build"):
         )
         compilados.append(tex_file.name.replace(".tex", ".pdf"))
     return compilados
-        
+
+def compilar_puml(root_dir: str = "."):
+    root = Path(root_dir)
+
+    compilados = []
+    for tex_file in root.rglob("*.puml"):
+        print(f"Compilando: {tex_file.name}")
+
+        cmd = [
+            "plantuml",
+            tex_file.name
+        ]
+
+        subprocess.run(
+            cmd,
+            cwd=root,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        compilados.append(tex_file.name.replace(".puml", ".pdf"))
+    return compilados
 
 #pdflatex -synctex=1 --shell-escape -interaction=nonstopmode -output-directory=build %.tex
 
-if compilar: compilar_tex()
+if compilar:
+    compilar_tex()
+
+if gerar_uml:
+    compilar_puml()
 
 pdf_files = list(build_dir.glob("*.pdf"))
 
