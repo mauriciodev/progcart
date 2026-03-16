@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "praias",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "nome": "Praia de copacabana", "ranking": 3 }, "geometry": { "type": "Point", "coordinates": [ -43.178278787481311, -22.969136057456836 ] } },
+{ "type": "Feature", "properties": { "nome": "Praia de Ipanema", "ranking": 1 }, "geometry": { "type": "Point", "coordinates": [ -43.200345962009166, -22.987680485778817 ] } },
+{ "type": "Feature", "properties": { "nome": "Praia do Leblon", "ranking": 2 }, "geometry": { "type": "Point", "coordinates": [ -43.22123707587906, -22.987700170655984 ] } }
+]
+}

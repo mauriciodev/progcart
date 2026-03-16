@@ -47,7 +47,23 @@ app.exitQgis()
     \end{minted}
 \end{frame}
 
-\begin{frame}{Projeto e Singleton}
+\begin{frame}[fragile]{Scripts Python no QGIS}
+    \textbf{Terminal Python}
+    O terminal Python do QGIS permite executar comandos de forma interativa.
+    \begin{center}
+        \includegraphics[width=0.71\linewidth]{pyqgis_figs/python_console1}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Scripts Python no QGIS}
+    \textbf{Editor de scripts Python}
+    O Editor de scripts Python do QGIS permite editar e executar scripts inteiros.
+    \begin{center}
+        \includegraphics[width=0.71\linewidth]{pyqgis_figs/python_console2}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Manipulação da estrutura do Projeto no QGIS}
     \textbf{QgsProject}
     
     \begin{itemize}
@@ -58,11 +74,12 @@ app.exitQgis()
     
     \vspace{0.4cm}
     
-    \textbf{Acesso global:}
+    \textbf{Obter a instância (global) do projeto}
     
-    \begin{center}
-        \texttt{QgsProject.instance()}
-    \end{center}
+    \begin{minted}{python}
+from qgis.core import QgsProject
+project = QgsProject.instance()
+    \end{minted}
     
     \vspace{0.3cm}
     
@@ -72,6 +89,55 @@ app.exitQgis()
         \item Remover camadas
         \item Acessar CRS do projeto
     \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{PyQGIS — QgsProject.instance()}
+    
+    \textbf{QgsProject.instance()} fornece acesso ao \textbf{projeto QGIS atualmente aberto}.  
+    É o ponto central para acessar \textbf{camadas, CRS, caminhos e estado do projeto}.
+    
+    
+    \vspace{0.2cm}
+    
+    \begin{columns}
+        
+        \column{0.5\textwidth}
+        \textbf{Gerenciamento de camadas}
+        
+        \begin{minted}{python}
+project.mapLayers()
+
+project.mapLayersByName("rios")
+
+project.addMapLayer(layer)
+
+project.removeMapLayer(layer.id())
+        \end{minted}
+        
+        \column{0.5\textwidth}
+        \textbf{Informações do projeto}
+        
+        \begin{minted}{python}
+project.fileName()
+
+project.homePath()
+
+project.crs()
+
+project.setCrs(crs)
+        \end{minted}
+        
+    \end{columns}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Exemplo: listar camadas}
+    
+    \begin{minted}{python}
+for layer in project.mapLayers().values():
+    print(layer.name())
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}{Providers}
@@ -120,6 +186,64 @@ app.exitQgis()
     \end{center}
 \end{frame}
 
+\begin{frame}[fragile]{QgsVectorLayer: diferentes fontes}
+    
+    A classe \texttt{QgsVectorLayer} permite acessar dados vetoriais de diversos formatos.
+    
+    \vspace{0.3cm}
+    
+    \begin{minted}{python}
+from qgis.core import QgsVectorLayer, QgsProject
+    \end{minted}
+    
+    \begin{columns}
+        
+        \column[t]{0.5\textwidth}
+        \textbf{Shapefile}
+        
+        \begin{minted}{python}
+layer = QgsVectorLayer(
+"/dados/rios.shp",
+"Rios",
+"ogr"
+)
+        \end{minted}
+        
+        \textbf{GeoPackage}
+        
+        \begin{minted}{python}
+layer = QgsVectorLayer(
+"/dados/brasil.gpkg|layername=estados",
+"Estados",
+"ogr"
+)
+        \end{minted}
+        
+        \column[t]{0.5\textwidth}
+        
+        \textbf{PostGIS}
+        
+        \begin{minted}{python}
+uri = "dbname='gis' host=localhost \
+port=5432 user='postgres' \
+password='123' \
+table=\"public\".\"municipios\" (geom)"
+
+layer = QgsVectorLayer(uri,
+"Municipios",
+"postgres")
+        \end{minted}
+        
+        \textbf{Adicionar ao projeto}
+        
+        \begin{minted}{python}
+QgsProject.instance().addMapLayer(layer)
+        \end{minted}
+        
+    \end{columns}
+    
+\end{frame}
+
 \begin{frame}[fragile]{Iterando Feições}
     \begin{minted}{python}
 layer = iface.activeLayer()
@@ -128,7 +252,7 @@ for feat in layer.getFeatures():
     geom = feat.geometry()
     attrs = feat.attributes()
 
-print(geom.area(), attrs)
+    print(geom.area(), attrs)
     \end{minted}
     
     \vspace{0.3cm}
@@ -137,6 +261,25 @@ print(geom.area(), attrs)
     \begin{itemize}
         \item Iteração é lazy (generator)
         \item Geometria e atributos são acessados separadamente
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Edição de Camadas}
+    \begin{minted}{python}
+layer.startEditing()
+
+for feat in layer.getFeatures():
+    feat["area"] = feat.geometry().area()
+    layer.updateFeature(feat)
+
+layer.commitChanges()
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Regra importante:}
+    \begin{itemize}
+        \item Sempre iniciar e finalizar modo de edição
     \end{itemize}
 \end{frame}
 
@@ -161,23 +304,248 @@ print(geom.area(), attrs)
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Edição de Camadas}
+\begin{frame}[fragile]{Geometria (QgsGeometry)}
+    
+    \textbf{Operações geométricas}
+    
     \begin{minted}{python}
-layer.startEditing()
+from qgis.core import QgsGeometry
 
-for feat in layer.getFeatures():
-    feat["area"] = feat.geometry().area()
-    layer.updateFeature(feat)
+g1 = QgsGeometry.fromWkt("POINT(0 0)")
+g2 = QgsGeometry.fromWkt("POINT(1 1)")
 
-layer.commitChanges()
+
+g_line = QgsGeometry.fromWkt("LINESTRING(0 0, 1 1, 2 1)")
+print(g_line.length()) # comprimento 
+
+g_poly = QgsGeometry.fromWkt(
+"POLYGON((0 0,2 0,2 2,0 2,0 0))"
+)
+print(g_poly.area()) # area
+
+# buffer
+buffer_geom = g1.buffer(10, 8)
+
+# operações espaciais
+inter = g_poly.intersection(buffer_geom)
+diff = g_poly.difference(buffer_geom)
     \end{minted}
+
+
+    
+\end{frame}
+
+\begin{frame}[fragile]{Geometria (QgsGeometry): Criação}
+    
+    A classe \texttt{QgsGeometry} pode ser criada a partir de objetos
+    \texttt{QgsPointXY}, listas de pontos ou anéis de polígonos.
     
     \vspace{0.3cm}
     
-    \textbf{Regra importante:}
-    \begin{itemize}
-        \item Sempre iniciar e finalizar modo de edição
-    \end{itemize}
+    \textbf{Exemplos}
+    
+    \begin{minted}{python}
+from qgis.core import QgsGeometry, QgsPointXY
+
+# POINT
+p = QgsPointXY(-43.2, -22.9)
+geom_point = QgsGeometry.fromPointXY(p)
+
+# LINESTRING
+line = [ QgsPointXY(0,0), QgsPointXY(1,1), QgsPointXY(2,1) ]
+geom_line = QgsGeometry.fromPolylineXY(linha)
+
+# POLYGON
+ring = [[ QgsPointXY(0,0), QgsPointXY(2,0), QgsPointXY(2,2),
+          QgsPointXY(0,2), QgsPointXY(0,0)
+]]
+geom_poly = QgsGeometry.fromPolygonXY(ring)
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Geometria (QgsGeometry): Acesso às coordenadas}
+    
+    \textbf{Convertendo QgsGeometry para estruturas Python}
+    
+    \begin{minted}{python}
+from qgis.core import QgsGeometry, QgsWkbTypes
+
+# acessar coordenadas
+p = g1.asPoint()
+line = g_line.asPolyline()
+poly = g_poly.asPolygon()
+
+print(p)
+print(line)
+print(poly)
+    \end{minted}
+    
+    \vspace{0.2cm}
+    
+    \textbf{Comparando o tipo da geometria}
+    
+    \begin{minted}{python}
+geom = g_line
+if geom.wkbType() == QgsWkbTypes.LineString:
+    print("É uma linha")
+if geom.wkbType() == QgsWkbTypes.Point:
+    print("É um ponto")
+if geom.wkbType() == QgsWkbTypes.Polygon:
+    print("É um polígono")
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Geometria (QgsGeometry)}
+    
+    \textbf{Também existem as versões que usam outras geometrias} (e não QgsPointXY)
+    
+    \begin{minted}{python}
+QgsGeometry.fromPolyline(
+    [QgsPoint(1, 1), QgsPoint(2, 2)]
+)
+    \end{minted}
+    
+    \textbf{Conversões de formato}
+    
+    \begin{minted}{python}
+# WKT
+wkt = g_poly.asWkt()
+
+# WKB
+wkb = g_poly.asWkb()
+
+# GeoJSON
+json = g_poly.asJson()
+    \end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile]{Geometria (QgsGeometry)}
+    
+    É possível iterar sobre as partes de geometrias mais complexas:
+    
+    \textbf{Para Multipontos}
+    \begin{minted}{python}
+geom = QgsGeometry.fromWkt( 'MultiPoint( 0 0, 1 1, 2 2)' )
+for part in geom.parts():
+    print(part.asWkt())
+    \end{minted}
+    
+    \textbf{Para Linestrings}
+    
+    \begin{minted}{python}
+geom = QgsGeometry.fromWkt( 'LineString( 0 0, 10 10 )' )
+for part in geom.parts():
+    print(part.asWkt())
+    \end{minted}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]{Exemplos de WKT (Well-Known Text)}
+    
+    WKT é um formato textual padrão para representar geometrias.
+    
+    \vspace{0.3cm}
+    
+    \begin{columns}
+        
+        \column[t]{0.5\textwidth}
+        \textbf{Geometrias simples}
+        
+        \begin{minted}{text}
+POINT(10 20)
+
+LINESTRING(0 0, 1 1, 2 1)
+
+POLYGON(
+    (0 0, 4 0, 4 3, 0 3, 0 0)
+)
+        \end{minted}
+        
+        \column[t]{0.5\textwidth}
+        \textbf{Geometrias múltiplas}
+        
+        \begin{minted}{text}
+MULTIPOINT(
+    (10 20),
+    (30 40)
+)
+
+MULTILINESTRING(
+    (0 0, 1 1, 2 1),
+    (2 2, 3 3)
+)
+
+MULTIPOLYGON(
+    ((0 0,4 0,4 3,0 3,0 0)),
+    ((5 5,7 5,7 7,5 7,5 5))
+)
+        \end{minted}
+        
+    \end{columns}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Camada de memória com um ponto}
+    
+    Podemos criar camadas temporárias diretamente em memória usando \texttt{QgsVectorLayer}.
+    
+    \begin{minted}{python}
+from qgis.core import (
+QgsVectorLayer, QgsFeature, QgsGeometry, QgsPointXY, QgsProject
+)
+
+# criar camada de memória
+layer = QgsVectorLayer("Point?crs=EPSG:4326", "Pontos", "memory")
+# acessar provedor de dados
+provider = layer.dataProvider()
+# criar feição
+feat = QgsFeature()
+geom = QgsGeometry.fromPointXY(QgsPointXY(-43.2, -22.9))
+feat.setGeometry(geom)
+# adicionar feição na camada
+provider.addFeature(feat)
+# atualizar camada
+layer.updateExtents()
+# adicionar ao projeto
+QgsProject.instance().addMapLayer(layer)
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Camada de memória com linha geodésica}
+    
+
+    
+    \begin{minted}{python}
+from qgis.core import QgsDistanceArea
+new_york = (40.661, -73.944) #lat lon
+london = (51.5072, 0.1276) #lat lon
+# Remember the order is X,Y
+point1 = QgsPointXY(new_york[1], new_york[0])
+point2 = QgsPointXY(london[1], london[0])
+d = QgsDistanceArea()
+d.setEllipsoid('WGS84')
+# Create a geodesic line with vertices every 100km
+vertices = d.geodesicLine(point1, point2, 100000)
+# Create a polyline from the vertices
+# The method returns 1 geometry unless the line crosses antimeridien
+geodesic_line = QgsGeometry.fromPolylineXY(vertices[0])
+# Create a line layer to display the route
+vlayer = QgsVectorLayer('LineString?crs=EPSG:4326', 'route', 'memory')
+provider = vlayer.dataProvider()
+f = QgsFeature()
+f.setGeometry(geodesic_line)
+provider.addFeature(f)
+vlayer.updateExtents() 
+QgsProject.instance().addMapLayer(vlayer)
+    \end{minted}
+    
 \end{frame}
 
 \begin{frame}{CRS e Transformações}
@@ -199,6 +567,42 @@ layer.commitChanges()
     
     Essencial para operações métricas corretas.
 \end{frame}
+
+\begin{frame}[fragile]{Transformação de CRS (PyQGIS)}
+    
+    O PyQGIS permite transformar geometrias entre sistemas de referência.
+    
+    \begin{minted}{python}
+from qgis.core import (
+QgsCoordinateReferenceSystem,
+QgsCoordinateTransform,
+QgsProject,
+QgsGeometry
+)
+# geometria em WGS84
+geom = QgsGeometry.fromWkt("POINT(-43 -22)")
+# CRS origem e destino
+src = QgsCoordinateReferenceSystem("EPSG:4326")
+dst = QgsCoordinateReferenceSystem("EPSG:3857")
+# criar transformador
+transform = QgsCoordinateTransform(src, dst, QgsProject.instance())
+# transformar geometria
+geom.transform(transform)
+print(geom.asWkt())
+    \end{minted}
+    
+    Exemplo: conversão de coordenadas geográficas (lat/lon) para Web Mercator.
+    
+\end{frame}
+
+\begin{frame}[fragile]{Tipos de camada no QGIS}
+
+\begin{center}
+    \includegraphics[width=0.8\linewidth]{pyqgis_figs/classQgsMapLayer__inherit__graph}
+    \url{https://api.qgis.org/api/classQgsMapLayer.html}
+\end{center}
+\end{frame}
+
 
 \begin{frame}{Automação e Scripts Standalone}
     \textbf{Objetivo:}
@@ -248,21 +652,21 @@ layer.commitChanges()
 
 \begin{frame}[fragile]{Estrutura Mínima de Script Standalone}
     \begin{minted}{python}
-        from qgis.core import *
-        from qgis.PyQt.QtWidgets import QApplication
-        import sys
-        
-        QgsApplication.setPrefixPath(
-        "/usr", True
-        )
-        
-        app = QApplication(sys.argv)
-        qgs = QgsApplication([], False)
-        qgs.initQgis()
-        
-        # --- código aqui ---
-        
-        qgs.exitQgis()
+from qgis.core import *
+from qgis.PyQt.QtWidgets import QApplication
+import sys
+
+QgsApplication.setPrefixPath(
+    "/usr", True
+)
+
+app = QApplication(sys.argv)
+qgs = QgsApplication([], False)
+qgs.initQgis()
+
+# --- código aqui ---
+
+qgs.exitQgis()
     \end{minted}
 \end{frame}
 
@@ -285,14 +689,14 @@ layer.commitChanges()
 
 \begin{frame}[fragile]{Carregando Camada Vetorial}
     \begin{minted}{python}
-        layer = QgsVectorLayer(
-        "/dados/limites.shp",
-        "limites",
-        "ogr"
-        )
-        
-        if not layer.isValid():
-        raise Exception("Camada inválida")
+layer = QgsVectorLayer(
+    "/dados/limites.shp",
+    "limites",
+    "ogr"
+)
+
+if not layer.isValid():
+    raise Exception("Camada inválida")
     \end{minted}
     
     \textbf{Importante:}
@@ -301,16 +705,16 @@ layer.commitChanges()
 
 \begin{frame}[fragile]{Executando Processing Standalone}
     \begin{minted}{python}
-        import processing
-        from processing.core.Processing import Processing
-        
-        Processing.initialize()
-        
-        result = processing.run("native:buffer", {
-            "INPUT": layer,
-            "DISTANCE": 100,
-            "OUTPUT": "/dados/buffer.shp"
-        })
+import processing
+from processing.core.Processing import Processing
+
+Processing.initialize()
+
+result = processing.run("native:buffer", {
+    "INPUT": layer,
+    "DISTANCE": 100,
+    "OUTPUT": "/dados/buffer.shp"
+})
     \end{minted}
     
     \textbf{Observação:}
