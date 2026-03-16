@@ -11,7 +11,7 @@ https://py.geocompx.org/01-spatial-data
 - [Aula 11 Interfaces web rápidas](interfaces_web_rapidas.pdf) (Iniciado)
 - [Aula 12 Contâineres](containeres.pdf) (Iniciado)
 - [Aula 13 Bancos de dados relacionais](bancos_de_dados_relacionais.pdf) (Iniciado)
-- [Aula 14 Operações espaciais no QGIS](operacoes_espaciais_qgis.pdf) (ok)
+- [Aula 14 Operações espaciais no QGIS](operacoes_espaciais_qgis.pdf) (Iniciado)
 - [Aula 15 PyQGIS plugin de geoprocessamento](pyqgis_processing_plugin.pdf) (Iniciado)
 - [Aula 16 Serviços web de geoinformação](https://drive.google.com/file/d/1x9_QKMC1RiGESCXSCmmUEdtg-oOd9kV7/view?usp=drive_link
 )
