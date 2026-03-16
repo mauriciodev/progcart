@@ -4,7 +4,7 @@ Sequência de aulas:
 - [Aula 3 - Estruturas de dados em python](estruturas_dados_python.pdf) (ok)
 - [Aula 4,5,6 - Python orientado a objetos](Python_oop.pdf) (ok)
 - [Aula 7 - Interfaces gráficas desktop com PyQt6](pyqt.pdf) (ok)
-- [Aula 8 PyQGIS - Python no QGIS](pyqgis.pdf) (Iniciado)
+- [Aula 8 PyQGIS - Python no QGIS](pyqgis.pdf) (ok)
 - [Aula 9 PyQGIS - plugins de interface](pyqgis_plugins.pdf) (Iniciado)
 - [Aula 10 Geopandas com cadernos Jupyter com e Leafmap](geopandas_jupyter_leafmap.pdf) (Iniciado)
 https://py.geocompx.org/01-spatial-data  
