@@ -18,6 +18,7 @@ https://py.geocompx.org/01-spatial-data
 )
 
 Extras:  
+- [Processamento paralelo em Python](concurrent_future.pdf) (Ok)
 - [Aula 9 Geoprocessamento](geoprocessamento.pdf) (inciado)
 - [Comandos de terminal](comandos_de_terminal.pdf) (Iniciado)
 - [Agentes de IA para geoinformação](strands.pdf) (Iniciado)
