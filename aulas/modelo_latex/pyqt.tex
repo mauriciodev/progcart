@@ -630,12 +630,16 @@ valor = self.doubleSpinBox.value()
         
     \end{frame}
 
+\section{Plots da MatPlotLib em PyQt}
+
 \begin{frame}[fragile]{Plots da MatPlotLib em PyQt}
     A MatPlotLib já tem widgets para PyQt prontas no backend qtagg.
     \begin{minted}{python}
 import sys
 import time
 import numpy as np
+import matplotlib
+matplotlib.use('Qt5Agg')
 
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.backends.backend_qtagg import \
