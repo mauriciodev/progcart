@@ -1,0 +1,388 @@
+\documentclass{beamer}
+
+%lembre-se de configurar o pdflatex com:
+%pdflatex -shell-escape -synctex=1 -interaction=nonstopmode  -output-directory=build  %.tex
+
+\usepackage{aula}
+
+\title{Processamento paralelo básico}
+\date{\today}
+
+\begin{document}
+    
+\input{capa}
+
+\begin{frame}[fragile]{Threads vs Processos (Python)}
+    
+    \begin{columns}[t]
+        
+        \column{0.48\textwidth}
+        \textbf{Threads}
+        
+        \begin{itemize}
+            \item Compartilham memória
+            \item Baixo custo de criação
+            \item Executam dentro do mesmo processo
+            \item Limitadas pelo \textbf{GIL}
+        \end{itemize}
+        
+        \textbf{Uso típico:}
+        \begin{itemize}
+            \item I/O-bound (download, arquivos, APIs)
+        \end{itemize}
+        
+        \column{0.48\textwidth}
+        \textbf{Processos}
+        
+        \begin{itemize}
+            \item Memória isolada
+            \item Mais pesados (fork/spawn)
+            \item Executam em paralelo real
+            \item Não sofrem com o GIL\\
+            
+        \end{itemize}
+        
+        \textbf{Uso típico:}
+        \begin{itemize}
+            \item CPU-bound (cálculos, raster, ML)
+        \end{itemize}
+        
+    \end{columns}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Resumo}
+    
+    \begin{itemize}
+        \item Threads → rápidas, mas limitadas pelo GIL
+        \item Processos → paralelismo real, porém mais custo
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{concurrent.futures — Conceito}
+    
+    O módulo \texttt{concurrent.futures} fornece uma API de alto nível para \textbf{execução paralela}.
+    
+    \vspace{0.4cm}
+    
+    Principais executores:
+    
+    \begin{itemize}
+        \item \textbf{ThreadPoolExecutor} — múltiplas threads
+        \item \textbf{ProcessPoolExecutor} — múltiplos processos
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Quando usar:}
+    
+    \begin{itemize}
+        \item I/O-bound → threads (download, leitura de arquivos)
+        \item CPU-bound → processos (cálculos pesados)
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Executando tarefas com ThreadPoolExecutor}
+    
+    Exemplo: executar várias tarefas em paralelo.
+    
+    \begin{minted}{python}
+from concurrent.futures import ThreadPoolExecutor
+import time
+
+def tarefa(x):
+    time.sleep(1)
+    return x * 2
+
+with ThreadPoolExecutor(max_workers=4) as executor:
+    resultados = list(executor.map(tarefa, range(5)))
+
+    print(resultados)
+    \end{minted}
+    
+    \textbf{map():}
+    \begin{itemize}
+        \item Executa a função para cada elemento
+        \item Retorna os resultados na mesma ordem
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Futures e submit()}
+    
+    \texttt{submit()} permite controle mais detalhado.
+    
+    \begin{minted}{python}
+from concurrent.futures import ThreadPoolExecutor
+
+def tarefa(x):
+    return x * x
+
+with ThreadPoolExecutor() as executor:
+    futures = [executor.submit(tarefa, i) for i in range(5)]
+
+for f in futures:
+    print(f.result())
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Future:}
+    
+    \begin{itemize}
+        \item Representa uma tarefa assíncrona
+        \item Métodos:
+        \begin{itemize}
+            \item \texttt{result()}
+            \item \texttt{done()}
+            \item \texttt{exception()}
+        \end{itemize}
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{ProcessPoolExecutor (CPU-bound)}
+    
+    Para tarefas pesadas, use múltiplos processos.
+    
+    \begin{minted}{python}
+from concurrent.futures import ProcessPoolExecutor
+
+def pesado(x):
+    s = 0
+    for i in range(10**7):
+    s += i * x
+    return s
+
+with ProcessPoolExecutor() as executor:
+    resultados = list(executor.map(pesado, range(4)))
+
+    print(resultados)
+    \end{minted}
+    
+    \textbf{Importante:}
+    
+    \begin{itemize}
+        \item Evita o GIL (Global Interpreter Lock)
+        \item Cada processo roda em um núcleo diferente
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Download paralelo com ThreadPoolExecutor}
+    
+    \begin{minted}{python}
+from concurrent.futures import ThreadPoolExecutor
+import requests
+from pathlib import Path
+
+urls = ["https://example.com/file1.zip", "https://example.com/file2.zip"]
+
+output_dir = Path("downloads")
+output_dir.mkdir(exist_ok=True)
+
+def download(url):
+    nome = url.split("/")[-1]
+    caminho = output_dir / nome
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        with open(caminho, "wb") as f:
+            f.write(r.content)
+            print(f"{nome} OK")
+    else:
+            print(f"Erro: {nome}")
+
+with ThreadPoolExecutor(max_workers=4) as executor:
+    executor.map(download, urls)
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{asyncio — Conceito}
+    
+    \textbf{asyncio} permite programação \textbf{assíncrona} em Python usando \textbf{corrotinas}.
+    
+    \vspace{0.4cm}
+    
+    \textbf{Ideia central}
+    
+    \begin{itemize}
+        \item Executar tarefas sem bloquear o programa
+        \item Ideal para operações \textbf{I/O-bound}
+        \item Baseado em \textbf{event loop}
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Principais conceitos}
+    
+    \begin{itemize}
+        \item \texttt{async def} → define corrotina
+        \item \texttt{await} → pausa execução até resultado
+        \item \texttt{event loop} → gerencia execução
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo básico}
+    
+    \begin{minted}{python}
+import asyncio
+
+async def tarefa():
+    print("Início")
+    await asyncio.sleep(1)
+    print("Fim")
+
+asyncio.run(tarefa())
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Observações}
+    
+    \begin{itemize}
+        \item \texttt{sleep()} não bloqueia o programa
+        \item Outras tarefas podem rodar durante o \texttt{await}
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Executando múltiplas tarefas}
+    
+    \begin{minted}{python}
+import asyncio
+
+async def tarefa(nome, tempo):
+    print(f"Início {nome}")
+    await asyncio.sleep(tempo)
+    print(f"Fim {nome}")
+
+async def main():
+    await asyncio.gather(
+        tarefa("A", 1),
+        tarefa("B", 2),
+        tarefa("C", 1)
+    )
+
+asyncio.run(main())
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{gather():}
+    \begin{itemize}
+        \item Executa várias corrotinas "em paralelo"
+        \item Retorna quando todas terminam
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo prático: múltiplas requisições}
+    
+    \begin{minted}{python}
+import asyncio
+import aiohttp
+
+urls = [
+    "https://example.com/1",
+    "https://example.com/2",
+    "https://example.com/3"
+]
+
+async def fetch(session, url):
+    async with session.get(url) as resp:
+        return await resp.text()
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        tarefas = [fetch(session, u) for u in urls]
+        resultados = await asyncio.gather(*tarefas)
+
+print(len(resultados))
+
+asyncio.run(main())
+    \end{minted}
+    
+    \textbf{Vantagem:} alta eficiência em requisições HTTP simultâneas.
+    
+\end{frame}
+
+\begin{frame}[fragile]{Threads vs asyncio (comparação direta)}
+    
+    \begin{columns}[t]
+        
+        \column{0.48\textwidth}
+        \textbf{Threads}
+        
+        \begin{itemize}
+            \item Paralelismo via \textbf{múltiplas threads}
+            \item Uso do SO (context switch)
+            \item Mais simples de usar
+            \item Pode ter \textbf{race conditions}
+            \item Limitado pelo GIL (CPU)
+        \end{itemize}
+        
+        \begin{minted}{python}
+from concurrent.futures import ThreadPoolExecutor
+
+def tarefa(x):
+    return x * 2
+
+with ThreadPoolExecutor() as ex:
+    resultados = list(ex.map(tarefa, range(5)))
+        \end{minted}
+        
+        \textbf{Modelo:}
+        \begin{itemize}
+            \item Preemptivo (SO decide troca)
+        \end{itemize}
+        
+        \column{0.48\textwidth}
+        \textbf{asyncio}
+        
+        \begin{itemize}
+            \item Concorrência via \textbf{corrotinas}
+            \item Single-thread (event loop)
+            \item Mais eficiente para I/O massivo
+            \item Sem race condition por padrão
+            \item Requer \texttt{async/await}
+        \end{itemize}
+        
+        \begin{minted}{python}
+import asyncio
+
+async def tarefa(x):
+    return x * 2
+
+async def main():
+    res = await asyncio.gather(
+        *(tarefa(i) for i in range(5))
+    )
+
+asyncio.run(main())
+        \end{minted}
+        
+        \textbf{Modelo:}
+        \begin{itemize}
+            \item Cooperativo (await libera execução)
+        \end{itemize}
+        
+    \end{columns}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Resumo prático}
+    
+    \begin{itemize}
+        \item Poucas tarefas I/O → tanto faz
+        \item Muitas conexões (HTTP, APIs) → \textbf{asyncio}
+        \item Código legado ou simples → \textbf{threads}
+    \end{itemize}
+    
+\end{frame}
+
+\end{document}
