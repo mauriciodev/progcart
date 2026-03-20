@@ -14,8 +14,7 @@ https://py.geocompx.org/01-spatial-data
 - [Aula 9 PyQGIS - Geometrias](pyqgis_geometries.pdf) (Iniciado)
 - [Aula 14 Operações espaciais no QGIS](operacoes_espaciais_qgis.pdf) (Iniciado)
 - [Aula 15 PyQGIS plugin de geoprocessamento](pyqgis_processing_plugin.pdf) (Iniciado)
-- [Aula 16 Serviços web de geoinformação](https://drive.google.com/file/d/1x9_QKMC1RiGESCXSCmmUEdtg-oOd9kV7/view?usp=drive_link
-)
+- [Aula 16 Serviços web de geoinformação](https://drive.google.com/file/d/1usPna5n-riIUtXKA0HDy61V8FIlQdA22/view?usp=sharing)
 
 Extras:  
 - [Processamento paralelo em Python](concurrent_future.pdf) (Ok)
