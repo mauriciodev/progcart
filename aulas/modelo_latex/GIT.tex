@@ -8,6 +8,9 @@
 \begin{document}
     
 \input{capa}
+\sumario
+
+\section{GitHub}
 
 \begin{frame}{GitHub}
     
@@ -168,6 +171,8 @@
     
 \end{frame}
 
+
+\section{GitHub Desktop}
 \begin{frame}{GitHub Desktop — Login do usuário}
     
     \begin{columns}[T]
@@ -308,7 +313,7 @@ https://github.com/usuario/meu-repo.git
     
 \end{frame}
 
-
+\section{Git no terminal}
 
 \begin{frame}[fragile]{Git no terminal - Instalação}
     
@@ -354,6 +359,25 @@ git clone git@github.com/mauriciodev/progcart.git
         \item Pasta .git
     \end{itemize}
 \end{frame}
+
+\begin{frame}[fragile]{Git no terminal - Criando Repositório Local}
+    Caso o projeto já exista:
+    
+    \begin{minted}{bash}
+        git init
+        git add .
+        git commit -m "Initial commit"
+    \end{minted}
+    
+    Adicionar remoto:
+    
+    \begin{minted}{bash}
+        git remote add origin https://github.com/usuario/meu-repo.git
+        git push -u origin main
+    \end{minted}
+\end{frame}
+
+\section{Git no VSCodium}
 
 \begin{frame}{Git no VSCodium}
     
@@ -418,22 +442,7 @@ git clone git@github.com/mauriciodev/progcart.git
     
 \end{frame}
 
-\begin{frame}[fragile]{Git no terminal - Criando Repositório Local}
-    Caso o projeto já exista:
-    
-    \begin{minted}{bash}
-git init
-git add .
-git commit -m "Initial commit"
-    \end{minted}
-    
-    Adicionar remoto:
-    
-    \begin{minted}{bash}
-git remote add origin https://github.com/usuario/meu-repo.git
-git push -u origin main
-    \end{minted}
-\end{frame}
+
 
 %
 %\begin{frame}[fragile]{Código Python}

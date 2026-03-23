@@ -9,6 +9,8 @@
     
 \input{capa}
 
+\section{QGIS Plugin Builder}
+
 \begin{frame}{Plugin Builder: Passo a passo}
 \begin{figure}
     \centering
@@ -113,6 +115,106 @@
     \url{https://docs.qgis.org/3.34/en/docs/pyqgis_developer_cookbook/plugins/plugins.html}
 \end{frame}
 
+\section{Depuração remota no QGIS}
+
+\begin{frame}{Depuração de plugins QGIS — Visão geral}
+    
+    Depurar plugins QGIS pode ser desafiador porque o código roda \textbf{dentro do QGIS}.
+    
+    \vspace{0.4cm}
+    
+    \textbf{Estratégia:}
+    
+    \begin{itemize}
+        \item Usar o \textbf{VSCodium} como debugger
+        \item Conectar ao processo do QGIS
+        \item Inserir breakpoints no código do plugin
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Ferramenta principal:}
+    
+    \begin{itemize}
+        \item \texttt{debugpy} (debugger Python)
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Passo 1 — Inserir debugpy no plugin}
+    
+    Adicione no código do plugin (ex: no \texttt{initGui()} ou início do run):
+    
+    \begin{minted}{python}
+import debugpy
+
+debugpy.listen(("localhost", 5678))
+print("Aguardando debugger...")
+
+debugpy.wait_for_client()
+print("Debugger conectado!")
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Efeito:}
+    
+    \begin{itemize}
+        \item QGIS pausa execução
+        \item Aguarda conexão do VSCodium
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Passo 2 — Configurar VSCodium}
+    
+    
+\textbf{Ao iniciar a depuração, escolha "Remote attach".}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{pyqgis_figs/debug_remote_attach}
+\end{figure}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Depois:}
+    
+    \begin{itemize}
+        \item Abrir o plugin no QGIS
+        \item Executar a depuração.
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Passo 3 — Depuração na prática}
+    
+    Fluxo de uso:
+    
+    \begin{enumerate}
+        \item Abrir QGIS
+        \item Executar o plugin
+        \item QGIS pausa em \texttt{wait\_for\_client()}
+        \item Iniciar debug no VSCodium
+        \item Continuar execução
+    \end{enumerate}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Agora você pode:}
+    
+    \begin{itemize}
+        \item Colocar breakpoints
+        \item Inspecionar variáveis
+        \item Executar passo a passo
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Dica:}
+    
+    Remova os comandos antes de publicar o plugin.
+    
+\end{frame}
 
 
 \end{document}

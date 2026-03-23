@@ -47,6 +47,11 @@
 	\end{block}
 }
 
+\newcommand{\sumario}{
+\begin{frame}{Sumário}
+    \tableofcontents{}
+\end{frame}
+}
 
 \newcommand{\colimage}[2][]{%
 	\begin{figure}
@@ -64,3 +69,13 @@
 \setbeamercolor{structure}{fg=PastelGreen}
 \setbeamercolor{palette primary}{bg=PastelGreen, fg=black}
  
+\AtBeginSection[]{
+    \begin{frame}
+        \vfill
+        \centering
+        \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+            \usebeamerfont{title}\insertsectionhead\par%
+        \end{beamercolorbox}
+        \vfill
+    \end{frame}
+}

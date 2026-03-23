@@ -8,6 +8,7 @@
 \begin{document}
     
     \input{capa}
+    \sumario
     
     \begin{frame}{Introdução ao PyQt5}
         
@@ -145,6 +146,8 @@ app.exec()
         
     \end{frame}
     
+    \section{Qt Designer}
+    
     \begin{frame}{Aplicação PyQt5 — Qt Designer}
         
         \textbf{Qt Designer} é uma ferramenta visual para criar interfaces gráficas.
@@ -240,9 +243,9 @@ class MainWindow(QMainWindow):
         super().__init__()
         loadUi("main_window.ui", self)
 
-# Acessando widgets do .ui
-self.pushButton.setText("Clique aqui")
-self.label.setText("Olá, PyQt5!")
+        # Acessando widgets do .ui
+        self.pushButton.setText("Clique aqui")
+        self.label.setText("Olá, PyQt5!")
         \end{minted}
         
         \vspace{0.3cm}
@@ -267,7 +270,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         loadUi("main_window.ui", self)
     
-    self.pushButton.clicked.connect(self.ao_clicar)
+        self.pushButton.clicked.connect(self.ao_clicar)
     
     def ao_clicar(self):
         self.label.setText("Botão clicado!")
@@ -349,6 +352,8 @@ def processar(self):
         \end{itemize}
         
     \end{frame}
+    
+    \section{Widgets mais comuns}
     
     \begin{frame}[fragile]{QPushButton}
         
@@ -660,12 +665,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # Carrega a MainWindow que tem um objeto verticalLayout
         uic.loadUi('plot.ui', self)
     
-    # Cria um canvas da MatPlotLib integrado à PyQt
-    self.static_canvas = FigureCanvas(Figure(figsize=(5, 3)))
-    #  Adiciona a barra de navegação no layout
-    self.verticalLayout.addWidget(NavigationToolbar(self.static_canvas, self))
-    # Adiciona o canvas no layout
-    self.verticalLayout.addWidget(self.static_canvas)
+        # Cria um canvas da MatPlotLib integrado à PyQt
+        self.static_canvas = FigureCanvas(Figure(figsize=(5, 3)))
+        #  Adiciona a barra de navegação no layout
+        self.verticalLayout.addWidget(NavigationToolbar(self.static_canvas, self))
+        # Adiciona o canvas no layout
+        self.verticalLayout.addWidget(self.static_canvas)
     
     def draw_plot(self): # Função que gera os dados e desenha
         self._static_ax = self.static_canvas.figure.subplots()
@@ -688,6 +693,8 @@ if __name__ == "__main__":
     qapp.exec()
     \end{minted}
 \end{frame}
+
+\section{PyInstaller: Arquivos executáveis com Python}
 
 % Slide 1
 \begin{frame}[fragile]{Empacotando PyQt5 com Pixi}

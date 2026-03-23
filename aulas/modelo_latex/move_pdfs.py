@@ -8,7 +8,7 @@ root_dir = Path(__file__).resolve().parent
 build_dir = root_dir / "build"
 target_dir = root_dir.parent
 compilar = False
-gerar_uml = True
+gerar_uml = False
 
 
 def compilar_tex(root_dir: str = ".", build_dir: str = "build"):
