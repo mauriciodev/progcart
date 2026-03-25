@@ -69,7 +69,7 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}{Plugin Builder: Onde salvar?}
+\begin{frame}[fragile]{Plugin Builder: Onde salvar?}
 \begin{itemize}
     \item   Onde salvar?
     \item   LINUX
@@ -77,6 +77,11 @@
     \item   WINDOWS
     \item   \url{C:\\Users\\<user>\\AppData\\Roaming\\QGIS\\QGIS3\\profiles\\default\\python\\plugins\\}
 \end{itemize}
+
+    \begin{minted}{python}
+from qgis.core import QgsApplication
+print(QgsApplication.qgisSettingsDirPath())
+    \end{minted}
 \end{frame}
 
 \begin{frame}[fragile]{Estrutura básica de um plugin QGIS}
@@ -114,6 +119,8 @@
     \end{itemize}
     \url{https://docs.qgis.org/3.34/en/docs/pyqgis_developer_cookbook/plugins/plugins.html}
 \end{frame}
+
+
 
 \section{Depuração remota no QGIS}
 
