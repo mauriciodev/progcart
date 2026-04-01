@@ -46,6 +46,8 @@
     
 \end{frame}
 
+\subsection{Google Colab}
+
 \begin{frame}[fragile]{Google Colab (na nuvem)}
     
     Executa notebooks diretamente no navegador.
@@ -85,7 +87,111 @@
     
 \end{frame}
 
+\begin{frame}{Google Colab (na nuvem)}
+    
+    \begin{itemize}
+        \item Roda no navegador
+        \item Utiliza uma máquina virtual oferecida pelo Google.
+        \item Pacotes devem ser instalados pelo caderno.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/colab_1}
+    \end{figure}
+\end{frame}
 
+\begin{frame}{Google Colab (na nuvem}
+    
+    \begin{itemize}
+        \item Roda no navegador
+        \item Utiliza uma máquina virtual oferecida pelo Google.
+        \item Pacotes devem ser instalados pelo caderno.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/colab_2}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Google Colab (na nuvem)}
+    
+    \begin{itemize}
+        \item Roda no navegador
+        \item Utiliza uma máquina virtual oferecida pelo Google.
+        \item Pacotes devem ser instalados pelo caderno.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/colab_3}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Comandos básicos no Jupyter Notebook}
+
+    No Jupyter podemos combinar \textbf{código}, \textbf{comandos especiais} e \textbf{texto formatado}.
+    
+    \vspace{0.3cm}
+    
+    \begin{columns}[t]
+    
+    \column{0.48\textwidth}
+    \textbf{Comandos de sistema (\texttt{!})}
+    
+    Executam comandos do terminal:
+    
+    \begin{minted}{python}
+!ls
+!pip install geopandas
+!pwd
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Magic commands (\texttt{\%})}
+    
+    Comandos especiais do Jupyter:
+    
+    \begin{minted}{python}
+%timeit sum(range(1000))
+%matplotlib inline
+    \end{minted}
+    
+    \column{0.48\textwidth}
+    \textbf{Markdown}
+    
+    Permite escrever texto formatado.
+    
+    \begin{minted}{markdown}
+# Título
+## Seção
+
+Texto com **negrito**
+e *itálico*
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Figuras}
+    
+    \begin{minted}{markdown}
+![Mapa](figura.png)
+    \end{minted}
+    
+    \end{columns}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Resumo}
+    
+    \begin{itemize}
+    \item \texttt{!} → comandos do sistema
+    \item \texttt{\%} → comandos do Jupyter
+    \item Markdown → documentação e organização
+    \end{itemize}
+
+\end{frame}
+
+\subsection{Jupyter lab}
 \begin{frame}[fragile]{JupyterLab (local)}
     
     Interface web moderna para notebooks.
@@ -97,12 +203,12 @@
     \begin{columns}[t]
         \column{0.48\textwidth}
         \begin{minted}{bash}
-            pip install jupyterlab
+pip install jupyterlab
         \end{minted}
         \column{0.48\textwidth}
         \begin{minted}{bash}
-            pixi add jupyterlab
-            pixi shell
+pixi add jupyterlab
+pixi shell
         \end{minted}
     \end{columns}
     
@@ -110,7 +216,7 @@
     \textbf{Executar}:
     
     \begin{minted}{bash}
-        jupyter lab
+jupyter lab
     \end{minted}
     
     \vspace{0.3cm}
@@ -159,6 +265,7 @@
     \end{figure}
 \end{frame}
 
+\subsection{VSCodium Jupyter plugin}
 \begin{frame}[fragile]{VSCode / VSCodium (plugin Jupyter)}
     
     Permite rodar notebooks dentro do editor.
@@ -271,112 +378,103 @@ pixi add notebook ipykernel
     
 \end{frame}
 
-\begin{frame}{Jupyter Notebooks}
-    \centering
-    \huge Jupyter Notebooks \\
-    (Cadernos Jupyter)\\
-    Laboratório de ciência de dados.
+
+
+\section{Estruturas de dados avançadas no Jupyter}
+
+\begin{frame}[fragile]{Matplotlib: Exemplo de regressão linear}
+
+Exemplo em um notebook Jupyter com dados sintéticos.
+
+\vspace{0.3cm}
+
+    \begin{minted}{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# gerar dados sintéticos
+np.random.seed(0)
+x = np.linspace(0, 10, 30)
+y = 2.5 * x + 5 + np.random.randn(30)
+
+# ajustar regressão linear (y = ax + b)
+coef = np.polyfit(x, y, 1)
+y_fit = np.polyval(coef, x)
+
+# plot
+plt.scatter(x, y, label="dados")
+plt.plot(x, y_fit, label="ajuste linear")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+plt.title("Regressão linear")
+
+plt.show()
+    \end{minted}
+
 \end{frame}
 
-\begin{frame}{Google Colab}
-    \url{https://colab.research.google.com/}
-\end{frame}
-
-\begin{frame}[fragile]{Instalação do Jupyter com Pixi}
-    
-    \textbf{Contexto:}  
-    Pixi gerencia ambientes e dependências de projetos Python.
-    
-    \vspace{0.3cm}
-    
-    \textbf{1. Criar um projeto Pixi}
-    \begin{minted}{bash}
-pixi init projeto-jupyter
-cd projeto-jupyter
-    \end{minted}
-    
-    \vspace{0.2cm}
-    
-    \textbf{2. Adicionar Jupyter ao ambiente}
-    \begin{minted}{bash}
-pixi add jupyter
-    \end{minted}
-    
-    \vspace{0.2cm}
-    
-    \textbf{3. Executar o Jupyter Notebook}
-    \begin{minted}{bash}
-pixi run jupyter notebook
-    \end{minted}
-    
-    \vspace{0.3cm}
-    
-    \textbf{Observações:}
+\begin{frame}[fragile]{Matplotlib: Exemplo de regressão linear}
     \begin{itemize}
-        \item Ambiente isolado e reprodutível
-        \item Dependências descritas no \texttt{pixi.toml}
+        \item Gráficos da Matplotlib tem visualização como Jupyter Widgets.
     \end{itemize}
-    
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/matplotlib}
+    \end{figure}
 \end{frame}
-\begin{frame}[fragile]{Instalação do Jupyter com uv}
+
+\begin{frame}[fragile]{Dataframe no caderno Jupyter.}
     
-    \textbf{Contexto:}  
-    \texttt{uv} é um gerenciador rápido de ambientes e pacotes Python.
-    
-    \vspace{0.3cm}
-    
-    \textbf{1. Criar ambiente virtual}
-    \begin{minted}{bash}
-uv venv
-    \end{minted}
-    
-    \vspace{0.2cm}
-    
-    \textbf{2. Ativar o ambiente}
-    \begin{minted}{bash}
-source .venv/bin/activate
-    \end{minted}
-    
-    \vspace{0.2cm}
-    
-    \textbf{3. Instalar Jupyter}
-    \begin{minted}{bash}
-uv pip install jupyter
-    \end{minted}
-    
-    \vspace{0.2cm}
-    
-    \textbf{4. Executar o Jupyter Notebook}
-    \begin{minted}{bash}
-jupyter notebook
-    \end{minted}
+    \textbf{Pands/Geopandas} Acesso a \textit{DataFrames}.
     
     \vspace{0.3cm}
     
-    \textbf{Observações:}
+    \textbf{Instalação (Colab)}
+    
+    \begin{minted}{python}
+!pip install geopandas
+    \end{minted}
+    
+    \textbf{Código}
+    
+    \begin{minted}{python}
+import pandas as pd
+import geopandas as gpd
+    \end{minted}
+
+    \begin{minted}{python}    
+# carregar dados vetoriais
+url = "https://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip"
+gdf = gpd.read_file(url)
+gdf
+    \end{minted}    
+\end{frame}
+
+\begin{frame}{Dataframe no caderno Jupyter.}
     \begin{itemize}
-        \item Fluxo similar ao \texttt{pip + venv}
-        \item Foco em desempenho
+        \item Dataframes e geodataframes tem visualização como Jupyter Widgets.
     \end{itemize}
-    
-\end{frame}
-
-\begin{frame}{Pandas e Geopandas}
-    \centering
-    \huge (geo) Data frames
-\end{frame}
-
-\begin{frame}{Matplotlib no Jupyter}
-
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/gdf_colab}
+    \end{figure}
 \end{frame}
 
 \section{Visualização de geoinformação no Jupyter}
 
-\begin{frame}[fragile]{Exemplo — Leafmap em caderno Jupyter}
+\begin{frame}[fragile]{Leafmap em caderno Jupyter}
     
     \textbf{Contexto:}  
     \texttt{leafmap} permite criar mapas interativos usando Python,
     integrando Jupyter + Leaflet.
+    
+    
+    \textbf{Instalação (Colab)}
+    
+    \begin{minted}{python}
+!pip install leafmap geopandas
+    \end{minted}
     
     \vspace{0.3cm}
     
@@ -385,9 +483,6 @@ import leafmap
 
 # Criar um mapa interativo
 m = leafmap.Map(center=[-15, -55], zoom=4)
-
-# Adicionar camada base
-m.add_basemap("OpenStreetMap")
 
 # Exibir o mapa no Jupyter
 m
@@ -404,19 +499,17 @@ m
     
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo: Mapa interativo com Leafmap}
-    
-    \textbf{Leafmap} permite criar mapas interativos facilmente em notebooks.
-    
-    \vspace{0.3cm}
-    
-    \textbf{Instalação (Colab)}
-    
-    \begin{minted}{python}
-!pip install leafmap geopandas
-    \end{minted}
-    
-    \textbf{Código}
+\begin{frame}{Leafmap em caderno Jupyter}
+    \begin{itemize}
+        \item Leafmap (ou folium, maplibre-gl, etc) apresentam mapas como Jupyter Widgets.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/leafmap_1}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Leafmap em caderno Jupyter: GeoDataFrame}
     
     \begin{minted}{python}
 import leafmap
@@ -426,22 +519,87 @@ import geopandas as gpd
 m = leafmap.Map(center=[-15, -55], zoom=4)
 
 # carregar dados vetoriais
-url = "https://raw.githubusercontent.com/" \
-"geopandas/geopandas/main/examples/" \
-"naturalearth_lowres/naturalearth_lowres.shp"
-
+url = "https://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip"
 gdf = gpd.read_file(url)
 
-# filtrar Brasil
-br = gdf[gdf.name == "Brazil"]
-
-# adicionar ao mapa
-m.add_gdf(br, layer_name="Brasil")
+# adicionar ao mapa com estilo
+m.add_gdf(
+    gdf,
+    layer_name="Natural Earth",
+    style={
+        "color": "red",        # cor da borda
+        "fillColor": "lightgray",
+        "weight": 2
+    }
+)
 
 # exibir mapa
 m
     \end{minted}
     
 \end{frame}
+
+
+\begin{frame}{Leafmap em caderno Jupyter: GeoDataFrame}
+    \begin{itemize}
+        \item Adicionando uma camada vetorial (GeoDataFrame).
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/leafmap_2}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Leafmap em caderno Jupyter: COG}
+
+\textbf{COG (Cloud Optimized GeoTIFF)} permite leitura eficiente via HTTP.
+
+\vspace{0.3cm}
+
+\textbf{Código}
+
+\begin{minted}{python}
+import leafmap
+m = leafmap.Map(center=[20, 0], zoom=2)
+
+# URL de um COG público (exemplo Sentinel-2)
+url = "https://github.com/opengeos/data/releases/download/raster/Libya-2023-07-01.tif"
+
+# adicionar COG ao mapa
+m.add_cog_layer(url, name="COG")
+
+bounds = leafmap.cog_bounds(url)
+m.zoom_to_bounds(bounds)
+# exibir mapa
+m
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Vantagens do COG}
+
+\begin{itemize}
+\item Acesso direto via URL (sem download completo)
+\item Leitura por blocos (otimizado para web)
+\item Ideal para grandes rasters
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Leafmap em caderno Jupyter: COG}
+    \begin{itemize}
+        \item Adicionando uma camada matricial (COG).
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/leafmap_3}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Referências importantes}
+DORMAN, Michael et al. Geocomputation with Python. [S.l.]: CRC Press, 2025. Disponível em \url{https://py.geocompx.org/}.
+
+\end{frame}
+
 
 \end{document}
