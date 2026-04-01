@@ -6,14 +6,18 @@ Sequência de aulas:
 - [Aula 7 - Interfaces gráficas desktop com PyQt6](pyqt.pdf) (ok)
 - [Aula 8 PyQGIS - Python no QGIS](pyqgis.pdf) (ok)
 - [Aula 9 PyQGIS - plugins de interface](pyqgis_plugins.pdf) (ok)
+- [Projeto 1 - Plugin Hello Map](https://github.com/mauriciodev/progcart/raw/refs/heads/main/projeto_1_pyqt_qgis/docs/projeto1.odp)
 - [Aula 10 Geopandas com cadernos Jupyter com e Leafmap](geopandas_jupyter_leafmap.pdf) (Iniciado)
 https://py.geocompx.org/01-spatial-data  
 - [Aula 11 Interfaces web rápidas](interfaces_web_rapidas.pdf) (Iniciado)
+- [Projeto 2]()
 - [Aula 12 Contâineres](containeres.pdf) (Iniciado)
 - [Aula 13 Bancos de dados relacionais](bancos_de_dados_relacionais.pdf) (Iniciado)
+- [Projeto 3]()
 - [Aula 9 PyQGIS - Geometrias](pyqgis_geometries.pdf) (Iniciado)
 - [Aula 14 Operações espaciais no QGIS](operacoes_espaciais_qgis.pdf) (Iniciado)
 - [Aula 15 PyQGIS plugin de geoprocessamento](pyqgis_processing_plugin.pdf) (Iniciado)
+- [Projeto 4]()
 - [Aula 16 Serviços web de geoinformação](https://drive.google.com/file/d/1usPna5n-riIUtXKA0HDy61V8FIlQdA22/view?usp=sharing)
 
 Extras:  
