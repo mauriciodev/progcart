@@ -2,16 +2,274 @@
 
 \usepackage{aula}
 
-\title{Geopandas com cadernos Jupyter com e Leafmap}
+\title{Cadernos Jupyter com Geopandas e Leafmap}
 \date{\today}
 
 \begin{document}
     
 \input{capa}
 
-\
+\sumario
 
 \section{Cadernos jupyter}
+
+
+\begin{frame}{Jupyter Notebooks — Conceito}
+    
+    Jupyter Notebook é um ambiente interativo para:
+    
+    \begin{itemize}
+        \item Executar código (Python, R, etc.)
+        \item Visualizar resultados imediatamente
+        \item Combinar código, texto e gráficos
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Muito usado em:}
+    
+    \begin{itemize}
+        \item Ciência de dados
+        \item Geoprocessamento
+        \item Ensino e prototipagem
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Existem várias formas de usar:
+    
+    \begin{itemize}
+        \item Google Colab
+        \item VSCode / VSCodium
+        \item JupyterLab local
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Google Colab (na nuvem)}
+    
+    Executa notebooks diretamente no navegador.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Como usar:}
+    
+    \begin{itemize}
+        \item Acessar: \texttt{https://colab.research.google.com}
+        \item Login com conta Google
+        \item Criar novo notebook
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Instalação de pacotes}
+    
+    \begin{minted}{python}
+!pip install geopandas
+    \end{minted}
+    
+    \textbf{Vantagens}
+    
+    \begin{itemize}
+        \item Não precisa instalar nada
+        \item Roda na nuvem (CPU/GPU)
+        \item Fácil compartilhamento
+    \end{itemize}
+    
+    \textbf{Limitações}
+    
+    \begin{itemize}
+        \item Ambiente temporário
+        \item Dependente de internet
+    \end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{JupyterLab (local)}
+    
+    Interface web moderna para notebooks.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Instalação}
+    
+    \begin{columns}[t]
+        \column{0.48\textwidth}
+        \begin{minted}{bash}
+            pip install jupyterlab
+        \end{minted}
+        \column{0.48\textwidth}
+        \begin{minted}{bash}
+            pixi add jupyterlab
+            pixi shell
+        \end{minted}
+    \end{columns}
+    
+    
+    \textbf{Executar}:
+    
+    \begin{minted}{bash}
+        jupyter lab
+    \end{minted}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Funcionalidades}
+    
+    \begin{itemize}
+        \item Interface com abas (tipo IDE)
+        \item Editor de arquivos
+        \item Terminal integrado
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Vantagens}
+    
+    \begin{itemize}
+        \item Mais poderoso que notebook clássico
+        \item Totalmente local
+        \item Ideal para projetos maiores
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{JupyterLab (local)}
+    
+    \begin{itemize}
+        \item Roda no navegador
+        \item Acessa os pacotes instalados no mesmo ambiente Python.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/jupyterlab}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{JupyterLab (local)}
+    
+    \begin{itemize}
+        \item Roda no navegador
+        \item Acessa os pacotes instalados no mesmo ambiente Python.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/jupyterlab_2}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{VSCode / VSCodium (plugin Jupyter)}
+    
+    Permite rodar notebooks dentro do editor.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Instalação}
+    \begin{columns}[t]
+        \column{0.48\textwidth}
+            \begin{minted}{bash}
+# instalar python com pip
+pip install notebook ipykernel
+        \end{minted}
+        \column{0.48\textwidth}
+            \begin{minted}{bash}
+# instalar python com pixi
+pixi add notebook ipykernel
+        \end{minted}
+    \end{columns}
+
+    
+    Instalar extensões:
+    
+    \begin{itemize}
+        \item Python
+        \item Jupyter
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Uso}
+    
+    \begin{itemize}
+        \item Abrir ou criar um novo arquivo com extensão \texttt{.ipynb}.
+        \item Executar células diretamente
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Vantagens}
+    
+    \begin{itemize}
+        \item Integração com código Python
+        \item Debugging e autocomplete
+        \item Ambiente local controlado
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{VSCode / VSCodium (plugin Jupyter)}
+    
+\begin{itemize}
+    \item Ao executar uma célula, deve-se escolher o ambiente python que executará os comandos. 
+    \item Com a extensão \textbf{Colab} pode-se escolher um ambiente python \textbf{remoto do Google}!
+\end{itemize}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{jupyter_figs/vscodium_1_run}
+\end{figure}
+\end{frame}
+
+\begin{frame}{VSCode / VSCodium (plugin Jupyter)}
+    
+    \begin{itemize}
+        \item Podemos escolher o ambiente python criado com pixi.
+        \item Lembre-se que deve ter os pacotes do jupyter instalados para funcionar como \textbf{kernel}.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/vscodium_2_run}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{VSCode / VSCodium (plugin Jupyter)}
+    
+    \begin{itemize}
+        \item Note o \textbf{kernel} em execução no canto superior direito. 
+        \item Diferente do local onde observamos o ambiente nos arquivos .py.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{jupyter_figs/vscodium_3_run}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{Comparação das abordagens}
+    
+    \begin{center}
+        \begin{tabular}{lccc}
+            \textbf{Critério} & \textbf{Colab} & \textbf{VSCode} & \textbf{JupyterLab} \\
+            \hline
+            Instalação & Não & Sim & Sim \\
+            Offline & Não & Sim & Sim \\
+            GPU & Sim & Não & Não \\
+            Facilidade & Alta & Média & Média \\
+            Controle ambiente & Baixo & Alto & Alto \\
+        \end{tabular}
+    \end{center}
+    
+    \vspace{0.4cm}
+    
+    \textbf{Resumo}
+    
+    \begin{itemize}
+        \item Iniciantes → Colab
+        \item Desenvolvimento → VSCode
+        \item Projetos maiores → JupyterLab
+    \end{itemize}
+    
+\end{frame}
 
 \begin{frame}{Jupyter Notebooks}
     \centering
@@ -112,9 +370,7 @@ jupyter notebook
 
 \end{frame}
 
-\begin{frame}{Visualização de geoinformação no Jupyter}
-
-\end{frame}
+\section{Visualização de geoinformação no Jupyter}
 
 \begin{frame}[fragile]{Exemplo — Leafmap em caderno Jupyter}
     
@@ -145,6 +401,46 @@ m
         \item Zoom e navegação com o mouse
         \item Ideal para exploração espacial
     \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Mapa interativo com Leafmap}
+    
+    \textbf{Leafmap} permite criar mapas interativos facilmente em notebooks.
+    
+    \vspace{0.3cm}
+    
+    \textbf{Instalação (Colab)}
+    
+    \begin{minted}{python}
+!pip install leafmap geopandas
+    \end{minted}
+    
+    \textbf{Código}
+    
+    \begin{minted}{python}
+import leafmap
+import geopandas as gpd
+
+# criar mapa centrado no Brasil
+m = leafmap.Map(center=[-15, -55], zoom=4)
+
+# carregar dados vetoriais
+url = "https://raw.githubusercontent.com/" \
+"geopandas/geopandas/main/examples/" \
+"naturalearth_lowres/naturalearth_lowres.shp"
+
+gdf = gpd.read_file(url)
+
+# filtrar Brasil
+br = gdf[gdf.name == "Brazil"]
+
+# adicionar ao mapa
+m.add_gdf(br, layer_name="Brasil")
+
+# exibir mapa
+m
+    \end{minted}
     
 \end{frame}
 
