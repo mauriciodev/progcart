@@ -68,12 +68,15 @@
 \definecolor{PastelGreen}{RGB}{160,210,175}
 \setbeamercolor{structure}{fg=PastelGreen}
 \setbeamercolor{palette primary}{bg=PastelGreen, fg=black}
+\setbeamercolor{section in toc}{fg=black}
+\setbeamercolor{subsection in toc}{fg=black}
  
 \AtBeginSection[]{
     \begin{frame}
         \vfill
         \centering
         \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+            \inserttitle \\
             \usebeamerfont{title}\insertsectionhead\par%
         \end{beamercolorbox}
         \vfill
