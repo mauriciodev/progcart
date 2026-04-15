@@ -9,6 +9,12 @@
     
 \input{capa}
 
+\sumario
+
+\section{Aplicações cliente/servidor}
+
+\subsection{HTML + Flask}
+
 \begin{frame}{HTML Form → Flask (WSGI)}
     
     \textbf{Fluxo da aplicação:}
@@ -38,37 +44,80 @@
     
 \end{frame}
 
-\begin{frame}{Streamlit}
-    \centering
-    Isso tudo é muito bacana, mas não parece prático. Tem algo mais prático? \pause
-    \huge{Backend e Frontend integrados:\\ Streamlit}
+\begin{frame}{Cliente-Servidor com Flask e HTML}
+
+\centering
+
+\usetikzlibrary{positioning}
+
+\begin{tikzpicture}[
+    node distance=5cm,
+    every node/.style={
+        draw,
+        rectangle,
+        rounded corners,
+        align=center,
+        minimum width=3.5cm,
+        minimum height=1.5cm
+    }
+]
+
+% Nodes
+\node (client) {Cliente \\ (Browser) \\ HTML/CSS/JS};
+\node (server) [right=5cm of client] {Servidor \\ Flask (Python)};
+
+% Notes
+\node (client_note) [below=1.5cm of client, draw=none] {
+Usuário interage \\ via navegador
+};
+
+\node (server_note) [below=1.5cm of server, draw=none] {
+Processa lógica \\ e retorna HTML
+};
+
+% Arrows (separadas verticalmente)
+
+% Request (linha superior)
+\draw[->, thick]
+([yshift=6pt]client.east) -- 
+node[above]{HTTP Request \\ (GET / POST)}
+([yshift=6pt]server.west);
+
+% Response (linha inferior)
+\draw[->, thick]
+([yshift=-6pt]server.west) -- 
+node[below]{HTTP Response \\ (HTML)}
+([yshift=-6pt]client.east);
+
+\end{tikzpicture}
+
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo — HTML}
     
     \begin{minted}{html}
-        <!DOCTYPE html>
-        <html>
-        <body>
-        
+<!DOCTYPE html>
+<html>
+    <body>
+    
         <form action="/" method="post">
         
-        Nome:
-        <input type="text" name="nome"><br><br>
-        
-        Curso:
-        <select name="curso">
-        <option value="python">Python</option>
-        <option value="geoprocessamento">Geoprocessamento</option>
-        <option value="web">Web</option>
-        </select><br><br>
-        
-        <input type="submit" value="Enviar">
+            Nome:
+            <input type="text" name="nome"><br><br>
+            
+            Curso:
+            <select name="curso">
+                <option value="python">Python</option>
+                <option value="geoprocessamento">Geoprocessamento</option>
+                <option value="web">Web</option>
+            </select><br><br>
+            
+            <input type="submit" value="Enviar">
         
         </form>
-        
-        </body>
-        </html>
+    
+    </body>
+</html>
     \end{minted}
     
 \end{frame}
@@ -93,8 +142,6 @@ Curso: {curso}
     Curso:
     <select name="curso">
         <option value="python">Python</option>
-        <option value="geoprocessamento">Geoprocessamento</option>
-        <option value="web">Web</option>
     </select><br><br>
     <input type="submit" value="Enviar">
 </form>"""
@@ -104,6 +151,654 @@ if __name__ == "__main__":
     
 \end{frame}
 
+\begin{frame}[fragile]{Tipos de Requisição HTTP}
+
+\textbf{Principais métodos HTTP:}
+
+\begin{itemize}
+    \item \textbf{GET} → Buscar dados (sem alterar estado)
+    \item \textbf{POST} → Enviar dados / criar recurso
+    \item \textbf{PUT} → Atualizar recurso (completo)
+    \item \textbf{PATCH} → Atualizar parcialmente
+    \item \textbf{DELETE} → Remover recurso
+\end{itemize}
+
+\textbf{Exemplos em Python:}
+
+\begin{minted}{python}
+import requests
+
+# GET
+r = requests.get("http://api.exemplo.com/users")
+
+# POST
+r = requests.post( "http://api.exemplo.com/users", json={"name": "Ana"} )
+
+# PUT
+r = requests.put( "http://api.exemplo.com/users/1", json={"name": "Ana Silva"})
+
+# DELETE
+r = requests.delete( "http://api.exemplo.com/users/1" )
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Observações:}
+\begin{itemize}
+    \item GET é idempotente e seguro
+    \item POST não é idempotente
+    \item PUT e DELETE são idempotentes
+\end{itemize}
+
+\end{frame}
+
+\subsection{Serviços REST}
+
+%------------------------------------------------
+\begin{frame}{Serviços REST: Objetivo}
+\begin{itemize}
+    \item Criar uma API REST simples
+    \item Testar com cliente Python
+    \item Visualizar no navegador
+    \item Documentar com Swagger
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]{Servidor Mock com Flask}
+
+\begin{minted}{python}
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route("/users")
+def get_users():
+    return jsonify([
+        {"id": 1, "name": "Ana"},
+        {"id": 2, "name": "Bruno"}
+    ])
+
+if __name__ == "__main__":
+    app.run(debug=True)
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Executar:}
+
+\begin{minted}{bash}
+python app.py
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Visualização no Navegador}
+
+\begin{itemize}
+    \item Acesse no navegador:
+    \item \texttt{http://127.0.0.1:5000/users}
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Resultado:}
+\begin{itemize}
+    \item JSON exibido diretamente
+    \item Fácil inspeção
+    \item Útil para debug rápido
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Cliente com requests}
+
+\begin{minted}{python}
+import requests
+
+url = "http://127.0.0.1:5000/users"
+
+response = requests.get(url)
+
+print("Status:", response.status_code)
+print("JSON:", response.json())
+\end{minted}
+
+\end{frame}
+
+
+
+%------------------------------------------------
+\begin{frame}[fragile]{Swagger com Flasgger (Simples)}
+
+\textbf{Instalar:}
+
+\begin{minted}{bash}
+pip install flasgger
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Adicionar ao Flask:}
+
+\begin{minted}{python}
+from flasgger import Swagger
+
+app = Flask(__name__)
+swagger = Swagger(app)
+
+@app.route("/users")
+def get_users():
+    """
+    Lista de usuários
+    ---
+    responses:
+      200:
+        description: Lista de usuários
+    """
+    return jsonify([
+        {"id": 1, "name": "Ana"}
+    ])
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Swagger UI}
+
+\begin{itemize}
+    \item Acesse:
+    \item \texttt{http://127.0.0.1:5000/apidocs}
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Vantagens:}
+\begin{itemize}
+    \item Interface interativa
+    \item Teste direto no navegador
+    \item Documentação automática
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Fluxo Completo}
+
+\begin{itemize}
+    \item Flask → fornece API
+    \item Browser → visualiza JSON
+    \item Requests → cliente Python
+    \item Swagger → documentação + teste
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Pipeline didático:}
+
+\begin{itemize}
+    \item Implementar → Testar → Visualizar → Documentar
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Inserindo Dados (POST)}
+
+\begin{minted}{python}
+from flask import Flask, jsonify, request
+app = Flask(__name__)
+
+# "Banco" em memória. Deve ser trocado para outro tipo de persistência de dados.
+users = [
+    {"id": 1, "name": "Ana"}
+]
+
+@app.route("/users", methods=["GET"])
+def get_users():
+    return jsonify(users)
+
+@app.route("/users", methods=["POST"])
+def add_user():
+    data = request.get_json()
+    new_user = {
+        "id": len(users) + 1,
+        "name": data.get("name")
+    }
+    users.append(new_user)
+    return jsonify(new_user), 201
+
+app.run(debug=True)
+\end{minted}
+
+\end{frame}
+
+\begin{frame}{Aplicações cliente/servidor}
+    \centering
+    Isso tudo é muito bacana, mas não parece prático. Tem algo mais prático? \pause
+    \huge{Backend e Frontend integrados:\\ Streamlit}
+\end{frame}
+
+
+\section{Frameworks web para protótipos}
+%------------------------------------------------
+\begin{frame}{Problema}
+\begin{itemize}
+    \item Código acadêmico geralmente é:
+    \begin{itemize}
+        \item Difícil de usar
+        \item Pouco interativo
+        \item Dependente de scripts ou CLI
+    \end{itemize}
+    \item Dificulta:
+    \begin{itemize}
+        \item Reprodutibilidade
+        \item Demonstração de resultados
+        \item Adoção por outros pesquisadores
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Solução}
+\begin{itemize}
+    \item Criar interfaces leves para experimentação
+    \item Tornar parâmetros ajustáveis
+    \item Visualizar resultados em tempo real
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Ferramentas: (existem outras)}
+\begin{itemize}
+    \item Jupyter + ipywidgets
+    \item Streamlit
+    \item Gradio
+    \item Dash
+    \item Rerun
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Comparação}
+\begin{itemize}
+    \item Jupyter:
+    \begin{itemize}
+        \item + Simples e direto
+        \item - Pouco escalável como app
+    \end{itemize}
+
+    \item Streamlit:
+    \begin{itemize}
+        \item + Apps completos
+        \item + Layout flexível
+    \end{itemize}
+
+    \item Gradio:
+    \begin{itemize}
+        \item + Extremamente rápido
+        \item + Ideal para ML
+    \end{itemize}
+
+    \item Dash:
+    \begin{itemize}
+        \item + Muito poderoso para dashboards
+        \item + Baseado em Flask + React
+        \item - Mais verboso
+    \end{itemize}
+
+    \item Rerun:
+    \begin{itemize}
+        \item + Excelente para visualização de dados em tempo real
+        \item + Muito usado em robótica/visão computacional
+        \item - Menos focado em apps web tradicionais
+    \end{itemize}
+
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Boas práticas}
+\begin{itemize}
+    \item Separar lógica do modelo da interface
+    \item Usar funções puras sempre que possível
+    \item Controlar parâmetros via UI
+    \item Evitar hardcode
+\end{itemize}
+\end{frame}
+
+
+\subsection{Jupyter + ipywidgets}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Jupyter + ipywidgets}
+\begin{itemize}
+    \item Ideal para exploração interativa
+    \item Integra diretamente com notebooks
+    \item Sem necessidade de frontend
+\end{itemize}
+
+\begin{minted}{python}
+import ipywidgets as widgets
+from ipywidgets import interact
+
+def modelo(alpha):
+    return alpha * 2
+
+interact(modelo, alpha=(0, 10))
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Quando usar Jupyter}
+\begin{itemize}
+    \item Pesquisa exploratória
+    \item Ensino
+    \item Prototipação rápida
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Limitações:}
+\begin{itemize}
+    \item Difícil de compartilhar como app (voila)
+    \item Dependência do ambiente Jupyter
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Exemplo de compartilhamento de caderno Jupyter}
+\begin{itemize}
+    \item Endereço no github: 
+    \item \url{ https://github.com/mauriciodev/progcart/blob/main/aulas/jupyter/geopandas_jupyter_leafmap.ipynb}
+    \item Endereço para abrir no Google Colab:
+    \item \url{https://colab.research.google.com/github/mauriciodev/progcart/blob/main/aulas/jupyter/geopandas_jupyter_leafmap.ipynb}
+\end{itemize}
+
+\begin{itemize}
+    \item Caderno de dados espaciais em Jupyter \\ \textbf{\href{https://colab.research.google.com/github/mauriciodev/progcart/blob/main/aulas/jupyter/geopandas_jupyter_leafmap.ipynb}{Abra no colab}}
+    \item Caderno IPyWidgets \\ \textbf{\href{https://colab.research.google.com/github/mauriciodev/progcart/blob/main/aulas/jupyter/widgets.ipynb}{Abra no colab}}
+\end{itemize}
+
+\end{frame}
+
+\subsection{Streamlit}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Quando usar Streamlit}
+\begin{itemize}
+    \item Dashboards
+    \item Demonstrações interativas
+    \item Compartilhamento com usuários finais
+\end{itemize}
+
+\textbf{Execução:}
+\begin{minted}{bash}
+streamlit run app.py
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Streamlit}
+\begin{itemize}
+    \item Cria apps web com Python puro
+    \item Atualização automática ao alterar código
+    \item Muito usado em ciência de dados
+\end{itemize}
+\vspace{0.3cm}
+\begin{minted}{python}
+import streamlit as st
+
+x = st.slider("Valor", 0, 10)
+st.write("Resultado:", x * 2)
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Streamlit: Usuários com Duas Colunas}
+
+\begin{minted}{python}
+import streamlit as st
+
+if "users" not in st.session_state: # Estado persistente
+    st.session_state.users = [ {"id": 1, "name": "Ana"} ]
+
+col1, col2 = st.columns(2) # Layout em duas colunas
+
+with col1: # Coluna 1: Entrada
+    st.subheader("Adicionar usuário")
+    name = st.text_input("Nome")
+
+    if st.button("Adicionar"):
+        if name:
+            new_user = {
+                "id": len(st.session_state.users) + 1,
+                "name": name
+            }
+            st.session_state.users.append(new_user)
+            st.success(f"{name} adicionado!")
+
+with col2: # Coluna 2: Visualização
+    st.subheader("Lista de usuários")
+    st.write(st.session_state.users)
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Streamlit - Widgets}
+
+Entrada de Texto
+\begin{minted}{python}
+import streamlit as st
+
+name = st.text_input("Nome")
+st.write("Olá,", name)
+\end{minted}
+
+Número e Slider
+\begin{minted}{python}
+x = st.number_input("Valor", min_value=0, max_value=10)
+
+y = st.slider("Escolha um valor", 0, 100, 50)
+
+st.write(x, y)
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Streamlit - Widgets}
+Checkbox e Radio
+\begin{minted}{python}
+flag = st.checkbox("Ativar")
+
+opcao = st.radio(
+    "Escolha uma opção",
+    ["A", "B", "C"]
+)
+
+st.write(flag, opcao)
+\end{minted}
+
+Selectbox e Multiselect
+\begin{minted}{python}
+item = st.selectbox(
+    "Escolha um item",
+    ["Python", "R", "Julia"]
+)
+
+itens = st.multiselect(
+    "Escolha vários",
+    ["A", "B", "C"]
+)
+
+st.write(item, itens)
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Streamlit - Widgets}
+Botão
+\begin{minted}{python}
+if st.button("Clique aqui"):
+    st.write("Botão pressionado!")
+\end{minted}
+
+Upload de Arquivo
+\begin{minted}{python}
+file = st.file_uploader("Envie um arquivo")
+
+if file:
+    st.write(file.name)
+\end{minted}
+
+
+Data e Cor
+\begin{minted}{python}
+date = st.date_input("Data")
+
+color = st.color_picker("Escolha uma cor")
+
+st.write(date, color)
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Streamlit - Widgets}
+Exibição de Dados
+\begin{minted}{python}
+import pandas as pd
+
+df = pd.DataFrame({
+    "A": [1,2,3],
+    "B": [4,5,6]
+})
+
+st.dataframe(df)
+st.table(df)
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Streamlit - Controle de Layout}
+\begin{itemize}
+    \item Controla organização da interface
+    \item Permite criar apps mais estruturados
+\end{itemize}
+
+Container
+\begin{minted}{python}
+container = st.container()
+
+with container:
+    st.write("Conteúdo agrupado")
+\end{minted}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Streamlit - Controle de Layout}
+Colunas
+\begin{minted}{python}
+col1, col2 = st.columns(2)
+
+with col1:
+    st.write("Coluna 1")
+
+with col2:
+    st.write("Coluna 2")
+\end{minted}
+
+Sidebar
+\begin{minted}{python}
+st.sidebar.title("Menu")
+
+op = st.sidebar.selectbox(
+    "Escolha",
+    ["Home", "Dados"]
+)
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Streamlit - Controle de Layout}
+Expander
+\begin{minted}{python}
+with st.expander("Detalhes"):
+    st.write("Informações escondidas")
+\end{minted}
+
+Abas
+\begin{minted}{python}
+tab1, tab2 = st.tabs(["Aba 1", "Aba 2"])
+
+with tab1:
+    st.write("Conteúdo 1")
+
+with tab2:
+    st.write("Conteúdo 2")
+\end{minted}
+
+\end{frame}
+
+
+
+
+\subsection{Gradio}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Gradio}
+\begin{itemize}
+    \item Focado em interfaces simples para ML
+    \item Criação rápida de demos
+    \item Fácil compartilhamento (link público)
+\end{itemize}
+
+\begin{minted}{python}
+import gradio as gr
+
+def modelo(x):
+    return x * 2
+
+gr.Interface(fn=modelo,
+             inputs="number",
+             outputs="number").launch()
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Quando usar Gradio}
+\begin{itemize}
+    \item Modelos de machine learning
+    \item Demos rápidas
+    \item Compartilhamento com não técnicos
+\end{itemize}
+\end{frame}
+
+
+
+%------------------------------------------------
+\begin{frame}{Conclusão}
+\begin{itemize}
+    \item Interfaces aumentam o impacto do código acadêmico
+    \item Reduzem barreiras de uso
+    \item Facilitam validação e colaboração
+\end{itemize}
+\end{frame}
+
+\end{document}
+
+\section{IPyWidgets em Jupyter}
+
+\section{Streamlit}
 % Slide 1
 \begin{frame}[fragile]{Introdução ao Streamlit}
     \begin{itemize}
@@ -211,8 +906,10 @@ m.to_streamlit(height=500)
     \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Dash e Plotly}
+\begin{frame}[fragile]{Outros frameworks}
     Dash
+    Rerun \url{https://rerun.io/examples}
+    Gradio: \url{https://www.gradio.app/}
 \end{frame}
 
 \begin{frame}[fragile]{Rerun}
