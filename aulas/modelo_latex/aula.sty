@@ -72,13 +72,16 @@
 \setbeamercolor{subsection in toc}{fg=black}
  
 \AtBeginSection[]{
-    \begin{frame}
-        \vfill
-        \centering
-        \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
-            \inserttitle \\
-            \usebeamerfont{title}\insertsectionhead\par%
-        \end{beamercolorbox}
-        \vfill
-    \end{frame}
+  \begin{frame}
+    \frametitle{Sumário}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\AtBeginSubsection[]
+{
+  \begin{frame}
+    \frametitle{Sumário}
+    \tableofcontents[currentsection, currentsubsection]
+  \end{frame}
 }
