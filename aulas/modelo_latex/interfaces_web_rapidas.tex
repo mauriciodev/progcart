@@ -525,21 +525,221 @@ interact(modelo, alpha=(0, 10))
 
 \end{frame}
 
+
+
+%------------------------------------------------
+\begin{frame}[fragile]{Instalação}
+
+\begin{minted}{bash}
+pixi add install ipywidgets
+\end{minted}
+
+\textbf{Ativar (se necessário):}
+
+\begin{minted}{bash}
+jupyter nbextension enable --py widgetsnbextension
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{IPyWidgets}
+
+Slider (IntSlider)
+\begin{minted}{python}
+import ipywidgets as widgets
+from IPython.display import display
+
+widgets.IntSlider(
+    value=10,
+    min=0,
+    max=100,
+    step=1,
+    description='Valor:'
+)
+\end{minted}
+
+FloatSlider
+\begin{minted}{python}
+widgets.FloatSlider(
+    value=0.5,
+    min=0.0,
+    max=1.0,
+    step=0.01,
+    description='Float:'
+)
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{IPyWidgets}
+Checkbox
+\begin{minted}{python}
+widgets.Checkbox(
+    value=True,
+    description='Ativar'
+)
+\end{minted}
+
+Dropdown
+\begin{minted}{python}
+widgets.Dropdown(
+    options=['A', 'B', 'C'],
+    value='A',
+    description='Escolha:'
+)
+\end{minted}
+
+RadioButtons
+\begin{minted}{python}
+widgets.RadioButtons(
+    options=['Opção 1', 'Opção 2'],
+    description='Opções:'
+)
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{IPyWidgets}
+SelectMultiple
+\begin{minted}{python}
+widgets.SelectMultiple(
+    options=['A', 'B', 'C'],
+    description='Múltiplo:'
+)
+\end{minted}
+
+Text
+\begin{minted}{python}
+widgets.Text(
+    placeholder='Digite algo',
+    description='Texto:'
+)
+\end{minted}
+
+Textarea
+\begin{minted}{python}
+widgets.Textarea(
+    placeholder='Texto longo',
+    description='Área:'
+)
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{IPyWidgets}
+Button
+\begin{minted}{python}
+button = widgets.Button(description="Clique")
+
+def on_click(b):
+    print("Clicado!")
+
+button.on_click(on_click)
+button
+\end{minted}
+
+DatePicker
+\begin{minted}{python}
+widgets.DatePicker(
+    description='Data'
+)
+\end{minted}
+
+ColorPicker
+\begin{minted}{python}
+widgets.ColorPicker(
+    description='Cor'
+)
+\end{minted}
+
+\end{frame}
+
+
+
+%------------------------------------------------
+\begin{frame}[fragile]{Layout (HBox / VBox)}
+
+\begin{minted}{python}
+widgets.HBox([
+    widgets.Button(description="A"),
+    widgets.Button(description="B")
+])
+
+widgets.VBox([
+    widgets.IntSlider(),
+    widgets.Text()
+])
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Publicando Notebook com Voila}
+
+\textbf{Objetivo:} Transformar um notebook Jupyter em aplicação web interativa.
+
+\vspace{0.3cm}
+
+\textbf{1. Instalação:}
+\begin{minted}{bash}
+pixi add voila
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{2. Executar o Voila:}
+\begin{minted}{bash}
+voila seu_notebook.ipynb
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{3. Resultado:}
+\begin{itemize}
+    \item Remove células de código
+    \item Exibe apenas outputs e widgets
+    \item Abre no navegador automaticamente
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{5. Deploy (exemplo):}
+\begin{itemize}
+    \item Binder
+    \item Heroku
+    \item Servidor próprio
+\end{itemize}
+
+\end{frame}
+
 \subsection{Streamlit}
 
 %------------------------------------------------
-\begin{frame}[fragile]{Quando usar Streamlit}
-\begin{itemize}
-    \item Dashboards
-    \item Demonstrações interativas
-    \item Compartilhamento com usuários finais
-\end{itemize}
-
-\textbf{Execução:}
-\begin{minted}{bash}
+\begin{frame}[fragile]{Introdução ao Streamlit}
+    \begin{itemize}
+        \item Framework Python para aplicações web interativas
+        \item Foco em simplicidade e prototipação rápida
+        \item Executa com:
+    \end{itemize}
+    
+\begin{minted}{shell}
+pixi shell
+pixi add streamlit 
 streamlit run app.py
 \end{minted}
 
+    \vspace{0.3cm}
+    
+    \textbf{Principais conceitos:}
+    \begin{itemize}
+        \item Layout declarativo
+        \item Widgets interativos
+        \item Atualização automática da interface
+    \end{itemize}
+    \href{https://streamlit.io/}{Documentação (link)}
 \end{frame}
 
 %------------------------------------------------
@@ -557,6 +757,68 @@ x = st.slider("Valor", 0, 10)
 st.write("Resultado:", x * 2)
 \end{minted}
 
+\end{frame}
+
+% Slide 2
+\begin{frame}[fragile]{Estrutura Básica da Aplicação}
+    \begin{minted}[fontsize=\scriptsize]{python}
+import streamlit as st
+import matplotlib.pyplot as plt
+import leafmap.foliumap as leafmap
+
+st.title("Exemplo Streamlit + Matplotlib + Leafmap")
+
+st.sidebar.header("Controles")
+
+lat = st.sidebar.number_input("Latitude", value=-15.78)
+lon = st.sidebar.number_input("Longitude", value=-47.93)
+zoom_btn = st.sidebar.button("Zoom na coordenada")
+    \end{minted}
+    
+    \begin{itemize}
+        \item Sidebar contém widgets
+        \item Valores são reavaliados a cada interação
+    \end{itemize}
+\end{frame}
+
+% Slide 3
+\begin{frame}[fragile]{Adicionando um Gráfico Matplotlib}
+    \begin{minted}[fontsize=\scriptsize]{python}
+st.subheader("Gráfico Matplotlib")
+
+fig, ax = plt.subplots()
+ax.plot([1, 2, 3, 4], [10, 20, 25, 30])
+ax.set_title("Exemplo de gráfico")
+
+st.pyplot(fig)
+    \end{minted}
+    
+    \begin{itemize}
+        \item Criamos a figura normalmente
+        \item Usamos \texttt{st.pyplot()} para renderizar
+    \end{itemize}
+\end{frame}
+
+% Slide 4
+\begin{frame}[fragile]{Adicionando Mapa com Leafmap}
+    \begin{minted}[fontsize=\scriptsize]{python}
+st.subheader("Mapa Leafmap")
+
+m = leafmap.Map(center=[lat, lon], zoom=4)
+
+if zoom_btn:
+    m.set_center(lon, lat, zoom=10)
+
+m.add_marker(location=[lat, lon],
+popup="Coordenada selecionada")
+
+m.to_streamlit(height=500)
+    \end{minted}
+    
+    \begin{itemize}
+        \item Leafmap usa base Folium
+        \item Botão altera o centro do mapa
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Streamlit: Usuários com Duas Colunas}
@@ -750,41 +1012,25 @@ with tab2:
 
 
 
-
-\subsection{Gradio}
-
-%------------------------------------------------
-\begin{frame}[fragile]{Gradio}
-\begin{itemize}
-    \item Focado em interfaces simples para ML
-    \item Criação rápida de demos
-    \item Fácil compartilhamento (link público)
-\end{itemize}
-
-\begin{minted}{python}
-import gradio as gr
-
-def modelo(x):
-    return x * 2
-
-gr.Interface(fn=modelo,
-             inputs="number",
-             outputs="number").launch()
-\end{minted}
-
+\begin{frame}[fragile]{Outros frameworks}
+    Dash \url{https://dash.plotly.com/}  \\
+    Rerun \url{https://rerun.io/examples}  \\
+    Gradio: \url{https://www.gradio.app/}  \\
 \end{frame}
 
-%------------------------------------------------
-\begin{frame}{Quando usar Gradio}
-\begin{itemize}
-    \item Modelos de machine learning
-    \item Demos rápidas
-    \item Compartilhamento com não técnicos
-\end{itemize}
+\section{Clientes web rápidos}
+
+\begin{frame}[fragile]{Interface cliente: kepler.gl}
+    \url{https://kepler.gl/} \\
+    \textbf{Pode ser gerado pela Leafmap} \\
+    Trabalho de alunos do 2o ano 2025: \url{https://mauriciodev.github.io/progcart/ipe2.html}
+    % TODO: \usepackage{graphicx} required
+    \begin{figure}
+        %\caption{}
+        %\label{fig:kepler}
+        \includegraphics[width=\textwidth]{clientes_js_figs/kepler}
+    \end{figure}
 \end{frame}
-
-
-
 %------------------------------------------------
 \begin{frame}{Conclusão}
 \begin{itemize}
@@ -796,149 +1042,4 @@ gr.Interface(fn=modelo,
 
 \end{document}
 
-\section{IPyWidgets em Jupyter}
 
-\section{Streamlit}
-% Slide 1
-\begin{frame}[fragile]{Introdução ao Streamlit}
-    \begin{itemize}
-        \item Framework Python para aplicações web interativas
-        \item Foco em simplicidade e prototipação rápida
-        \item Executa com:
-    \end{itemize}
-    
-\begin{minted}{shell}
-pixi shell
-pixi add streamlit 
-streamlit run app.py
-\end{minted}
-
-    \vspace{0.3cm}
-    
-    \textbf{Principais conceitos:}
-    \begin{itemize}
-        \item Layout declarativo
-        \item Widgets interativos
-        \item Atualização automática da interface
-    \end{itemize}
-    \href{https://streamlit.io/}{Documentação (link)}
-\end{frame}
-
-% Slide 2
-\begin{frame}[fragile]{Estrutura Básica da Aplicação}
-    \begin{minted}[fontsize=\scriptsize]{python}
-import streamlit as st
-import matplotlib.pyplot as plt
-import leafmap.foliumap as leafmap
-
-st.title("Exemplo Streamlit + Matplotlib + Leafmap")
-
-st.sidebar.header("Controles")
-
-lat = st.sidebar.number_input("Latitude", value=-15.78)
-lon = st.sidebar.number_input("Longitude", value=-47.93)
-zoom_btn = st.sidebar.button("Zoom na coordenada")
-    \end{minted}
-    
-    \begin{itemize}
-        \item Sidebar contém widgets
-        \item Valores são reavaliados a cada interação
-    \end{itemize}
-\end{frame}
-
-% Slide 3
-\begin{frame}[fragile]{Adicionando um Gráfico Matplotlib}
-    \begin{minted}[fontsize=\scriptsize]{python}
-st.subheader("Gráfico Matplotlib")
-
-fig, ax = plt.subplots()
-ax.plot([1, 2, 3, 4], [10, 20, 25, 30])
-ax.set_title("Exemplo de gráfico")
-
-st.pyplot(fig)
-    \end{minted}
-    
-    \begin{itemize}
-        \item Criamos a figura normalmente
-        \item Usamos \texttt{st.pyplot()} para renderizar
-    \end{itemize}
-\end{frame}
-
-% Slide 4
-\begin{frame}[fragile]{Adicionando Mapa com Leafmap}
-    \begin{minted}[fontsize=\scriptsize]{python}
-st.subheader("Mapa Leafmap")
-
-m = leafmap.Map(center=[lat, lon], zoom=4)
-
-if zoom_btn:
-    m.set_center(lon, lat, zoom=10)
-
-m.add_marker(location=[lat, lon],
-popup="Coordenada selecionada")
-
-m.to_streamlit(height=500)
-    \end{minted}
-    
-    \begin{itemize}
-        \item Leafmap usa base Folium
-        \item Botão altera o centro do mapa
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Exercício de Streamlit}
-    Analisar:
-\begin{itemize}
-    \item   HTML gerado
-    \item   Requests abertos
-    \item   Debug
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{https://kepler.gl/}
-    \url{https://kepler.gl/}
-    Trabalho de alunos do 2o ano 2025: \url{https://mauriciodev.github.io/progcart/ipe2.html}
-    % TODO: \usepackage{graphicx} required
-    \begin{figure}
-        %\caption{}
-        %\label{fig:kepler}
-        \includegraphics[width=\textwidth]{clientes_js_figs/kepler}
-    \end{figure}
-\end{frame}
-
-\begin{frame}[fragile]{Outros frameworks}
-    Dash
-    Rerun \url{https://rerun.io/examples}
-    Gradio: \url{https://www.gradio.app/}
-\end{frame}
-
-\begin{frame}[fragile]{Rerun}
-    Rerun
-\end{frame}
-
-%\begin{frame}[fragile]{Código Python}
-%   \begin{minted}{python}
-%   def soma(a, b):
-%  return a + b
-%   \end{minted}
-%\end{frame}
-%
-%\begin{frame}[fragile]{Código Python}
-%   \begin{columns}[t]
-%       \begin{column}[t]{0.48\textwidth}
-%           
-%           Versão \textbf{código aberto} do VS Code.
-%           
-%           \textbf{Usaremos para:}
-%           \begin{itemize}
-%               \item teste
-%           \end{itemize}
-%       \end{column}
-%       
-%       \begin{column}[t]{0.48\textwidth}
-%           \colimage{./introducao_figs/ides.png}
-%       \end{column}
-%   \end{columns}   
-%\end{frame}
-
-\end{document}
