@@ -1,7 +1,7 @@
 \documentclass{beamer}
 
 \usepackage{aula}
-
+\usetikzlibrary{positioning}
 \title{Interfaces web rápidas}
 \date{\today}
 
@@ -13,8 +13,324 @@
 
 \section{Aplicações cliente/servidor}
 
-\subsection{HTML + Flask}
+\subsection{Conceitos de desenvolvimento web}
+% =====================================================================
+% SLIDE 1: O Modelo Cliente-Servidor
+% =====================================================================
+\begin{frame}{Modelo Central: Cliente-Servidor}
+\begin{columns}[t]
+\column{0.5\textwidth}
+\textbf{Cliente:} O navegador do usuário (ex.: Chrome). Solicita recursos.
+\vspace{0.3cm}
 
+\textbf{Servidor:} Máquina que hospeda o site/API. Processa requisições.
+\vspace{0.3cm}
+
+\column{0.5\textwidth}
+\textbf{Interação:} 
+
+Cliente $\xrightarrow{\text{Requisição}}$ Servidor $\xrightarrow{\text{Resposta}}$ Cliente
+
+\vspace{0.5cm}
+\textbf{Objetivo:} Entregar conteúdo dinâmico e funcional.
+\end{columns}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[
+every node/.style={
+    draw,
+    minimum width=3cm,
+    minimum height=1.2cm,
+    align=center
+}
+]
+
+\node (client) {Navegador\\(Cliente)};
+\node (server) [right=5cm of client] {Servidor Web};
+
+\draw[->, very thick]
+([yshift=6pt]client.east) -- node[above]{Requisição} ([yshift=6pt]server.west);
+
+\draw[->, very thick]
+([yshift=-6pt]server.west) -- node[below]{Resposta} ([yshift=-6pt]client.east);
+
+\end{tikzpicture}
+\end{figure}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 2: Frontend
+% =====================================================================
+\begin{frame}[fragile]{Frontend: Apresentação (O que o usuário vê)}
+
+\textbf{Definição:} Código executado no navegador do usuário.
+
+\vspace{0.2cm}
+\begin{itemize}
+\item \textbf{HTML:} Estrutura e conteúdo (esqueleto)
+\item \textbf{CSS:} Estilo e layout (aparência)
+\item \textbf{JavaScript:} Interatividade (comportamento)
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Exemplo (JS):}
+
+\begin{minted}{javascript}
+function clickHandler() {
+    console.log("Botão clicado.");
+}
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 3: Backend
+% =====================================================================
+\begin{frame}{Backend: Lógica e Dados}
+
+\textbf{Definição:} Código executado no servidor. Implementa regras de negócio.
+
+\vspace{0.2cm}
+\textbf{Componentes:}
+\begin{itemize}
+\item \textbf{Linguagem:} Python, Node.js, Java, etc.
+\item \textbf{Framework:} Estrutura (Flask, Django)
+\item \textbf{Banco de dados:} Armazenamento persistente
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Processo:}
+
+Requisição HTTP $\rightarrow$ processamento $\rightarrow$ consulta ao BD $\rightarrow$ resposta
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 4: Banco de Dados
+% =====================================================================
+\begin{frame}{Armazenamento de Dados}
+
+\textbf{Função:} Armazenar e recuperar dados.
+
+\vspace{0.3cm}
+\textbf{Tipos:}
+\begin{itemize}
+\item \textbf{SQL:} Estruturado (PostgreSQL, MySQL)
+\item \textbf{NoSQL:} Flexível (MongoDB)
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Conceito-chave:} A API controla o acesso aos dados.
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 5: API
+% =====================================================================
+\begin{frame}{API: Comunicação}
+
+\textbf{Definição:} Regras de comunicação entre sistemas.
+
+\vspace{0.2cm}
+\textbf{REST:} Padrão baseado em HTTP.
+
+\vspace{0.2cm}
+\textbf{Métodos HTTP:}
+\begin{itemize}
+\item GET → leitura
+\item POST → criação
+\item PUT/PATCH → atualização
+\item DELETE → remoção
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Formato:} JSON
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 6: Fluxo Completo
+% =====================================================================
+\begin{frame}{Fluxo Completo}
+
+\begin{center}
+
+\begin{tikzpicture}[
+every node/.style={
+    draw,
+    minimum width=2.5cm,
+    minimum height=1.2cm,
+    align=center
+}
+]
+
+\node (browser) [fill=cyan!20] {Entrada do Usuário \\ Navegador};
+\node (server) [fill=orange!20, right=5cm of browser] {Backend \\ API};
+\node (db) [fill=green!20, below=3cm of server] {Banco de Dados};
+
+\draw[->, thick]
+([yshift=6pt]browser.east) --
+node[above]{Requisição HTTP}
+([yshift=6pt]server.west);
+
+\draw[->, thick]
+([yshift=-6pt]server.west) --
+node[below]{Resposta JSON}
+([yshift=-6pt]browser.east);
+
+\draw[->, thick]
+([xshift=-8pt]server.south) --
+node[left]{Consulta}
+([xshift=-8pt]db.north);
+
+\draw[->, thick]
+([xshift=8pt]db.north) --
+node[right]{Dados}
+([xshift=8pt]server.south);
+
+\end{tikzpicture}
+
+\end{center}
+
+\vspace{0.2cm}
+\textit{Cliente solicita → Servidor processa → Banco responde → Cliente recebe}
+
+\end{frame}
+
+
+\begin{frame}{Padrões Arquiteturais}
+    \begin{columns}[t]
+        \column{0.5\textwidth}
+        \textbf{Monólito:} Uma única base de código gerencia todo o sistema (simples no início, difícil de escalar).
+        
+        \vspace{0.3cm}
+        \textbf{Microsserviços:} Aplicação dividida em pequenos serviços independentes que se comunicam.
+        \begin{itemize}
+            \item \textbf{Vantagem:} Independência tecnológica, alto isolamento de falhas e escalabilidade granular.
+        \end{itemize}
+
+    \column{0.5\textwidth}
+        \textbf{Tendência Principal: Desacoplamento}
+        \begin{itemize}
+            \item \textbf{Frontend $\leftrightarrow$ Backend} se comunicam exclusivamente via APIs.
+            \item Permite que equipes trabalhem de forma independente no cliente e no servidor.
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Resumo: Componentes da Stack}
+    \begin{table}
+        \centering
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Área} & \textbf{Tecnologia Principal} & \textbf{Função} \\
+            \hline
+            Lado do Cliente & HTML/CSS/JS & Apresentação/Interação \\
+            \hline
+            Lógica de Backend & Python/Node.js/etc. & Processamento de Requisições \\
+            \hline
+            Camada de Dados & SQL/NoSQL & Persistência/Armazenamento \\
+            \hline
+            Comunicação & API REST (JSON) & Definição de Interface \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+% =====================================================================
+% SLIDE 10
+% =====================================================================
+\begin{frame}{Conclusão}
+
+\centering
+\textbf{Desenvolvimento web é um sistema em camadas}
+
+\vspace{0.5cm}
+
+Cliente $\rightarrow$ API $\rightarrow$ Backend $\rightarrow$ Banco
+
+\vspace{1cm}
+
+\textbf{Entender cada camada é essencial}
+
+\end{frame}
+
+\subsection{Implementação de um site básico em HTML puro}
+
+\begin{frame}[fragile]{Exemplo — HTML}
+    
+    \begin{minted}{html}
+<!DOCTYPE html>
+<html>
+    <body>
+    
+        <form action="/" method="post">
+        
+            Nome:
+            <input type="text" name="nome"><br><br>
+            
+            Curso:
+            <select name="curso">
+                <option value="python">Python</option>
+                <option value="geoprocessamento">Geoprocessamento</option>
+                <option value="web">Web</option>
+            </select><br><br>
+            
+            <input type="submit" value="Enviar">
+        
+        </form>
+    
+    </body>
+</html>
+    \end{minted}
+    
+\end{frame}
+
+\begin{frame}[fragile]{Servidor HTTP simples com Python}
+
+\textbf{Objetivo:} Servir arquivos locais rapidamente (HTML, imagens, etc.)
+
+\vspace{0.3cm}
+
+\textbf{Executar no terminal:}
+
+\begin{minted}{bash}
+python -m http.server 8000
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Acessar no navegador:}
+
+\begin{itemize}
+    \item \texttt{http://localhost:8000}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Estrutura:}
+\begin{itemize}
+    \item Serve arquivos do diretório atual
+    \item Exibe listagem automática
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Observações:}
+\begin{itemize}
+    \item Ideal para testes rápidos
+    \item Não usar em produção
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+\subsection{Site com HTML + Flask}
 \begin{frame}{HTML Form → Flask (WSGI)}
     
     \textbf{Fluxo da aplicação:}
@@ -93,35 +409,6 @@ node[below]{HTTP Response \\ (HTML)}
 
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo — HTML}
-    
-    \begin{minted}{html}
-<!DOCTYPE html>
-<html>
-    <body>
-    
-        <form action="/" method="post">
-        
-            Nome:
-            <input type="text" name="nome"><br><br>
-            
-            Curso:
-            <select name="curso">
-                <option value="python">Python</option>
-                <option value="geoprocessamento">Geoprocessamento</option>
-                <option value="web">Web</option>
-            </select><br><br>
-            
-            <input type="submit" value="Enviar">
-        
-        </form>
-    
-    </body>
-</html>
-    \end{minted}
-    
-\end{frame}
-
 \begin{frame}[fragile]{Exemplo — Servidor Flask}
     
     \begin{minted}{python}
@@ -151,229 +438,8 @@ if __name__ == "__main__":
     
 \end{frame}
 
-\begin{frame}[fragile]{Tipos de Requisição HTTP}
-
-\textbf{Principais métodos HTTP:}
-
-\begin{itemize}
-    \item \textbf{GET} → Buscar dados (sem alterar estado)
-    \item \textbf{POST} → Enviar dados / criar recurso
-    \item \textbf{PUT} → Atualizar recurso (completo)
-    \item \textbf{PATCH} → Atualizar parcialmente
-    \item \textbf{DELETE} → Remover recurso
-\end{itemize}
-
-\textbf{Exemplos em Python:}
-
-\begin{minted}{python}
-import requests
-
-# GET
-r = requests.get("http://api.exemplo.com/users")
-
-# POST
-r = requests.post( "http://api.exemplo.com/users", json={"name": "Ana"} )
-
-# PUT
-r = requests.put( "http://api.exemplo.com/users/1", json={"name": "Ana Silva"})
-
-# DELETE
-r = requests.delete( "http://api.exemplo.com/users/1" )
-\end{minted}
-
-\vspace{0.3cm}
-
-\textbf{Observações:}
-\begin{itemize}
-    \item GET é idempotente e seguro
-    \item POST não é idempotente
-    \item PUT e DELETE são idempotentes
-\end{itemize}
-
-\end{frame}
-
-\subsection{Serviços REST}
-
-%------------------------------------------------
-\begin{frame}{Serviços REST: Objetivo}
-\begin{itemize}
-    \item Criar uma API REST simples
-    \item Testar com cliente Python
-    \item Visualizar no navegador
-    \item Documentar com Swagger
-\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile]{Servidor Mock com Flask}
-
-\begin{minted}{python}
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route("/users")
-def get_users():
-    return jsonify([
-        {"id": 1, "name": "Ana"},
-        {"id": 2, "name": "Bruno"}
-    ])
-
-if __name__ == "__main__":
-    app.run(debug=True)
-\end{minted}
-
-\vspace{0.3cm}
-
-\textbf{Executar:}
-
-\begin{minted}{bash}
-python app.py
-\end{minted}
-
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}{Visualização no Navegador}
-
-\begin{itemize}
-    \item Acesse no navegador:
-    \item \texttt{http://127.0.0.1:5000/users}
-\end{itemize}
-
-\vspace{0.5cm}
-
-\textbf{Resultado:}
-\begin{itemize}
-    \item JSON exibido diretamente
-    \item Fácil inspeção
-    \item Útil para debug rápido
-\end{itemize}
-
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}[fragile]{Cliente com requests}
-
-\begin{minted}{python}
-import requests
-
-url = "http://127.0.0.1:5000/users"
-
-response = requests.get(url)
-
-print("Status:", response.status_code)
-print("JSON:", response.json())
-\end{minted}
-
-\end{frame}
 
 
-
-%------------------------------------------------
-\begin{frame}[fragile]{Swagger com Flasgger (Simples)}
-
-\textbf{Instalar:}
-
-\begin{minted}{bash}
-pip install flasgger
-\end{minted}
-
-\vspace{0.3cm}
-
-\textbf{Adicionar ao Flask:}
-
-\begin{minted}{python}
-from flasgger import Swagger
-
-app = Flask(__name__)
-swagger = Swagger(app)
-
-@app.route("/users")
-def get_users():
-    """
-    Lista de usuários
-    ---
-    responses:
-      200:
-        description: Lista de usuários
-    """
-    return jsonify([
-        {"id": 1, "name": "Ana"}
-    ])
-\end{minted}
-
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}{Swagger UI}
-
-\begin{itemize}
-    \item Acesse:
-    \item \texttt{http://127.0.0.1:5000/apidocs}
-\end{itemize}
-
-\vspace{0.5cm}
-
-\textbf{Vantagens:}
-\begin{itemize}
-    \item Interface interativa
-    \item Teste direto no navegador
-    \item Documentação automática
-\end{itemize}
-
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}{Fluxo Completo}
-
-\begin{itemize}
-    \item Flask → fornece API
-    \item Browser → visualiza JSON
-    \item Requests → cliente Python
-    \item Swagger → documentação + teste
-\end{itemize}
-
-\vspace{0.5cm}
-
-\textbf{Pipeline didático:}
-
-\begin{itemize}
-    \item Implementar → Testar → Visualizar → Documentar
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}[fragile]{Inserindo Dados (POST)}
-
-\begin{minted}{python}
-from flask import Flask, jsonify, request
-app = Flask(__name__)
-
-# "Banco" em memória. Deve ser trocado para outro tipo de persistência de dados.
-users = [
-    {"id": 1, "name": "Ana"}
-]
-
-@app.route("/users", methods=["GET"])
-def get_users():
-    return jsonify(users)
-
-@app.route("/users", methods=["POST"])
-def add_user():
-    data = request.get_json()
-    new_user = {
-        "id": len(users) + 1,
-        "name": data.get("name")
-    }
-    users.append(new_user)
-    return jsonify(new_user), 201
-
-app.run(debug=True)
-\end{minted}
-
-\end{frame}
 
 \begin{frame}{Aplicações cliente/servidor}
     \centering
@@ -1038,6 +1104,229 @@ with tab2:
     \item Reduzem barreiras de uso
     \item Facilitam validação e colaboração
 \end{itemize}
+\end{frame}
+
+
+\section{Exercícios complementares: Serviços REST}
+
+%------------------------------------------------
+\begin{frame}{Serviços REST: Objetivo}
+\begin{itemize}
+    \item Criar uma API REST simples
+    \item Testar com cliente Python
+    \item Visualizar no navegador
+    \item Documentar com Swagger
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]{Servidor Mock com Flask}
+
+\begin{minted}{python}
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route("/users")
+def get_users():
+    return jsonify([
+        {"id": 1, "name": "Ana"},
+        {"id": 2, "name": "Bruno"}
+    ])
+
+if __name__ == "__main__":
+    app.run(debug=True)
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Executar:}
+
+\begin{minted}{bash}
+python app.py
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Visualização no Navegador}
+
+\begin{itemize}
+    \item Acesse no navegador:
+    \item \texttt{http://127.0.0.1:5000/users}
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Resultado:}
+\begin{itemize}
+    \item JSON exibido diretamente
+    \item Fácil inspeção
+    \item Útil para debug rápido
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Cliente com requests}
+
+\begin{minted}{python}
+import requests
+
+url = "http://127.0.0.1:5000/users"
+
+response = requests.get(url)
+
+print("Status:", response.status_code)
+print("JSON:", response.json())
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Tipos de Requisição HTTP}
+	
+	\textbf{Principais métodos HTTP:}
+	
+	\begin{itemize}
+		\item \textbf{GET} → Buscar dados (sem alterar estado)
+		\item \textbf{POST} → Enviar dados / criar recurso
+		\item \textbf{PUT} → Atualizar recurso (completo)
+		\item \textbf{PATCH} → Atualizar parcialmente
+		\item \textbf{DELETE} → Remover recurso
+	\end{itemize}
+	
+	\textbf{Exemplos em Python:}
+	
+	\begin{minted}{python}
+		import requests
+		
+		# GET
+		r = requests.get("http://api.exemplo.com/users")
+		
+		# POST
+		r = requests.post( "http://api.exemplo.com/users", json={"name": "Ana"} )
+		
+		# PUT
+		r = requests.put( "http://api.exemplo.com/users/1", json={"name": "Ana Silva"})
+		
+		# DELETE
+		r = requests.delete( "http://api.exemplo.com/users/1" )
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Observações:}
+	\begin{itemize}
+		\item GET é idempotente e seguro
+		\item POST não é idempotente
+		\item PUT e DELETE são idempotentes
+	\end{itemize}
+	
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}[fragile]{Swagger com Flasgger (Simples)}
+
+\textbf{Instalar:}
+
+\begin{minted}{bash}
+pixi add flasgger
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Adicionar ao Flask:}
+
+\begin{minted}{python}
+from flasgger import Swagger
+
+app = Flask(__name__)
+swagger = Swagger(app)
+
+@app.route("/users")
+def get_users():
+    """
+    Lista de usuários
+    ---
+    responses:
+      200:
+        description: Lista de usuários
+    """
+    return jsonify([
+        {"id": 1, "name": "Ana"}
+    ])
+\end{minted}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Swagger UI}
+
+\begin{itemize}
+    \item Acesse:
+    \item \texttt{http://127.0.0.1:5000/apidocs}
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Vantagens:}
+\begin{itemize}
+    \item Interface interativa
+    \item Teste direto no navegador
+    \item Documentação automática
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Fluxo Completo}
+
+\begin{itemize}
+    \item Flask → fornece API
+    \item Browser → visualiza JSON
+    \item Requests → cliente Python
+    \item Swagger → documentação + teste
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Pipeline didático:}
+
+\begin{itemize}
+    \item Implementar → Testar → Visualizar → Documentar
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Inserindo Dados (POST)}
+
+\begin{minted}{python}
+from flask import Flask, jsonify, request
+app = Flask(__name__)
+
+# "Banco" em memória. Deve ser trocado para outro tipo de persistência de dados.
+users = [
+    {"id": 1, "name": "Ana"}
+]
+
+@app.route("/users", methods=["GET"])
+def get_users():
+    return jsonify(users)
+
+@app.route("/users", methods=["POST"])
+def add_user():
+    data = request.get_json()
+    new_user = {
+        "id": len(users) + 1,
+        "name": data.get("name")
+    }
+    users.append(new_user)
+    return jsonify(new_user), 201
+
+app.run(debug=True)
+\end{minted}
+
 \end{frame}
 
 \end{document}
