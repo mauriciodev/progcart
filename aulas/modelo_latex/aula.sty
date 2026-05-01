@@ -16,29 +16,6 @@
 \definecolor{codegray}{rgb}{0.95,0.95,0.95}
 
 
-
-% Código
-\usepackage[outputdir=build]{minted}
-
-% Configuração global do Minted
-\setminted{
-	fontsize=\scriptsize,%\small,
-	frame=single,
-	%linenos,
-	%breaklines=true,
-	tabsize=2, % Python geralmente usa 4 espaços
-	%numbersep=5pt,
-	%showspaces=true,
-	%bgcolor=codegray % Usando a cor que você definiu
-}
-%
-%\definecolor{minhacor}{RGB}{0,60,120}
-%
-%\setbeamercolor{title}{fg=minhacor}
-%\setbeamercolor{frametitle}{fg=minhacor}
-
-%\newcommand{\destaque}[1]{\textcolor{minhacor}{\textbf{#1}}}
-
 \newcommand{\espaco}{\vspace{0.3cm}}
 
 \newenvironment{exemplo}{
@@ -84,4 +61,58 @@
     \frametitle{Sumário}
     \tableofcontents[currentsection, currentsubsection]
   \end{frame}
+}
+
+% Cores
+\usepackage{xcolor}
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{codeblue}{rgb}{0.0,0.0,0.6}
+\definecolor{codegreen}{rgb}{0.0,0.5,0.0}
+\definecolor{codered}{rgb}{0.6,0.0,0.0}
+
+% =========================================================
+% Configuração global do Minted
+\usepackage[outputdir=build]{minted}
+
+\setminted{
+	fontsize=\scriptsize,%\small,
+	frame=single,
+	%linenos,
+	%breaklines=true,
+	tabsize=2, % Python geralmente usa 4 espaços
+	%numbersep=5pt,
+	%showspaces=true,
+	%bgcolor=codegray % Usando a cor que você definiu
+}
+
+% =========================================================
+%% Listings (substituto do minted)
+%\usepackage{listings}
+%
+%\lstdefinestyle{mystyle}{
+%	backgroundcolor=\color{codegray},
+%	basicstyle=\ttfamily\scriptsize,
+%	frame=single,
+%	tabsize=2,
+%	breaklines=true,
+%	keywordstyle=\color{codeblue}\bfseries,
+%	commentstyle=\color{codegreen},
+%	stringstyle=\color{codered},
+%	showstringspaces=false
+%}
+%
+%\lstset{style=mystyle}
+%
+%\lstnewenvironment{minted}[1]
+%{
+%		\lstset{language=#1}
+%	}
+%{}
+%% =========================================================
+
+% Logotipo no cabeçalho
+\addtobeamertemplate{frametitle}{}{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[anchor=north east] at (current page.north east) {\includegraphics[height=0.7cm]{Python-logo-notext}};
+	\end{tikzpicture}
 }

@@ -2,7 +2,7 @@
 
 \usepackage{aula}
 
-\title{Introdução a Algoritmos}
+\title{Agentes de Inteligência Artificial}
 \date{\today}
 
 \begin{document}
@@ -169,7 +169,24 @@
     
 \end{frame}
 
+\begin{frame}{Agente no strands}
+	\begin{minted}{python}
+from strands import Agent
+from strands.models.ollama import OllamaModel
 
+# Create an Ollama model instance
+ollama_model = OllamaModel(
+host="http://localhost:11434",  # Ollama server address
+model_id="gemma4"               # Specify which model to use
+)
+
+# Create an agent using the Ollama model
+agent = Agent(model=ollama_model)
+
+# Use the agent
+agent("Tell me about Strands agents.") # Prints model output to stdout by default
+	\end{minted}
+\end{frame}
 
 \begin{frame}[fragile]{Exemplo — Estrutura de um agente}
     
