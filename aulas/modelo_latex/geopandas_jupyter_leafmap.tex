@@ -596,6 +596,53 @@ m
     \end{figure}
 \end{frame}
 
+\begin{frame}[fragile]{Dados geoespaciais do Brasil em Python (geobr)}
+	
+	\textbf{Instalação:}
+	
+	\begin{minted}{bash}
+pixi add geobr geopandas
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Importação:}
+	
+	\begin{minted}{python}
+import geobr
+import geopandas as gpd
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Baixar municípios:}
+	
+	\begin{minted}{python}
+mun = geobr.read_municipality(year=2020)
+
+print(mun.head())
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Outros datasets:}
+	
+	\begin{minted}{python}
+estados = geobr.read_state()
+regioes = geobr.read_region()
+biomas = geobr.read_biomes()
+	\end{minted}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Resultado:}
+	\begin{itemize}
+		\item GeoDataFrame (GeoPandas)
+		\item Pronto para plot/mapas
+	\end{itemize}
+	
+\end{frame}
+
 \begin{frame}{Referências importantes}
 DORMAN, Michael et al. Geocomputation with Python. [S.l.]: CRC Press, 2025. Disponível em \url{https://py.geocompx.org/}.
 
