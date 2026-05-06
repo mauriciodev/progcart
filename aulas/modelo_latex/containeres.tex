@@ -40,6 +40,41 @@
     
 \end{frame}
 
+\begin{frame}[fragile]{Docker: Instalação no Windows}
+    
+    No Windows, Docker é instalado através do \textbf{Docker Desktop}.
+    
+    \vspace{0.3cm}
+    \textbf{1. Instalar o subsistema Linux do Windows (WSL)}
+    \begin{minted}{powershell}
+wsl --install
+    \end{minted}   
+    
+    \textbf{2. Instalar o Docker via Winget}
+    
+    \begin{minted}{powershell}
+winget install Docker.DockerDesktop
+    \end{minted}
+    
+    \textbf{3. Reiniciar o computador}
+    
+    \textbf{4. Verificar instalação}
+    
+    \begin{minted}{bash}
+docker --version
+docker run hello-world
+    \end{minted}
+    
+    \textbf{Requisitos}
+    
+    \begin{itemize}
+        \item Windows 10 ou 11
+        \item Virtualização habilitada
+        \item WSL2 instalado
+    \end{itemize}
+    
+\end{frame}
+
 \begin{frame}{Docker: Arquitetura}
     
     \begin{center}
@@ -93,7 +128,7 @@
     \textbf{Exemplo de execução}
     
     \begin{minted}{bash}
-        docker run hello-world
+docker run hello-world
     \end{minted}
     
     Fluxo típico:
@@ -127,49 +162,14 @@ CMD ["python", "app.py"]
     Construção da imagem:
     
     \begin{minted}{bash}
-        docker build -t meu_app .
+docker build -t meu_app .
     \end{minted}
     
     Execução:
     
     \begin{minted}{bash}
-        docker run meu_app
+docker run meu_app
     \end{minted}
-    
-\end{frame}
-
-\begin{frame}[fragile]{Docker: Instalação no Windows}
-    
-    Docker é instalado através do \textbf{Docker Desktop}.
-    
-    \vspace{0.3cm}
-    \textbf{1. Instalar o subsistema Linux do Windows (WSL)}
-    \begin{minted}{powershell}
-        wsl --install
-    \end{minted}   
-    
-    \textbf{2. Instalar o Docker via Winget}
-    
-    \begin{minted}{powershell}
-        winget install Docker.DockerDesktop
-    \end{minted}
-    
-    \textbf{3. Reiniciar o computador}
-    
-    \textbf{4. Verificar instalação}
-    
-    \begin{minted}{bash}
-        docker --version
-        docker run hello-world
-    \end{minted}
-    
-    \textbf{Requisitos}
-    
-    \begin{itemize}
-        \item Windows 10 ou 11
-        \item Virtualização habilitada
-        \item WSL2 instalado
-    \end{itemize}
     
 \end{frame}
 
@@ -208,6 +208,16 @@ CMD ["python", "app.py"]
         \item Containers são mais \textbf{leves e rápidos}
     \end{itemize}
     
+\end{frame}
+
+\begin{frame}{Tipos de hospedagem para sistemas web}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{bancos_de_dados_relacionais_figs/iaas-paas-saas-diagram5.1-1638x1046}
+\caption{Quero hospedar meu site. O que um datacenter pode me oferecer? Fonte: \url{https://www.redhat.com/pt-br/topics/cloud-computing/iaas-vs-paas-vs-saas}}
+\end{figure}
+
 \end{frame}
 
 \begin{frame}[fragile]{Docker Volumes — Persistência de dados}
