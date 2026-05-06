@@ -16,8 +16,8 @@
     
     \begin{itemize}
         \item Dados organizados em tabelas (relações)
-        \item Linhas → tuplas
-        \item Colunas → atributos
+        \item Linhas $\rightarrow$ tuplas
+        \item Colunas $\rightarrow$ atributos
         \item Chaves primárias e estrangeiras
     \end{itemize}
     
@@ -38,7 +38,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{SQL — Structured Query Language}
+\begin{frame}{SQL - Structured Query Language}
     
     \textbf{SQL} é a linguagem padrão para manipulação de bancos de dados relacionais.
     
@@ -103,9 +103,9 @@ WHERE condicao;
     Componentes:
     
     \begin{itemize}
-        \item \textbf{SELECT} — define as colunas retornadas
-        \item \textbf{FROM} — define a tabela consultada
-        \item \textbf{WHERE} — filtra os registros
+        \item \textbf{SELECT} - define as colunas retornadas
+        \item \textbf{FROM} - define a tabela consultada
+        \item \textbf{WHERE} - filtra os registros
     \end{itemize}
     
     Exemplo:
@@ -160,11 +160,11 @@ FROM cidades;
     Funções comuns:
     
     \begin{itemize}
-        \item \texttt{COUNT()} — número de registros
-        \item \texttt{SUM()} — soma
-        \item \texttt{AVG()} — média
-        \item \texttt{MIN()} — valor mínimo
-        \item \texttt{MAX()} — valor máximo
+        \item \texttt{COUNT()} - número de registros
+        \item \texttt{SUM()} - soma
+        \item \texttt{AVG()} - média
+        \item \texttt{MIN()} - valor mínimo
+        \item \texttt{MAX()} - valor máximo
     \end{itemize}
     
     Exemplo:
@@ -176,7 +176,7 @@ FROM cidades;
     
 \end{frame}
 
-\begin{frame}[fragile]{Relacionando tabelas — JOIN}
+\begin{frame}[fragile]{Relacionando tabelas - JOIN}
     
     Bancos relacionais permitem combinar dados de várias tabelas.
     
@@ -402,11 +402,11 @@ ORDER BY populacao DESC;
     
     \textbf{Posicionamento:}
     
-    Shapefile → formato legado de troca.  
+    Shapefile $\rightarrow$ formato legado de troca.
     
-    PostgreSQL + PostGIS → infraestrutura robusta multiusuário.  
+    PostgreSQL + PostGIS $\rightarrow$ infraestrutura robusta multiusuário.
     
-    DuckDB Spatial → banco analítico leve e embarcado.
+    DuckDB Spatial $\rightarrow$ banco analítico leve e embarcado.
 \end{frame}
 
 \begin{frame}{Modelo Espacial}
@@ -466,7 +466,7 @@ ORDER BY populacao DESC;
 \end{frame}
 
 
-\begin{frame}{PostgreSQL + PostGIS — Visão Geral}
+\begin{frame}{PostgreSQL + PostGIS - Visão Geral}
     
     \textbf{PostgreSQL}:
     \begin{itemize}
@@ -548,7 +548,7 @@ ORDER BY populacao DESC;
     
     \vspace{0.4cm}
     
-    Sem índice → varredura completa da tabela.
+    Sem índice $\rightarrow$ varredura completa da tabela.
 \end{frame}
 
 
@@ -661,9 +661,9 @@ ORDER BY populacao DESC;
 \end{frame}
 
 
-\begin{frame}[fragile]{Consultas Espaciais — Exemplos SQL (PostGIS)}
+\begin{frame}[fragile]{Consultas Espaciais - Exemplos SQL (PostGIS)}
     
-    \textbf{1️⃣ Criar tabela espacial}
+    \textbf{1.Criar tabela espacial}
     
     \begin{minted}{sql}
 CREATE TABLE municipios (
@@ -676,7 +676,7 @@ geom GEOMETRY(MULTIPOLYGON, 4674)
     
     \vspace{0.3cm}
     
-    \textbf{2️⃣ Criar índice espacial}
+    \textbf{2.Criar índice espacial}
     
     \begin{minted}{sql}
 CREATE INDEX idx_municipios_geom
@@ -705,9 +705,9 @@ USING GIST (geom);
 \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Consultas Espaciais — Exemplos SQL}
+\begin{frame}[fragile]{Consultas Espaciais - Exemplos SQL}
     
-    \textbf{3️⃣ Municípios que intersectam um rio}
+    \textbf{3.Municípios que intersectam um rio}
     
     \begin{minted}{sql}
 SELECT m.nome
@@ -719,7 +719,7 @@ WHERE r.nome = 'Rio X';
     
     \vspace{0.3cm}
     
-    \textbf{4️⃣ Área em km²}
+    \textbf{4.Área em km²}
     
     \begin{minted}{sql}
 SELECT nome,
@@ -866,7 +866,7 @@ LIMIT 10;
     
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo — DuckDB + Spatial em Python}
+\begin{frame}[fragile]{Exemplo - DuckDB + Spatial em Python}
     
     \textbf{Instalação (uma vez):}
     \begin{minted}{bash}
@@ -890,7 +890,7 @@ con.execute("LOAD spatial;")
     
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo — DuckDB + Spatial em Python}
+\begin{frame}[fragile]{Exemplo - DuckDB + Spatial em Python}
     \begin{minted}{python}
 # cria tabela espacial
 con.execute("""
@@ -914,22 +914,22 @@ print(result)
     \end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo — Download de Shapefile + DuckDB Spatial}
+\begin{frame}[fragile]{Exemplo - Download de Shapefile + DuckDB Spatial}
     
     \begin{minted}{python}
 import requests, zipfile, io
 import duckdb
 
-# 1️⃣ Download (Natural Earth - países 110m, leve)
+# 1.Download (Natural Earth - países 110m, leve)
 url = "https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_countries.zip"
 response = requests.get(url)
 response.raise_for_status()
 
-# 2️⃣ Extrai zip em memória
+# 2.Extrai zip em memória
 with zipfile.ZipFile(io.BytesIO(response.content)) as z:
     z.extractall("ne_countries")
 
-# 3️⃣ Conecta ao DuckDB
+# 3.Conecta ao DuckDB
 con = duckdb.connect("world.duckdb")
 con.execute("INSTALL spatial;")
 con.execute("LOAD spatial;")
@@ -938,17 +938,17 @@ con.execute("LOAD spatial;")
     
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo — Download de Shapefile + DuckDB Spatial}
+\begin{frame}[fragile]{Exemplo - Download de Shapefile + DuckDB Spatial}
     
     \begin{minted}{python}
-# 4️⃣ Lê shapefile direto via GDAL
+# 4.Lê shapefile direto via GDAL
 con.execute("""
     CREATE TABLE countries AS
     SELECT * FROM ST_Read(
     'ne_countries/ne_110m_admin_0_countries.shp');
 """)
 
-# 5️⃣ Calcula área (m² — CRS 4326->3857)
+# 5.Calcula área (m² - CRS 4326$\rightarrow$3857)
 result = con.execute("""
     SELECT NAME,
     ST_Area(ST_Transform(geom, 3857)) AS area
