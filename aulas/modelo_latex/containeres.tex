@@ -4,7 +4,7 @@
 %pdflatex -shell-escape -synctex=1 -interaction=nonstopmode  -output-directory=build  %.tex
 
 \usepackage{aula}
-
+\usetikzlibrary{shapes.geometric, positioning}
 \title{Contêineres}
 \date{\today}
 
@@ -49,7 +49,7 @@
             \node[draw, rectangle, minimum width=3cm] (app) {Aplicação};
             
             \node[draw, rectangle, minimum width=4cm, below of=app] (container)
-            {Container \\ (bibliotecas + runtime)};
+            {Container  (bibliotecas + runtime)};
             
             \node[draw, rectangle, minimum width=4cm, below of=container] (engine)
             {Docker Engine};
@@ -220,16 +220,25 @@ CMD ["python", "app.py"]
     
     \begin{center}
         
-        \begin{tikzpicture}[node distance=1.2cm]
+        \begin{tikzpicture}[node distance=0.1cm]
             
             \node[draw, rectangle, minimum width=3.2cm] (container) {Container};
             
-            \node[draw, cylinder, shape border rotate=90,
-            minimum height=1.2cm, minimum width=2cm,
-            below of=container] (volume) {Volume};
+            \node[
+                draw,
+                cylinder,
+                shape border rotate=90,
+                minimum height=0.2cm,
+                minimum width=2cm,
+                below=of container
+            ] (volume) {Volume};
             
-            \node[draw, rectangle, minimum width=3.2cm,
-            below of=volume] (host) {Disco do Host};
+            \node[
+                draw,
+                rectangle,
+                minimum width=1.2cm,
+                below=of volume
+            ] (host) {Disco do Host};
             
             \draw[->] (container) -- (volume);
             \draw[->] (volume) -- (host);
