@@ -9,8 +9,7 @@
     
 \input{capa}
 
-
-
+\section{Conceitos básicos de banco de dados geográficos}
 \begin{frame}{Conceitos Fundamentais}
     \textbf{Banco de Dados Relacional (BDR)}:
     
@@ -68,6 +67,106 @@
     
 \end{frame}
 
+\section{Extensões espaciais para bancos de dados}
+% =====================================================================
+% SLIDE 1
+% =====================================================================
+\begin{frame}{Extensões Espaciais em SGBDs}
+
+\textbf{Objetivo:}
+Adicionar suporte a dados geoespaciais em bancos relacionais.
+
+\vspace{0.3cm}
+
+    \begin{columns}[t]
+    \column{0.5\linewidth}
+    \textbf{Funcionalidades espaciais:}
+    \begin{itemize}
+        \item Tipos geométricos:
+        \begin{itemize}
+            \item Ponto, Linha, Polígono
+        \end{itemize}
+    
+        \item Índices espaciais:
+        \begin{itemize}
+            \item Consultas rápidas por localização
+        \end{itemize}
+    
+        \item Funções espaciais:
+        \begin{itemize}
+            \item Distância
+            \item Interseção
+            \item Buffer
+            \item Área
+        \end{itemize}
+    
+        \item Integração com GIS:
+        \begin{itemize}
+            \item QGIS, GeoPandas, Leafmap
+        \end{itemize}
+    \end{itemize}
+    \column{0.5\linewidth}
+    \textbf{Padrões comun para colunas geométricas:}
+    \begin{itemize}
+        \item OGC Simple Features
+        \item WKT / WKB
+        \item GeoJSON
+    \end{itemize}
+    \end{columns}
+\end{frame}
+
+% =====================================================================
+% SLIDE 2
+% =====================================================================
+\begin{frame}{Principais Tecnologias Espaciais}
+
+\begin{table}
+\centering
+\scriptsize
+\begin{tabular}{|p{2.3cm}|p{2.7cm}|p{4.2cm}|}
+\hline
+\textbf{Tecnologia} & \textbf{Extensão Espacial} & \textbf{Características} \\
+\hline
+
+MySQL (SGBD)&
+Spatial Extensions &
+Suporte espacial integrado. Funções GIS básicas e índices espaciais. \\
+
+\hline
+
+PostgreSQL (SGDB)&
+PostGIS &
+Principal solução open-source GIS. Muito usado com QGIS e GeoPandas. \\
+
+\hline
+
+SQLite (em arquivo) &
+SpatiaLite / GeoPackage &
+Banco leve baseado em arquivo único. Muito usado em aplicações desktop e móveis. \\
+
+\hline
+
+DuckDB (em pocesso)&
+Spatial Extension &
+Foco em analytics e processamento geoespacial local de alta performance. \\
+
+\hline
+
+\end{tabular}
+\end{table}
+
+\vspace{0.3cm}
+
+\textbf{Exemplos de uso:}
+\begin{itemize}
+    \item PostGIS → servidores GIS
+    \item GeoPackage → intercâmbio de dados
+    \item DuckDB → análise geoespacial local
+\end{itemize}
+
+\end{frame}
+
+\section{Prática com Postgresql/Postgis}
 \begin{frame}[fragile]{Postgis no Docker}
     
     Recuperando nosso container de PostgreSQL+PostGIS da aula passada.
@@ -77,16 +176,153 @@
     \begin{minted}{bash}
 docker start postgis
     \end{minted}
-    
-    Criando um banco novo
+
+    Executa o terminal bash dentro do container
+\begin{minted}{bash}
+docker exec -it postgis bash 
+    \end{minted}
+
+    Criando um banco novo (no terminal do container)
     \begin{minted}{bash}
-docker exec -it postgis createdb geodb -U postgres
+createdb geodb -U postgres
     \end{minted}
     
-    Conectando ao banco pelo terminal
+    Conectando ao banco (no terminal do container)
     \begin{minted}{bash}
-docker exec -it postgis psql -U postgres -d geodb
-    \end{minted}    
+psql -U postgres -d geodb
+    \end{minted}     
+
+Conectando ao banco (fora do terminal do container)
+    \begin{minted}{bash}
+docker exec -it postgis psql -U postgres -d geodb 
+    \end{minted}     
+\end{frame}
+
+\begin{frame}[fragile]{Usuários e Permissões no PostgreSQL/PostGIS}
+
+\textbf{1. Alterar senha do usuário \texttt{postgres}:}
+
+\begin{minted}{sql}
+ALTER USER postgres
+WITH PASSWORD 'nova_senha';
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{2. Criar usuário \texttt{aluno}:}
+
+\begin{minted}{sql}
+CREATE USER aluno
+WITH PASSWORD 'senha123';
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{3. Permitir conexão ao banco \texttt{geodb}:}
+
+\begin{minted}{sql}
+GRANT CONNECT ON DATABASE geodb TO aluno;
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{4. Dar permissões de leitura e escrita:}
+
+\begin{minted}{sql}
+GRANT USAGE ON SCHEMA public TO aluno;
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON ALL TABLES IN SCHEMA public
+TO aluno;
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{5. Aplicar permissões futuras automaticamente:}
+
+\begin{minted}{sql}
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON TABLES TO aluno;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}{Conectando PostgreSQL no QGIS DB Manager}
+
+\begin{columns}[t]
+\column{0.35\textwidth}
+\textbf{Passos básicos:}
+
+\begin{enumerate}
+    \item Selecionar:
+    \begin{itemize}
+        \item \texttt{Camada - Adicionar camada}
+        \item \texttt{Nova Conexão}
+    \end{itemize}
+
+    \item Informar:
+    \begin{itemize}
+        \item Host: localhost
+        \item Porta (5432)
+        \item Banco: geodb
+        \item Usuário: postgres
+        \item Senha: nova\_senha
+    \end{itemize}
+
+    \item Testar conexão
+\end{enumerate}
+
+\column[t]{0.65\textwidth}
+\begin{figure}
+\centering
+\includegraphics[height=0.2\textheight]{bancos_de_dados_relacionais_figs/QGIS_Connection}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[height=0.45\textheight]{bancos_de_dados_relacionais_figs/QGIS_Connection2}
+\end{figure}
+
+
+\end{columns}
+\end{frame}
+
+\begin{frame}{Conectando PostgreSQL no QGIS}
+% TODO: \usepackage{graphicx} required
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{bancos_de_dados_relacionais_figs/DBManager1}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{bancos_de_dados_relacionais_figs/DBManager2}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo SQL: Criando e Inserindo Dados}
+
+\textbf{Criando a tabela \texttt{cidades}:}
+
+\begin{minted}{sql}
+CREATE TABLE cidades (
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    populacao INTEGER
+);
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Inserindo registros iniciais:}
+
+\begin{minted}{sql}
+INSERT INTO cidades (nome, populacao)
+VALUES
+    ('Rio de Janeiro', 6748000),
+    ('São Paulo', 12330000),
+    ('Belo Horizonte', 2531000);
+\end{minted}
+
 
 \end{frame}
 
@@ -644,9 +880,9 @@ ORDER BY populacao DESC;
     \textbf{Exemplo em PostGIS:}
     
     \begin{minted}{sql}
-        CREATE INDEX idx_geom
-        ON cidades
-        USING GIST (geom);
+CREATE INDEX idx_geom
+ON cidades
+USING GIST (geom);
     \end{minted}
     
     \textbf{Benefícios:}
@@ -729,6 +965,9 @@ FROM municipios;
     
 \end{frame}
 
+\section{Exercícios complementares: DuckDB}
+
+
 
 \begin{frame}{O que é DuckDB?}
     
@@ -794,6 +1033,11 @@ FROM municipios;
     
 \end{frame}
 
+\begin{frame}[fragile]{Laboratório de DuckDB}
+\href{https://colab.research.google.com/github/mauriciodev/progcart/blob/main/aulas/jupyter/duckdb_brasil.ipynb}{Abrir no colab}
+
+\end{frame}
+
 \begin{frame}[fragile]{Instalando DuckDB CLI com Pixi}
     
     O \textbf{Pixi} permite criar ambientes isolados e instalar ferramentas rapidamente.
@@ -803,20 +1047,20 @@ FROM municipios;
     \textbf{1. Criar um novo projeto Pixi}
     
     \begin{minted}{bash}
-        pixi init pixi_env
-        cd pixi_env
+pixi init pixi_env
+cd pixi_env
     \end{minted}
     
     \textbf{2. Instalar o DuckDB CLI}
     
     \begin{minted}{bash}
-        pixi add duckdb-cli
+pixi add duckdb-cli
     \end{minted}
     
     \textbf{3. Executar o DuckDB}
     
     \begin{minted}{bash}
-        pixi run duckdb
+pixi run duckdb
     \end{minted}
     
     \vspace{0.3cm}
@@ -824,7 +1068,7 @@ FROM municipios;
     \textbf{Verificando a instalação}
     
     \begin{minted}{sql}
-        SELECT version();
+SELECT version();
     \end{minted}
     
     \begin{itemize}

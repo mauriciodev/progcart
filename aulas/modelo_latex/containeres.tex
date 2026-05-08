@@ -296,12 +296,25 @@ docker exec -it postgis psql -U postgres
         \item Python (psycopg)
     \end{itemize}
     
-    Exemplo SQL:
+
+    
+\end{frame}
+
+\begin{frame}[fragile]{PostGIS em Docker}
+    A imagem postgis/postgis já carrega a extensão espacial PostGIS e todos bancos de dados criados. 
+    \vspace{0.3cm}
+
+    Teste se o postgis estáinstalado no banco. (acessar o banco usando psql)
     
     \begin{minted}{sql}
 SELECT PostGIS_Version();
     \end{minted}
-    
+
+    Não é necessário executar o comando: 
+    \begin{minted}{sql}
+CREATE EXTENSION PostGIS;
+    \end{minted}
+
 \end{frame}
 
 \begin{frame}[fragile]{Comandos úteis do Docker}
