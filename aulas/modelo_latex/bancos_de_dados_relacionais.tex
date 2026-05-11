@@ -68,9 +68,7 @@
 \end{frame}
 
 \section{Extensões espaciais para bancos de dados}
-% =====================================================================
-% SLIDE 1
-% =====================================================================
+
 \begin{frame}{Extensões Espaciais em SGBDs}
 
 \textbf{Objetivo:}
@@ -115,54 +113,51 @@ Adicionar suporte a dados geoespaciais em bancos relacionais.
     \end{columns}
 \end{frame}
 
-% =====================================================================
-% SLIDE 2
-% =====================================================================
 \begin{frame}{Principais Tecnologias Espaciais}
 
-\begin{table}
-\centering
-\scriptsize
-\begin{tabular}{|p{2.3cm}|p{2.7cm}|p{4.2cm}|}
-\hline
-\textbf{Tecnologia} & \textbf{Extensão Espacial} & \textbf{Características} \\
-\hline
-
-MySQL (SGBD)&
-Spatial Extensions &
-Suporte espacial integrado. Funções GIS básicas e índices espaciais. \\
-
-\hline
-
-PostgreSQL (SGDB)&
-PostGIS &
-Principal solução open-source GIS. Muito usado com QGIS e GeoPandas. \\
-
-\hline
-
-SQLite (em arquivo) &
-SpatiaLite / GeoPackage &
-Banco leve baseado em arquivo único. Muito usado em aplicações desktop e móveis. \\
-
-\hline
-
-DuckDB (em pocesso)&
-Spatial Extension &
-Foco em analytics e processamento geoespacial local de alta performance. \\
-
-\hline
-
-\end{tabular}
-\end{table}
-
-\vspace{0.3cm}
-
-\textbf{Exemplos de uso:}
-\begin{itemize}
-    \item PostGIS → servidores GIS
-    \item GeoPackage → intercâmbio de dados
-    \item DuckDB → análise geoespacial local
-\end{itemize}
+    \begin{table}
+    \centering
+    \scriptsize
+    \begin{tabular}{|p{2.3cm}|p{2.7cm}|p{4.2cm}|}
+    \hline
+    \textbf{Tecnologia} & \textbf{Extensão Espacial} & \textbf{Características} \\
+    \hline
+    
+    MySQL (SGBD)&
+    Spatial Extensions &
+    Suporte espacial integrado. Funções GIS básicas e índices espaciais. \\
+    
+    \hline
+    
+    PostgreSQL (SGDB)&
+    PostGIS &
+    Principal solução open-source GIS. Muito usado com QGIS e GeoPandas. \\
+    
+    \hline
+    
+    SQLite (em arquivo) &
+    SpatiaLite / GeoPackage &
+    Banco leve baseado em arquivo único. Muito usado em aplicações desktop e móveis. \\
+    
+    \hline
+    
+    DuckDB (em pocesso)&
+    Spatial Extension &
+    Foco em analytics e processamento geoespacial local de alta performance. \\
+    
+    \hline
+    
+    \end{tabular}
+    \end{table}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Exemplos de uso:}
+    \begin{itemize}
+        \item PostGIS → servidores GIS
+        \item GeoPackage → intercâmbio de dados
+        \item DuckDB → análise geoespacial local
+    \end{itemize}
 
 \end{frame}
 
@@ -288,7 +283,6 @@ ON TABLES TO aluno;
 \end{frame}
 
 \begin{frame}{Conectando PostgreSQL no QGIS}
-% TODO: \usepackage{graphicx} required
 \begin{figure}
 \centering
 \includegraphics[width=0.7\linewidth]{bancos_de_dados_relacionais_figs/DBManager1}
@@ -299,32 +293,39 @@ ON TABLES TO aluno;
 \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo SQL: Criando e Inserindo Dados}
 
+\begin{frame}[fragile]{Exemplo SQL: Criando e Inserindo Dados}
+Selecionar o banco \textbf{geodb} e abrir a Janela SQL do DB Manager.  
+
+\vspace{0.3cm}
 \textbf{Criando a tabela \texttt{cidades}:}
 
 \begin{minted}{sql}
 CREATE TABLE cidades (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     nome TEXT,
-    populacao INTEGER
+    populacao INTEGER,
+    longitude REAL,
+    latitude REAL
 );
 \end{minted}
-
+{\tiny Obs.: o tipo serial é um inteiro que se autoincrementa. Usar id INTEGER PRIMARY KEY AUTOINCREMENT em Spatialite.}
 \vspace{0.3cm}
 
 \textbf{Inserindo registros iniciais:}
 
 \begin{minted}{sql}
-INSERT INTO cidades (nome, populacao)
+INSERT INTO cidades
+(nome, populacao, longitude, latitude)
 VALUES
-    ('Rio de Janeiro', 6748000),
-    ('São Paulo', 12330000),
-    ('Belo Horizonte', 2531000);
+('Rio de Janeiro', 6748000, -43.1729, -22.9068),
+('São Paulo', 12330000, -46.6333, -23.5505),
+('Belo Horizonte', 2531000, -43.9386, -19.9208);
 \end{minted}
 
 
 \end{frame}
+
 
 \begin{frame}[fragile]{Estrutura básica de uma consulta}
     
@@ -349,7 +350,7 @@ WHERE condicao;
     \begin{minted}{sql}
 SELECT nome, populacao
 FROM cidades
-WHERE populacao > 100000;
+WHERE populacao > 3000000;
     \end{minted}
     
 \end{frame}
@@ -362,10 +363,12 @@ WHERE populacao > 100000;
     
     Inserir registros:
     
-    \begin{minted}{sql}
-INSERT INTO cidades (nome, populacao)
-VALUES ('Campinas', 1214000);
-    \end{minted}
+\vspace{0.3cm}
+
+\begin{minted}{sql}
+INSERT INTO cidades (nome, populacao, longitude, latitude)
+VALUES ('Campinas', 1214000, -47.0608, -22.9056);
+\end{minted}
     
     Atualizar registros:
     
@@ -384,13 +387,68 @@ WHERE nome = 'Campinas';
     
 \end{frame}
 
+
+\begin{frame}[fragile]{Inserindo, atualizando e removendo dados}
+    
+    Verificar se o PostGIS está carregado neste banco. 
+    \begin{minted}{sql}
+SELECT PostGIS_Version();
+    \end{minted}
+    Caso não esteja instalado, vai retornar que a função não existe. Para instalar:
+    \begin{minted}{sql}
+CREATE EXTENSION IF NOT EXISTS postgis;
+    \end{minted}
+
+
+    Inserindo uma coluna geometria à partir de colunas lat e lon:
+    
+    \vspace{0.3cm}
+
+    \begin{minted}{sql}
+-- Adiciona a coluna geom (geometria)
+ALTER TABLE cidades
+ADD COLUMN geom geometry(Point, 4326);
+
+-- Preenche a geometria usando longitude e latitude
+UPDATE cidades
+SET geom = ST_SetSRID(
+    ST_MakePoint(longitude, latitude),
+    4326
+);
+    \end{minted}
+Agora é possível visualizar esta tabela no mapa do QGIS!
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Inserindo dados geoespaciais no PostgreSQL pelo QGIS}
+
+Adicionar a camada vetorial no QGIS (baixando ou pelo URL) 
+
+\url{https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2025/Brasil/BR_UF_2025.zip}
+\begin{columns}
+\column[t]{0.4\textwidth}
+
+- Acessar o DB Manager. \\
+- Escolher a conexão ao PostGIS.\\
+- Importar camada vetorial. \\
+- Carregar no canvas.
+\column[t]{0.6\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{bancos_de_dados_relacionais_figs/Import_shape}
+\end{figure}
+\end{columns}
+\end{frame}
+
+
 \begin{frame}[fragile]{Operações de agregação}
     
     Funções de agregação resumem dados.
     
     \begin{minted}{sql}
 SELECT COUNT(*)
-FROM cidades;
+FROM estados;
     \end{minted}
     
     Funções comuns:
@@ -658,8 +716,17 @@ ORDER BY populacao DESC;
     Estrutura típica:
     
     \begin{center}
-        \texttt{id | nome | area | geom}\\
-        \texttt{1  | Rio de Janeiro | 43,696 | MULTIPOLYGON(...)}
+\begin{table}
+\centering
+\scriptsize
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{id} & \textbf{nome} & \textbf{area} & \textbf{geom} \\
+\hline
+1 & Rio de Janeiro & 43,696 & MULTIPOLYGON(...) \\
+\hline
+\end{tabular}
+\end{table}
     \end{center}
     
     \vspace{0.4cm}
@@ -972,6 +1039,8 @@ FROM municipios;
 \begin{frame}{O que é DuckDB?}
     
     \textbf{DuckDB} é um banco de dados analítico embutido (embedded OLAP).
+    
+    OLAP (Online Analytical Processing)
     
     \vspace{0.4cm}
     

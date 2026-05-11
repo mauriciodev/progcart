@@ -12,7 +12,7 @@
     
 \input{capa}
 
-
+\section{Conceitos de containerização}
 \begin{frame}{Docker: Conceito geral}
     
     \textbf{Docker} é uma plataforma para executar aplicações em \textbf{containers}.
@@ -300,6 +300,8 @@ docker exec -it postgis psql -U postgres
     
 \end{frame}
 
+\section{PostgreSQL+PostGIS em Docker}
+
 \begin{frame}[fragile]{PostGIS em Docker}
     A imagem postgis/postgis já carrega a extensão espacial PostGIS e todos bancos de dados criados. 
     \vspace{0.3cm}
@@ -360,6 +362,81 @@ docker container rm postgis
 \centering 
 Lista de comandos docker úteis (mas você pode fazer pelo Desktop).
 \large \url{https://docs.docker.com/get-started/docker_cheatsheet.pdf}
+\end{frame}
+
+\section{PostgreSQL+PostGIS com Docker compose}
+
+\begin{frame}[fragile]{Docker Compose: Conceitos}
+
+\textbf{Docker Compose} permite definir e executar múltiplos containers usando um único arquivo YAML.
+
+\vspace{0.4cm}
+
+\textbf{Principais conceitos:}
+
+\begin{itemize}
+    \item \textbf{services}
+    \begin{itemize}
+        \item Containers da aplicação
+    \end{itemize}
+
+    \item \textbf{image}
+    \begin{itemize}
+        \item Imagem Docker utilizada
+    \end{itemize}
+
+    \item \textbf{ports}
+    \begin{itemize}
+        \item Mapeamento de portas
+    \end{itemize}
+
+    \item \textbf{volumes}
+    \begin{itemize}
+        \item Persistência de dados
+    \end{itemize}
+
+    \item \textbf{environment}
+    \begin{itemize}
+        \item Variáveis de ambiente
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.4cm}
+
+\textbf{Execução:}
+
+\begin{minted}{bash}
+docker compose up -d
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: PostGIS com Docker Compose}
+Salvar em \textbf{docker-compose.ym}l e executar \textbf{ docker compose up} .
+\begin{minted}{yaml}
+version: '3.9'
+
+services: # Todos os containers serao descritos aqui
+  postgis: # Nome do container no compose
+    image: postgis/postgis # Imagem a ser utilizada: PostgreSQL + PostGIS
+    container_name: postgis # Nome do container
+    restart: unless-stopped # Reinício automático do serviço
+
+    ports:
+      - "5432:5432" # Porta local 5432 → container 5432
+
+    environment: # Variáveis de ambiente
+      POSTGRES_PASSWORD: postgres
+
+    volumes:  # Ligações entre pastas do hospedeiro e do container.
+      - dados_postgres:/var/lib/postgresql/data
+
+volumes: # Lista de volumes. Vários containers podem usar os mesmos volumes.
+  dados_postgres: # Volume mantém os dados persistentes
+\end{minted}
+
+\vspace{0.3cm}
+
 \end{frame}
 
 \end{document}
