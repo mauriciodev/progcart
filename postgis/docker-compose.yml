@@ -1,0 +1,15 @@
+version: '3.9'
+services: # Todos os containers serao descritos aqui
+    postgis: # Nome do container no compose
+        image: postgis/postgis # Imagem a ser utilizada: PostgreSQL + PostGIS
+        container_name: postgis # Nome do container
+        restart: unless-stopped # Reinı́cio automático do serviço
+        ports:
+            - "5432:5432" # Porta local 5432 → container 5432
+        environment: # Variáveis de ambiente
+            POSTGRES_PASSWORD: postgres
+        volumes: # Ligaçoes entre pastas do hospedeiro e do container.
+            - dados_postgres:/var/lib/postgresql/data
+
+volumes: # Lista de volumes. Vários containers podem usar os mesmos volumes.
+    dados_postgres: # Volume mantém os dados persistentes
