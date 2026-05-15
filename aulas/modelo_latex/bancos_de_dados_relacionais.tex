@@ -1153,6 +1153,156 @@ Selecionar todas as camadas do banco:
 \end{figure}
 \end{frame}
 
+\section{Execução remota de comandos SQL por bibliotecas Python}
+
+\begin{frame}{Conceitos: PostgreSQL e Python}
+
+\textbf{Integração Python + PostgreSQL}
+
+\vspace{0.4cm}
+
+Existem diversas bibliotecas Python que permitem:
+
+\begin{itemize}
+    \item Conectar ao PostgreSQL
+    \item Executar comandos SQL remotamente
+    \item Ler e escrever tabelas
+    \item Trabalhar com dados espaciais do PostGIS
+\end{itemize}
+
+\vspace{0.4cm}
+
+\textbf{Execução remota de SQL}
+
+\begin{itemize}
+    \item O código Python envia comandos SQL ao servidor
+    \item O processamento ocorre no PostgreSQL/PostGIS
+    \item Consultas utilizam índices e otimizações do banco
+\end{itemize}
+
+\vspace{0.4cm}
+
+\textbf{Vantagem:}
+Grandes volumes de dados podem ser processados diretamente no servidor.
+
+\end{frame}
+
+\begin{frame}[fragile]{QtSql: Executando SQL}
+
+\begin{minted}{python}
+from PyQt5.QtSql import QSqlDatabase, QSqlQuery
+
+db = QSqlDatabase.addDatabase("QPSQL")
+
+db.setHostName("localhost")
+db.setDatabaseName("geodb")
+db.setUserName("postgres")
+db.setPassword("postgres")
+
+db.open()
+
+query = QSqlQuery()
+
+query.exec(""" SELECT nome, populacao FROM cidades """)
+
+while query.next():
+    print(
+        query.value(0),
+        query.value(1)
+    )
+\end{minted}
+
+\end{frame}
+
+
+% =====================================================================
+% SLIDE 1 - OGR
+% =====================================================================
+\begin{frame}[fragile]{OGR: Executando SQL no PostgreSQL/PostGIS}
+
+\begin{minted}{python}
+from osgeo import ogr
+
+conn_str = (
+    "PG:host=localhost "
+    "dbname=geodb "
+    "user=postgres "
+    "password=postgres"
+)
+
+ds = ogr.Open(conn_str)
+
+sql = """ SELECT nome, populacao FROM cidades """
+
+layer = ds.ExecuteSQL(sql)
+
+for feat in layer:
+    print(
+        feat.GetField("nome"),
+        feat.GetField("populacao")
+    )
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 2 - GEOPANDAS
+% =====================================================================
+\begin{frame}[fragile]{GeoPandas: Executando SQL}
+
+\begin{minted}{python}
+import geopandas as gpd
+
+from sqlalchemy import create_engine
+
+engine = create_engine(
+    "postgresql://postgres:"
+    "postgres@localhost/geodb"
+)
+
+sql = """ SELECT * FROM cidades """
+
+gdf = gpd.read_postgis(
+    sql,
+    engine,
+    geom_col="geom"
+)
+
+print(gdf.head())
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 4 - PSYCOPG
+% =====================================================================
+\begin{frame}[fragile]{Psycopg: Executando SQL}
+
+\begin{minted}{python}
+import psycopg
+
+conn = psycopg.connect(
+    host="localhost",
+    dbname="geodb",
+    user="postgres",
+    password="postgres"
+)
+
+cur = conn.cursor()
+
+sql = """
+SELECT nome, populacao
+FROM cidades
+"""
+
+cur.execute(sql)
+
+for row in cur.fetchall():
+    print(row)
+\end{minted}
+
+\end{frame}
+
 \section{Exercícios complementares: PostGIS no QGIS Processing}
 \begin{frame}{Exercícios complementares: PostGIS no QGIS Processing}
 
