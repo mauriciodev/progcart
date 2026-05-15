@@ -37,6 +37,57 @@
     \end{itemize}
 \end{frame}
 
+
+\begin{frame}[fragile]{Tabelas em bancos relacionais}
+    
+    Dados em bancos relacionais são organizados em \textbf{tabelas}.
+    
+    \begin{center}
+        
+        \begin{tikzpicture}
+            
+            \draw (0,0) rectangle (8,3);
+            
+            % linhas horizontais
+            \draw (0,2.5) -- (8,2.5);
+            \draw (0,2) -- (8,2);
+            \draw (0,1.5) -- (8,1.5);
+            \draw (0,1) -- (8,1);
+            
+            % colunas
+            \draw (2,0) -- (2,3);
+            \draw (5,0) -- (5,3);
+            
+            % cabeçalhos
+            \node at (1,2.75) {\textbf{id}};
+            \node at (3.5,2.75) {\textbf{nome}};
+            \node at (6.5,2.75) {\textbf{população}};
+            
+            % linhas
+            \node at (1,2.25) {1};
+            \node at (3.5,2.25) {Curitiba};
+            \node at (6.5,2.25) {1774000};
+            
+            \node at (1,1.75) {2};
+            \node at (3.5,1.75) {Campinas};
+            \node at (6.5,1.75) {1214000};
+            
+            \node at (1,1.25) {3};
+            \node at (3.5,1.25) {Recife};
+            \node at (6.5,1.25) {1490000};
+            
+        \end{tikzpicture}
+        
+    \end{center}
+    
+    \begin{itemize}
+        \item \textbf{Colunas} representam atributos
+        \item \textbf{Linhas} representam registros
+        \item Cada tabela normalmente possui uma \textbf{chave primária (ID)}
+    \end{itemize}
+    
+\end{frame}
+
 \begin{frame}{SQL - Structured Query Language}
     
     \textbf{SQL} é a linguagem padrão para manipulação de bancos de dados relacionais.
@@ -66,6 +117,8 @@
     \end{itemize}
     
 \end{frame}
+
+
 
 \section{Extensões espaciais para bancos de dados}
 
@@ -470,6 +523,30 @@ FROM cidades;
     
 \end{frame}
 
+\begin{frame}[fragile]{Operações de agregação com GROUP BY e ORDER BY}
+
+\textbf{Agrupando cidades por faixa populacional:}
+
+\begin{minted}{sql}
+SELECT "NM_REGIAO", count(*) AS quantidade_de_estados
+FROM "BR_UF_2025"
+GROUP BY "NM_REGIAO"
+ORDER BY quantidade_de_estados;
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Termos usados:}
+\begin{itemize}
+\item \textbf{AS}: cria um alias (apelido) para uma coluna ou tabela. Muito útil para referenciar colunas geradas por funções (Ex.: Count(*)).
+\item \textbf{GROUP BY}: Agrupa valores iguais em uma coluna. Requer uma função de agregação depois (Ex.: Count() ).
+\item \textbf{ORDER BY}: Ordena pelos valores de uma coluna.
+\end{itemize}
+
+
+
+\end{frame}
+
 \begin{frame}[fragile]{Relacionando tabelas - JOIN}
     
     Bancos relacionais permitem combinar dados de várias tabelas.
@@ -500,55 +577,7 @@ ON c.estado_id = e.id;
     
 \end{frame}
 
-\begin{frame}[fragile]{Tabelas em bancos relacionais}
-    
-    Dados em bancos relacionais são organizados em \textbf{tabelas}.
-    
-    \begin{center}
-        
-        \begin{tikzpicture}
-            
-            \draw (0,0) rectangle (8,3);
-            
-            % linhas horizontais
-            \draw (0,2.5) -- (8,2.5);
-            \draw (0,2) -- (8,2);
-            \draw (0,1.5) -- (8,1.5);
-            \draw (0,1) -- (8,1);
-            
-            % colunas
-            \draw (2,0) -- (2,3);
-            \draw (5,0) -- (5,3);
-            
-            % cabeçalhos
-            \node at (1,2.75) {\textbf{id}};
-            \node at (3.5,2.75) {\textbf{nome}};
-            \node at (6.5,2.75) {\textbf{população}};
-            
-            % linhas
-            \node at (1,2.25) {1};
-            \node at (3.5,2.25) {Curitiba};
-            \node at (6.5,2.25) {1774000};
-            
-            \node at (1,1.75) {2};
-            \node at (3.5,1.75) {Campinas};
-            \node at (6.5,1.75) {1214000};
-            
-            \node at (1,1.25) {3};
-            \node at (3.5,1.25) {Recife};
-            \node at (6.5,1.25) {1490000};
-            
-        \end{tikzpicture}
-        
-    \end{center}
-    
-    \begin{itemize}
-        \item \textbf{Colunas} representam atributos
-        \item \textbf{Linhas} representam registros
-        \item Cada tabela normalmente possui uma \textbf{chave primária (ID)}
-    \end{itemize}
-    
-\end{frame}
+
 
 \begin{frame}[fragile]{Relacionamento entre tabelas (Modelo ER)}
     
@@ -769,6 +798,30 @@ ORDER BY populacao DESC;
     \end{center}
 \end{frame}
 
+\begin{frame}{Índices Espaciais}
+    Consultas espaciais são custosas.
+    
+    \vspace{0.4cm}
+    
+    Solução: Índices espaciais.
+    
+    \begin{itemize}
+        \item R-Tree
+        \item GiST (PostgreSQL)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Benefícios:
+    \begin{itemize}
+        \item Redução drástica de tempo de consulta
+        \item Filtragem por bounding box
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Sem índice $\rightarrow$ varredura completa da tabela.
+\end{frame}
 
 \begin{frame}{PostgreSQL + PostGIS - Visão Geral}
     
@@ -830,29 +883,29 @@ ORDER BY populacao DESC;
     
 \end{frame}
 
-\begin{frame}{Índices Espaciais}
-    Consultas espaciais são custosas.
+\begin{frame}[fragile]{Índices espaciais no PostgreSQL+PostGIS}
     
-    \vspace{0.4cm}
+    \textbf{1.Criar tabela espacial}
     
-    Solução: Índices espaciais.
+    \begin{minted}{sql}
+CREATE TABLE municipios (
+id SERIAL PRIMARY KEY,
+nome TEXT,
+populacao INTEGER,
+geom GEOMETRY(MULTIPOLYGON, 4674)
+);
+    \end{minted}
     
-    \begin{itemize}
-        \item R-Tree
-        \item GiST (PostgreSQL)
-    \end{itemize}
+    \vspace{0.3cm}
     
-    \vspace{0.4cm}
+    \textbf{2.Criar índice espacial}
     
-    Benefícios:
-    \begin{itemize}
-        \item Redução drástica de tempo de consulta
-        \item Filtragem por bounding box
-    \end{itemize}
+    \begin{minted}{sql}
+CREATE INDEX idx_municipios_geom
+ON municipios
+USING GIST (geom);
+    \end{minted}
     
-    \vspace{0.4cm}
-    
-    Sem índice $\rightarrow$ varredura completa da tabela.
 \end{frame}
 
 
@@ -964,30 +1017,41 @@ USING GIST (geom);
     
 \end{frame}
 
+\begin{frame}[fragile]{Criação de Índices }
 
-\begin{frame}[fragile]{Consultas Espaciais - Exemplos SQL (PostGIS)}
-    
-    \textbf{1.Criar tabela espacial}
-    
-    \begin{minted}{sql}
-CREATE TABLE municipios (
-id SERIAL PRIMARY KEY,
-nome TEXT,
-populacao INTEGER,
-geom GEOMETRY(MULTIPOLYGON, 4674)
-);
-    \end{minted}
-    
-    \vspace{0.3cm}
-    
-    \textbf{2.Criar índice espacial}
-    
-    \begin{minted}{sql}
-CREATE INDEX idx_municipios_geom
-ON municipios
+\textbf{Objetivo:}
+Melhorar desempenho de consultas espaciais e atributos.
+
+\textbf{Tabela}: \texttt{BR\_UF\_2025}
+
+\vspace{0.4cm}
+
+\textbf{Índice espacial (PostGIS):}
+
+\begin{minted}{sql}
+CREATE INDEX idx_br_uf_geom
+ON BR_UF_2025
 USING GIST (geom);
-    \end{minted}
-    
+\end{minted}
+
+\vspace{0.4cm}
+
+\textbf{Índice por código da UF:}
+
+\begin{minted}{sql}
+CREATE INDEX idx_br_uf_cd_uf
+ON BR_UF_2025 (CD_UF);
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Índice por área:}
+
+\begin{minted}{sql}
+CREATE INDEX idx_br_uf_area
+ON BR_UF_2025 (AREA_KM2);
+\end{minted}
+
 \end{frame}
 
 \begin{frame}{Exercícios PostGIS}
@@ -1033,15 +1097,73 @@ FROM municipios;
     
 \end{frame}
 
+
+\begin{frame}{Exercícios: Implementar a EDGV no PostGIS}
+Implementar usando SQL.
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{bancos_de_dados_relacionais_figs/EDGV_hidro}
+\end{figure}
+
+\hyperlink{https://inde.gov.br/pdf/ET-EDGV_versao_3.0_2018_05_20.pdf}{EDGV 3.0}
+
+\hyperlink{https://inde.gov.br/pdf/ANEXOS_ET_EDGV_3.0_2018_05_20.pdf}{Modelos conceituais da EDGV 3.0 (Anexos)}
+\end{frame}
+
+
+
+\section{Bancos de dados EDGV com DSG Tools}
+
+\begin{frame}{Exercícios: EDGV no PostGIS segundo o DSGTools}
+Abrir no GitHub:
+
+\hyperlink{https://github.com/dsgoficial/DsgTools/tree/master/DsgTools/core/DbModels/PostGIS/3}{edgv3.sql}
+
+\hyperlink{https://github.com/dsgoficial/DsgTools/tree/master/DsgTools/core/DbModels/PostGIS/3_Pro}{edgv3\_pro.sql}
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{bancos_de_dados_relacionais_figs/DSG_Tools_EDGV.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Criação do banco de dados em conformidade com uma EDGV}
+Crie uma nova conexão (não usa a padrão do QGIS).
+
+Para ET-EDGV 3.0 ou ET-EDGV 2.1.3:
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{bancos_de_dados_relacionais_figs/DSG_Tools_CreateDB}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Carregando camadas do banco de dados EDGV}
+Selecionar todas as camadas do banco:
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{bancos_de_dados_relacionais_figs/DSG_Tools_Load_Layers.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Carregando camadas do banco de dados EDGV}
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{bancos_de_dados_relacionais_figs/DSG_Tools_Load_Layers2.png}
+\end{figure}
+\end{frame}
+
 \section{Exercícios complementares: PostGIS no QGIS Processing}
 \begin{frame}{Exercícios complementares: PostGIS no QGIS Processing}
-% TODO: \usepackage{graphicx} required
+
 \begin{figure}
 \centering
 \includegraphics[width=0.9\linewidth]{bancos_de_dados_relacionais_figs/DB_processing}
 \end{figure}
 
 \end{frame}
+
+
 
 \section{Exercícios complementares: DuckDB}
 
