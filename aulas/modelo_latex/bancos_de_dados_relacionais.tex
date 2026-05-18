@@ -440,6 +440,157 @@ WHERE nome = 'Campinas';
     
 \end{frame}
 
+\begin{frame}{Extensão Espacial}
+    BDRs podem ser estendidos para armazenar geometrias.
+    
+    \vspace{0.4cm}
+    
+    Exemplo:
+    \begin{itemize}
+        \item \textbf{PostGIS} extensão do PostgreSQL
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Novo tipo de dado:
+    \begin{itemize}
+        \item GEOMETRY
+        \item GEOGRAPHY
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Permite armazenar:
+    \begin{itemize}
+        \item Pontos
+        \item Linhas
+        \item Polígonos
+    \end{itemize}
+    E executar consultas espaciais.
+\end{frame}
+
+\begin{frame}{Extensão Espacial - Tabelas geoespaciais}
+    Cada feição espacial é composta por:
+    
+    \begin{itemize}
+        \item Atributos (campos tabulares)
+        \item Geometria (coluna espacial)
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Estrutura típica:
+    
+    \begin{center}
+\begin{table}
+\centering
+\scriptsize
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{id} & \textbf{nome} & \textbf{area} & \textbf{geom} \\
+\hline
+1 & Rio de Janeiro & 43,696 & MULTIPOLYGON(...) \\
+\hline
+\end{tabular}
+\end{table}
+    \end{center}
+    
+    \vspace{0.4cm}
+    
+    A coluna \texttt{geom} armazena objetos como:
+    
+    \begin{itemize}
+        \item POINT
+        \item LINESTRING
+        \item POLYGON
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{PostgreSQL + PostGIS - Visão Geral}
+    
+    \textbf{PostgreSQL}:
+    \begin{itemize}
+        \item SGBD relacional cliente–servidor
+        \item ACID completo
+        \item Controle de concorrência (MVCC)
+        \item Extensível
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    \textbf{PostGIS}:
+    \begin{itemize}
+        \item Extensão espacial do PostgreSQL
+        \item Adiciona tipos GEOMETRY e GEOGRAPHY
+        \item Implementa padrões OGC Simple Features
+    \end{itemize}
+    
+    \vspace{0.4cm}
+    
+    Resultado:
+    \begin{center}
+        Banco relacional + engine espacial robusta
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}{Conceitos Fundamentais do PostGIS}
+    
+    \textbf{1. Tipo GEOMETRY}
+    \begin{itemize}
+        \item Armazena POINT, LINESTRING, POLYGON, etc.
+        \item Associado a um SRID (sistema de referência)
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{2. Funções Espaciais}
+    
+    \vspace{0.3cm}
+    
+    \textbf{3. Índices Espaciais}
+    \begin{itemize}
+        \item GiST (Generalized Search Tree)
+        \item Filtragem por bounding box
+        \item Otimização de ST\_Intersects, ST\_Within, etc.
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    
+    \textbf{4. Modelo Cliente–Servidor}
+    \begin{itemize}
+        \item Multiusuário
+        \item Controle transacional
+        \item Ideal para produção
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Shapefile vs PostgreSQL/PostGIS vs DuckDB Spatial}
+    
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l|c|c|c}
+            & Shapefile & PostgreSQL + PostGIS & DuckDB + Spatial \\
+            \hline
+            Multiusuário & Não & Sim & Limitado \\
+            Transações ACID & Não & Sim & Sim \\
+            Cliente–Servidor & Não & Sim & Não \\
+            Instalação & Simples & Servidor dedicado & Arquivo único \\
+            Índice Espacial & .qix & GiST / SP-GiST & R-Tree \\
+            SQL Completo & Não & Sim & Sim \\
+            Escalabilidade & Baixa & Alta & Média \\
+        \end{tabular}
+    }
+    \vspace{0.4cm}
+    
+    \textbf{Posicionamento:}
+    
+    Shapefile $\rightarrow$ formato legado de troca.
+    
+    PostgreSQL + PostGIS $\rightarrow$ infraestrutura robusta multiusuário.
+    
+    DuckDB Spatial $\rightarrow$ banco analítico leve e embarcado.
+\end{frame}
 
 \begin{frame}[fragile]{Inserindo, atualizando e removendo dados}
     
@@ -472,7 +623,6 @@ SET geom = ST_SetSRID(
 Agora é possível visualizar esta tabela no mapa do QGIS!
 
 \end{frame}
-
 
 \begin{frame}[fragile]{Inserindo dados geoespaciais no PostgreSQL pelo QGIS}
 
@@ -678,97 +828,7 @@ ORDER BY populacao DESC;
 
 
 
-\begin{frame}{Extensão Espacial}
-    BDRs podem ser estendidos para armazenar geometrias.
-    
-    \vspace{0.4cm}
-    
-    Exemplo:
-    \begin{itemize}
-        \item \textbf{PostGIS} extensão do PostgreSQL
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    Novo tipo de dado:
-    \begin{itemize}
-        \item GEOMETRY
-        \item GEOGRAPHY
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    Permite armazenar:
-    \begin{itemize}
-        \item Pontos
-        \item Linhas
-        \item Polígonos
-    \end{itemize}
-    E executar consultas espaciais.
-\end{frame}
 
-\begin{frame}{Shapefile vs PostgreSQL/PostGIS vs DuckDB Spatial}
-    
-    \resizebox{\textwidth}{!}{
-        \begin{tabular}{l|c|c|c}
-            & Shapefile & PostgreSQL + PostGIS & DuckDB + Spatial \\
-            \hline
-            Multiusuário & Não & Sim & Limitado \\
-            Transações ACID & Não & Sim & Sim \\
-            Cliente–Servidor & Não & Sim & Não \\
-            Instalação & Simples & Servidor dedicado & Arquivo único \\
-            Índice Espacial & .qix & GiST / SP-GiST & R-Tree \\
-            SQL Completo & Não & Sim & Sim \\
-            Escalabilidade & Baixa & Alta & Média \\
-        \end{tabular}
-    }
-    \vspace{0.4cm}
-    
-    \textbf{Posicionamento:}
-    
-    Shapefile $\rightarrow$ formato legado de troca.
-    
-    PostgreSQL + PostGIS $\rightarrow$ infraestrutura robusta multiusuário.
-    
-    DuckDB Spatial $\rightarrow$ banco analítico leve e embarcado.
-\end{frame}
-
-\begin{frame}{Modelo Espacial}
-    Cada feição espacial é composta por:
-    
-    \begin{itemize}
-        \item Atributos (campos tabulares)
-        \item Geometria (coluna espacial)
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    Estrutura típica:
-    
-    \begin{center}
-\begin{table}
-\centering
-\scriptsize
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{id} & \textbf{nome} & \textbf{area} & \textbf{geom} \\
-\hline
-1 & Rio de Janeiro & 43,696 & MULTIPOLYGON(...) \\
-\hline
-\end{tabular}
-\end{table}
-    \end{center}
-    
-    \vspace{0.4cm}
-    
-    A coluna \texttt{geom} armazena objetos como:
-    
-    \begin{itemize}
-        \item POINT
-        \item LINESTRING
-        \item POLYGON
-    \end{itemize}
-\end{frame}
 
 \begin{frame}{Consultas Espaciais}
     Além de consultas tradicionais:
@@ -797,117 +857,6 @@ ORDER BY populacao DESC;
         Selecionar municípios que intersectam um rio.
     \end{center}
 \end{frame}
-
-\begin{frame}{Índices Espaciais}
-    Consultas espaciais são custosas.
-    
-    \vspace{0.4cm}
-    
-    Solução: Índices espaciais.
-    
-    \begin{itemize}
-        \item R-Tree
-        \item GiST (PostgreSQL)
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    Benefícios:
-    \begin{itemize}
-        \item Redução drástica de tempo de consulta
-        \item Filtragem por bounding box
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    Sem índice $\rightarrow$ varredura completa da tabela.
-\end{frame}
-
-\begin{frame}{PostgreSQL + PostGIS - Visão Geral}
-    
-    \textbf{PostgreSQL}:
-    \begin{itemize}
-        \item SGBD relacional cliente–servidor
-        \item ACID completo
-        \item Controle de concorrência (MVCC)
-        \item Extensível
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    \textbf{PostGIS}:
-    \begin{itemize}
-        \item Extensão espacial do PostgreSQL
-        \item Adiciona tipos GEOMETRY e GEOGRAPHY
-        \item Implementa padrões OGC Simple Features
-    \end{itemize}
-    
-    \vspace{0.4cm}
-    
-    Resultado:
-    \begin{center}
-        Banco relacional + engine espacial robusta
-    \end{center}
-    
-\end{frame}
-
-\begin{frame}{Conceitos Fundamentais do PostGIS}
-    
-    \textbf{1. Tipo GEOMETRY}
-    \begin{itemize}
-        \item Armazena POINT, LINESTRING, POLYGON, etc.
-        \item Associado a um SRID (sistema de referência)
-    \end{itemize}
-    
-    \vspace{0.3cm}
-    
-    \textbf{2. Funções Espaciais}
-    
-    \vspace{0.3cm}
-    
-    \textbf{3. Índices Espaciais}
-    \begin{itemize}
-        \item GiST (Generalized Search Tree)
-        \item Filtragem por bounding box
-        \item Otimização de ST\_Intersects, ST\_Within, etc.
-    \end{itemize}
-    
-    \vspace{0.3cm}
-    
-    \textbf{4. Modelo Cliente–Servidor}
-    \begin{itemize}
-        \item Multiusuário
-        \item Controle transacional
-        \item Ideal para produção
-    \end{itemize}
-    
-\end{frame}
-
-\begin{frame}[fragile]{Índices espaciais no PostgreSQL+PostGIS}
-    
-    \textbf{1.Criar tabela espacial}
-    
-    \begin{minted}{sql}
-CREATE TABLE municipios (
-id SERIAL PRIMARY KEY,
-nome TEXT,
-populacao INTEGER,
-geom GEOMETRY(MULTIPOLYGON, 4674)
-);
-    \end{minted}
-    
-    \vspace{0.3cm}
-    
-    \textbf{2.Criar índice espacial}
-    
-    \begin{minted}{sql}
-CREATE INDEX idx_municipios_geom
-ON municipios
-USING GIST (geom);
-    \end{minted}
-    
-\end{frame}
-
 
 
 \begin{frame}{Índices Espaciais: Por que são importantes?}
@@ -1017,7 +966,7 @@ USING GIST (geom);
     
 \end{frame}
 
-\begin{frame}[fragile]{Criação de Índices }
+\begin{frame}[fragile]{Exercício: Criação de Índices }
 
 \textbf{Objetivo:}
 Melhorar desempenho de consultas espaciais e atributos.
@@ -1054,47 +1003,59 @@ ON BR_UF_2025 (AREA_KM2);
 
 \end{frame}
 
-\begin{frame}{Exercícios PostGIS}
-\begin{enumerate}
-    \item Instalar o PostGIS (Docker recomendado)
-    \item Criar um banco de dados
-    \item Acessar pelo QGIS
-    \item Abrir o DB Manager.
-    \item Criar uma tabela.
-    \item Importar um ShapeFile para o PostGIS.
-\end{enumerate}
+\begin{frame}[fragile]{Exercícios SQL}
     
+    Carregar os arquivos abaixo no QGIS e importar para um banco de dados no PostgreSQL:
+    \begin{enumerate}
+\item ja\_visitei.csv
+\item BR\_UF\_2025.zip (shapefile)
+    \end{enumerate}
+    Também será necessária a tabela cidades, construída anteriormente.
+
+    \vspace{0.3cm}
+    \textbf{Criar uma tabela com o resultado da operação de join de ja\_visitei e "BR\_UF\_2025" }
+    \pause
+    \begin{minted}{sql}
+CREATE table ja_visitei_do_brasil as
+select br.* , ja_visitei.visitei
+from "BR_UF_2025" as br
+join ja_visitei
+on ja_visitei.nome = br.name;
+    \end{minted}
+   
 \end{frame}
 
-\begin{frame}[fragile]{Modelo ER Espacial}
+\begin{frame}[fragile]{Exercícios SQL}
+    
+    \textbf{Selecionar os estados que contém os pontos da tabela cidades}
+    \pause
+    \begin{minted}{sql}
+SELECT *
+FROm "BR_UF_2025" AS estados, cidades
+WHERE st_intersects( estados.geom, st_setsrid(cidades.geom, 4674));
+    \end{minted}
+    \vspace{0.3cm}  
+
+    \textbf{Adicionar uma coluna uf na tabela cidades, com o resultado da operação de interseção}
+    \pause
+    \begin{minted}{sql}
+ALTER TABLE cidades
+ADD COLUMN uf VARCHAR(2);
+
+UPDATE cidades
+SET uf = estados."SIGLA_UF"
+FROM "BR_UF_2025" AS estados
+WHERE st_intersects( estados.geom, st_setsrid(cidades.geom, 4674));
+    \end{minted}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Modelo UML Espacial}
 % TODO: \usepackage{graphicx} required
 \begin{center}
     \includegraphics[height=0.7\textheight]{bancos_de_dados_relacionais_figs/exemplo_municipios}
 \end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Consultas Espaciais - Exemplos SQL}
-    
-    \textbf{3.Municípios que intersectam um rio}
-    
-    \begin{minted}{sql}
-SELECT m.nome
-FROM municipios m
-JOIN rios r
-ON ST_Intersects(m.geom, r.geom)
-WHERE r.nome = 'Rio X';
-    \end{minted}
-    
-    \vspace{0.3cm}
-    
-    \textbf{4.Área em km²}
-    
-    \begin{minted}{sql}
-SELECT nome,
-ST_Area(geom) / 1000000 AS area_km2
-FROM municipios;
-    \end{minted}
-    
 \end{frame}
 
 
@@ -1278,12 +1239,12 @@ print(gdf.head())
 % =====================================================================
 % SLIDE 4 - PSYCOPG
 % =====================================================================
-\begin{frame}[fragile]{Psycopg: Executando SQL}
+\begin{frame}[fragile]{Psycopg2: Executando SQL}
 
 \begin{minted}{python}
-import psycopg
+import psycopg2
 
-conn = psycopg.connect(
+conn = psycopg2.connect(
     host="localhost",
     dbname="geodb",
     user="postgres",
@@ -1303,6 +1264,32 @@ for row in cur.fetchall():
     print(row)
 \end{minted}
 
+\end{frame}
+
+\begin{frame}[fragile]{Psycopg2 no QGIS: Executando SQL}
+
+\begin{minted}{python}
+from qgis.core import QgsProviderRegistry
+import psycopg2
+# Nome da conexão configurada no QGIS
+connection_name = 'postgis no docker' 
+# Obtém metadados do provider PostgreSQL
+metadata = QgsProviderRegistry.instance().providerMetadata('postgres')
+# Recupera a conexão salva no QGIS
+conn = metadata.findConnection(connection_name, False)
+uri = conn.uri() # Parâmetros da conexão
+# Conecta no PostgreSQL
+pg_conn = psycopg2.connect(uri)
+cursor = pg_conn.cursor()
+# SQL que será executado
+sql = """ create table teste as select * from cidades; """
+cursor.execute(sql)
+pg_conn.commit()
+print('SQL executado com sucesso.')
+# Importante: Fechar a conexão.
+cursor.close()
+pg_conn.close()
+    \end{minted}
 \end{frame}
 
 \section{Exercícios complementares: PostGIS no QGIS Processing}
