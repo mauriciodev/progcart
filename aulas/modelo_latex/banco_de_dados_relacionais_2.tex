@@ -1,0 +1,343 @@
+\documentclass{beamer}
+
+%lembre-se de configurar o pdflatex com:
+%pdflatex -shell-escape -synctex=1 -interaction=nonstopmode  -output-directory=build  %.tex
+
+\usepackage{aula}
+
+\title{Aula modelo}
+\date{\today}
+
+\begin{document}
+    
+\input{capa}
+
+\sumario
+
+\section{Código}
+
+\begin{frame}[fragile]{Código Python}
+chaves
+relacionamentos n-m
+tipos de dados
+https://www.w3schools.com/SQl/sql\_quickref.asp
+distinct
+dates
+
+\end{frame}
+\section{Exercícios}
+
+\begin{frame}[fragile]{Base de Dados dos Exercícios}
+
+\textbf{Criação da tabela}
+
+\begin{minted}{sql}
+CREATE TABLE cidades (
+    id SERIAL PRIMARY KEY,
+    nome TEXT,
+    populacao INTEGER,
+    longitude REAL,
+    latitude REAL
+);
+\end{minted}
+
+\textbf{Carga dos dados}
+
+\begin{minted}{sql}
+INSERT INTO cidades
+(nome, populacao, longitude, latitude)
+VALUES
+('Rio de Janeiro', 6748000, -43.1729, -22.9068),
+('São Paulo', 12330000, -46.6333, -23.5505),
+('Belo Horizonte', 2531000, -43.9386, -19.9208),
+('Campinas', 1214000, -47.0608, -22.9056);
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE - CRIAÇÃO DA GEOMETRIA
+% =====================================================================
+\begin{frame}[fragile]{Exemplo: Criando a Coluna Geométrica}
+
+\textbf{Enunciado}
+
+A tabela possui colunas de longitude e latitude. Crie uma coluna espacial \texttt{geom} e preencha-a com geometrias do tipo ponto no sistema WGS84 (EPSG:4326).
+
+\vspace{0.3cm}
+
+\textbf{1. Adicionar a coluna geom}
+
+\begin{minted}{sql}
+ALTER TABLE cidades
+ADD COLUMN geom geometry(Point, 4326);
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{2. Preencher a geometria a partir das coordenadas}
+
+\begin{minted}{sql}
+UPDATE cidades
+SET geom = ST_SetSRID(
+    ST_MakePoint(
+        longitude,
+        latitude
+    ),
+    4326
+);
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Dados geojson}
+
+\textbf{Enunciado}
+
+Carregue o arquivo br.json na tabela 
+\pause
+\begin{minted}{sql}
+import geopandas as gpd
+from sqlalchemy import create_engine
+
+# Ler o GeoJSON
+gdf = gpd.read_file("br.json")
+
+# Conexão com o PostGIS
+engine = create_engine(
+    "postgresql+psycopg://postgres:postgres@localhost/geodb"
+)
+
+# Criar/substituir tabela no banco
+gdf.to_postgis(
+    name="brasil",
+    con=engine,
+    if_exists="replace",
+    index=True
+)
+print("Camada importada com sucesso.")
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Listando os Dados}
+
+\textbf{Enunciado}
+
+Liste todas as cidades cadastradas e mostre o campo geometria como texto.
+\pause
+\begin{minted}{sql}
+SELECT ST_AsText(geom), *
+FROM cidades;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Selecionando Colunas}
+
+\textbf{Enunciado}
+
+Liste apenas o nome e a população das cidades.
+\pause
+\begin{minted}{sql}
+SELECT nome, populacao
+FROM cidades;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Filtrando Dados}
+
+\textbf{Enunciado}
+
+Liste as cidades com população superior a 3 milhões de habitantes.
+\pause
+\begin{minted}{sql}
+SELECT *
+FROM cidades
+WHERE populacao > 3000000;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Ordenação}
+
+\textbf{Enunciado}
+
+Ordene as cidades pela população, da maior para a menor.
+\pause
+\begin{minted}{sql}
+SELECT nome, populacao
+FROM cidades
+ORDER BY populacao DESC;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Contagem}
+
+\textbf{Enunciado}
+
+Determine quantas cidades estão cadastradas.
+\pause
+\begin{minted}{sql}
+SELECT COUNT(*)
+FROM cidades;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Média}
+
+\textbf{Enunciado}
+
+Calcule a população média das cidades.
+\pause
+\begin{minted}{sql}
+SELECT AVG(populacao)
+FROM cidades;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Valores Extremos}
+
+\textbf{Enunciado}
+
+Determine a menor e a maior população cadastradas.
+\pause
+\begin{minted}{sql}
+SELECT
+    MIN(populacao) AS menor,
+    MAX(populacao) AS maior
+FROM cidades;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Busca por Texto}
+
+\textbf{Enunciado}
+
+Liste as cidades cujo nome começa com a letra "C".
+\pause
+\begin{minted}{sql}
+SELECT *
+FROM cidades
+WHERE nome LIKE 'C%';
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Coordenadas}
+
+\textbf{Enunciado}
+
+Ordene as cidades da mais oeste para a mais leste utilizando a longitude.
+\pause
+\begin{minted}{sql}
+SELECT nome, longitude
+FROM cidades
+ORDER BY longitude;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Classificação}
+
+\textbf{Enunciado}
+
+Classifique as cidades em Pequena, Média ou Grande e conte quantas existem em cada categoria.
+\pause
+\begin{minted}{sql}
+SELECT
+    CASE
+        WHEN populacao < 2000000
+            THEN 'Pequena'
+        WHEN populacao < 5000000
+            THEN 'Media'
+        ELSE 'Grande'
+    END AS categoria,
+    COUNT(*) AS total
+FROM cidades
+GROUP BY categoria;
+\end{minted}
+
+\end{frame}
+
+\section{Exercícios com EDGV}
+
+\begin{frame}[fragile]{Importando Shapefiles para PostGIS com GeoPandas}
+
+\textbf{Objetivo}
+
+Importar automaticamente todos os shapefiles contidos em um arquivo ZIP para o banco PostgreSQL/PostGIS.
+
+\vspace{0.3cm}
+
+\begin{minted}{python}
+from pathlib import Path
+import tempfile
+import zipfile
+
+import geopandas as gpd
+from sqlalchemy import create_engine
+
+# conexão com o banco
+engine = create_engine(
+    "postgresql+psycopg2://"
+    "postgres:postgres@localhost/geodb"
+)
+
+arquivo_zip = "dados.zip"
+
+with tempfile.TemporaryDirectory() as tmpdir:
+
+    with zipfile.ZipFile(arquivo_zip) as z:
+        z.extractall(tmpdir)
+
+    for shp in Path(tmpdir).rglob("*.shp"):
+
+        print(f"Importando {shp.name}")
+
+        gdf = gpd.read_file(shp)
+
+        tabela = shp.stem.lower()
+
+        gdf.to_postgis(
+            tabela,
+            engine,
+            if_exists="append",
+            index=True
+        )
+
+print("Importação concluída.")
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Resultado}
+
+Cada shapefile será criado como uma tabela PostGIS utilizando o nome do arquivo.
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: Classificação}
+
+\textbf{Enunciado}
+
+Faça uma consulta que verifique quais linhas de hid\_trecho\_drenagem\_l estão dentro de polígonos de hid\_trecho\_massa\_dagua\_a.
+\pause
+\begin{minted}{sql}
+SELECT
+    d.*
+FROM hid_trecho_drenagem_l d
+JOIN hid_trecho_massa_dagua_a m
+ON ST_Within(d.geom, m.geom);
+\end{minted}
+
+\end{frame}
+
+
+
+\end{document}

@@ -1,0 +1,665 @@
+\documentclass{beamer}
+
+%lembre-se de configurar o pdflatex com:
+%pdflatex -shell-escape -synctex=1 -interaction=nonstopmode  -output-directory=build  %.tex
+
+\usepackage{aula}
+
+\title{Aula modelo}
+\date{\today}
+
+\begin{document}
+    
+\input{capa}
+
+\sumario
+
+\section{SQLAlchemy}
+
+% =====================================================================
+% SLIDE 1
+% =====================================================================
+
+% =====================================================================
+% SLIDE 1
+% =====================================================================
+\begin{frame}{ORM: Object Relational Mapping}
+
+\textbf{ORM} (Object Relational Mapping) é uma técnica para mapear tabelas do banco de dados para classes Python.
+
+\vspace{0.4cm}
+
+\textbf{Sem ORM}
+
+\begin{itemize}
+    \item Escrever SQL manualmente
+    \item Converter resultados para objetos
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Com ORM}
+
+\begin{itemize}
+    \item Classes representam tabelas
+    \item Objetos representam registros
+    \item Métodos substituem comandos SQL simples
+\end{itemize}
+
+\vspace{0.4cm}
+
+\textbf{Benefícios}
+
+\begin{itemize}
+    \item Menos SQL repetitivo
+    \item Código mais organizado
+    \item Compatibilidade entre bancos
+\end{itemize}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 2
+% =====================================================================
+\begin{frame}[fragile]{SQLAlchemy: Conectando ao Banco}
+
+\textbf{GeoPackage (SQLite)}
+
+\begin{minted}{python}
+from sqlalchemy import create_engine
+
+engine = create_engine(
+    "sqlite:///dados.gpkg"
+)
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{PostGIS (PostgreSQL)}
+
+\begin{minted}{python}
+from sqlalchemy import create_engine
+
+engine = create_engine(
+    "postgresql+psycopg://"
+    "postgres:postgres"
+    "@localhost/geodb"
+)
+\end{minted}
+
+\vspace{0.3cm}
+
+O restante do código ORM é praticamente o mesmo para ambos.
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 3
+% =====================================================================
+\begin{frame}[fragile]{Mapeando uma Tabela para uma Classe}
+
+\begin{minted}{python}
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,
+    mapped_column
+)
+
+class Base(DeclarativeBase):
+    pass
+
+class Cidade(Base):
+
+    __tablename__ = "cidades"
+
+    id: Mapped[int] = mapped_column(
+        primary_key=True
+    )
+
+    nome: Mapped[str]
+
+    populacao: Mapped[int]
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Correspondência}
+
+\begin{itemize}
+    \item Classe → tabela
+    \item Atributo → coluna
+    \item Objeto → registro
+\end{itemize}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 4
+% =====================================================================
+\begin{frame}[fragile]{Criando Tabelas}
+
+\begin{minted}{python}
+Base.metadata.create_all(
+    engine
+)
+\end{minted}
+
+\vspace{0.3cm}
+
+SQL equivalente:
+
+\begin{minted}{sql}
+CREATE TABLE cidades (
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    populacao INTEGER
+);
+\end{minted}
+
+\vspace{0.3cm}
+
+O ORM gera a estrutura automaticamente.
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 5
+% =====================================================================
+\begin{frame}[fragile]{Inserindo Registros}
+
+\begin{minted}{python}
+from sqlalchemy.orm import Session
+
+with Session(engine) as session:
+
+    cidade = Cidade(
+        nome="Curitiba",
+        populacao=1774000
+    )
+
+    session.add(cidade)
+
+    session.commit()
+\end{minted}
+
+\vspace{0.3cm}
+
+Equivalente SQL:
+
+\begin{minted}{sql}
+INSERT INTO cidades
+(nome, populacao)
+VALUES
+('Curitiba', 1774000);
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 6
+% =====================================================================
+\begin{frame}[fragile]{Consultando Registros}
+
+\begin{minted}{python}
+from sqlalchemy import select
+
+with Session(engine) as session:
+
+    stmt = select(Cidade)
+
+    resultado = session.scalars(
+        stmt
+    )
+
+    for cidade in resultado:
+        print(cidade.nome)
+\end{minted}
+
+\vspace{0.3cm}
+
+Equivalente SQL:
+
+\begin{minted}{sql}
+SELECT *
+FROM cidades;
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 7
+% =====================================================================
+\begin{frame}[fragile]{Filtros e Ordenação}
+
+\begin{minted}{python}
+from sqlalchemy import select
+
+stmt = (
+    select(Cidade)
+    .where(
+        Cidade.populacao > 1000000
+    )
+    .order_by(
+        Cidade.nome
+    )
+)
+\end{minted}
+
+\vspace{0.3cm}
+
+Equivalente SQL:
+
+\begin{minted}{sql}
+SELECT *
+FROM cidades
+WHERE populacao > 1000000
+ORDER BY nome;
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 8
+% =====================================================================
+\begin{frame}[fragile]{Geometrias com PostGIS e GeoPackage}
+
+\textbf{GeoAlchemy2}
+
+\begin{minted}{python}
+from geoalchemy2 import Geometry
+
+class Cidade(Base):
+
+    __tablename__ = "cidades"
+
+    id = mapped_column(
+        primary_key=True
+    )
+
+    nome = mapped_column()
+
+    geom = mapped_column(
+        Geometry(
+            "POINT",
+            srid=4326
+        )
+    )
+\end{minted}
+
+\vspace{0.3cm}
+
+A coluna geom passa a ser tratada como uma geometria espacial pelo ORM.
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 9
+% =====================================================================
+\begin{frame}{ORM em Aplicações GIS}
+
+\textbf{GeoPackage}
+
+\begin{itemize}
+    \item Aplicações desktop
+    \item Dados locais
+    \item Arquivo único
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{PostGIS}
+
+\begin{itemize}
+    \item Múltiplos usuários
+    \item Grandes volumes de dados
+    \item Serviços web e APIs
+\end{itemize}
+
+\vspace{0.4cm}
+
+\textbf{SQLAlchemy + GeoAlchemy2}
+
+\begin{itemize}
+    \item Abstração do banco
+    \item Código reutilizável
+    \item Integração com FastAPI, Flask e GeoPandas
+\end{itemize}
+
+\end{frame}
+
+\section{SQLAlchemy com FastAPI}
+\begin{frame}{ORM + FastAPI}
+
+\textbf{FastAPI} é um framework moderno para construção de APIs REST em Python.
+
+\vspace{0.4cm}
+
+\textbf{Integração típica}
+
+\begin{center}
+Cliente
+$\rightarrow$
+FastAPI
+$\rightarrow$
+SQLAlchemy
+$\rightarrow$
+PostgreSQL/PostGIS
+\end{center}
+
+\vspace{0.4cm}
+
+\textbf{Vantagens}
+
+\begin{itemize}
+    \item APIs REST rapidamente
+    \item Integração nativa com JSON
+    \item Documentação automática (Swagger)
+    \item Suporte a PostgreSQL e PostGIS
+\end{itemize}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 2
+% =====================================================================
+\begin{frame}[fragile]{Configuração da Conexão}
+
+\begin{minted}{python}
+from sqlalchemy import create_engine
+
+DATABASE_URL = (
+    "postgresql+psycopg://"
+    "postgres:postgres"
+    "@localhost/geodb"
+)
+
+engine = create_engine(
+    DATABASE_URL
+)
+\end{minted}
+
+\vspace{0.4cm}
+
+\textbf{Sessões do banco}
+
+\begin{minted}{python}
+from sqlalchemy.orm import Session
+
+with Session(engine) as session:
+    ...
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 3
+% =====================================================================
+\begin{frame}[fragile]{Modelo ORM}
+
+\begin{minted}{python}
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    mapped_column
+)
+
+class Base(DeclarativeBase):
+    pass
+
+class Cidade(Base):
+
+    __tablename__ = "cidades"
+
+    id = mapped_column(
+        primary_key=True
+    )
+
+    nome = mapped_column()
+
+    populacao = mapped_column()
+\end{minted}
+
+\vspace{0.2cm}
+
+A classe Cidade representa a tabela do banco.
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 4
+% =====================================================================
+\begin{frame}[fragile]{Primeira Rota REST}
+
+\begin{minted}{python}
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def raiz():
+
+    return {
+        "mensagem":
+        "API funcionando"
+    }
+\end{minted}
+
+\vspace{0.3cm}
+
+Executar:
+
+\begin{minted}{bash}
+uvicorn app:app --reload
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 5
+% =====================================================================
+\begin{frame}[fragile]{Consultando Dados}
+
+\begin{minted}{python}
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+@app.get("/cidades")
+
+def listar_cidades():
+
+    with Session(engine) as session:
+
+        stmt = select(Cidade)
+
+        cidades = session.scalars(
+            stmt
+        ).all()
+
+        return cidades
+\end{minted}
+
+\vspace{0.2cm}
+
+Endpoint:
+
+\begin{minted}{text}
+/cidades
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 6
+% =====================================================================
+\begin{frame}[fragile]{Inserindo Registros}
+
+\begin{minted}{python}
+@app.post("/cidades")
+
+def criar_cidade():
+
+    with Session(engine) as session:
+
+        cidade = Cidade(
+            nome="Campinas",
+            populacao=1214000
+        )
+
+        session.add(cidade)
+
+        session.commit()
+
+        return {"status":"ok"}
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 7
+% =====================================================================
+\begin{frame}[fragile]{Recebendo JSON}
+
+\begin{minted}{python}
+from pydantic import BaseModel
+
+class CidadeDTO(BaseModel):
+
+    nome: str
+    populacao: int
+
+
+@app.post("/cidades")
+
+def criar(cidade: CidadeDTO):
+
+    print(cidade.nome)
+
+    return {"status":"ok"}
+\end{minted}
+
+\vspace{0.3cm}
+
+Exemplo JSON:
+
+\begin{minted}{json}
+{
+  "nome":"Curitiba",
+  "populacao":1774000
+}
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 8
+% =====================================================================
+\begin{frame}[fragile]{Consultando por ID}
+
+\begin{minted}{python}
+@app.get("/cidades/{id}")
+
+def buscar(id: int):
+
+    with Session(engine) as session:
+
+        cidade = session.get(
+            Cidade,
+            id
+        )
+
+        return cidade
+\end{minted}
+
+\vspace{0.3cm}
+
+Exemplos:
+
+\begin{minted}{text}
+/cidades/1
+/cidades/2
+\end{minted}
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 9
+% =====================================================================
+\begin{frame}[fragile]{Swagger Automático}
+
+\begin{itemize}
+    \item Documentação gerada automaticamente
+    \item Testes de API diretamente no navegador
+    \item Visualização dos modelos Pydantic
+\end{itemize}
+
+\vspace{0.3cm}
+
+Após iniciar a aplicação:
+
+\begin{minted}{text}
+http://localhost:8000/docs
+\end{minted}
+
+\vspace{0.3cm}
+
+Permite executar:
+
+\begin{itemize}
+    \item GET
+    \item POST
+    \item PUT
+    \item DELETE
+\end{itemize}
+
+Sem escrever código cliente.
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 10
+% =====================================================================
+\begin{frame}{Arquitetura Completa}
+
+\begin{center}
+
+Cliente (Browser, Python, QGIS)
+
+\vspace{0.2cm}
+
+$\downarrow$
+
+\vspace{0.2cm}
+
+FastAPI
+
+\vspace{0.2cm}
+
+$\downarrow$
+
+\vspace{0.2cm}
+
+SQLAlchemy ORM
+
+\vspace{0.2cm}
+
+$\downarrow$
+
+\vspace{0.2cm}
+
+PostgreSQL / PostGIS
+
+\end{center}
+
+\vspace{0.5cm}
+
+\textbf{Benefícios}
+
+\begin{itemize}
+    \item Código organizado
+    \item Menos SQL manual
+    \item APIs REST modernas
+    \item Integração com sistemas GIS
+\end{itemize}
+
+\end{frame}
+
+\end{document}
