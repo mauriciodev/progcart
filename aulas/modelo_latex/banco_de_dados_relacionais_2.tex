@@ -14,17 +14,487 @@
 
 \sumario
 
-\section{Código}
+\section{Conceitos}
 
-\begin{frame}[fragile]{Código Python}
-chaves
-relacionamentos n-m
-tipos de dados
-https://www.w3schools.com/SQl/sql\_quickref.asp
-distinct
-dates
+\begin{frame}[fragile]{Principais Tipos de Dados do PostgreSQL}
+
+\scriptsize
+
+\begin{columns}[t]
+
+% =====================================================
+\column{0.32\textwidth}
+
+\textbf{Numéricos}
+
+\begin{itemize}
+    \item \texttt{SMALLINT}
+    \item \texttt{INTEGER}
+    \item \texttt{BIGINT}
+    \item \texttt{REAL}
+    \item \texttt{DOUBLE PRECISION}
+    \item \texttt{NUMERIC}
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Texto}
+
+\begin{itemize}
+    \item \texttt{TEXT}
+    \item \texttt{VARCHAR}
+    \item \texttt{CHAR}
+\end{itemize}
+
+% =====================================================
+\column{0.32\textwidth}
+
+\textbf{Data e Hora}
+
+\begin{itemize}
+    \item \texttt{DATE}
+    \item \texttt{TIME}
+    \item \texttt{TIMESTAMP}
+    \item \texttt{TIMESTAMPTZ}
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Booleano}
+
+\begin{itemize}
+    \item \texttt{BOOLEAN}
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Auto Incremento}
+
+\begin{itemize}
+    \item \texttt{SERIAL}
+    \item \texttt{BIGSERIAL}
+\end{itemize}
+
+% =====================================================
+\column{0.32\textwidth}
+
+\textbf{Estruturados}
+
+\begin{itemize}
+    \item \texttt{JSON}
+    \item \texttt{JSONB}
+    \item \texttt{XML}
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Binários}
+
+\begin{itemize}
+    \item \texttt{BYTEA}
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{PostGIS}
+
+\begin{itemize}
+    \item \texttt{geometry}
+    \item \texttt{geography}
+\end{itemize}
+
+\end{columns}
+
+\vspace{0.3cm}
+
+\begin{minted}{sql}
+CREATE TABLE exemplo (
+    id SERIAL PRIMARY KEY,
+    nome TEXT,
+    atributos JSONB,
+    geom geometry(Point,4326)
+);
+\end{minted}
 
 \end{frame}
+
+% =====================================================================
+% SLIDE 1
+% =====================================================================
+\begin{frame}[fragile]{Trabalhando com Datas}
+
+\textbf{Objetivo}
+
+Armazenar e consultar datas em uma tabela PostgreSQL.
+
+\vspace{0.3cm}
+
+\textbf{Tabela de eventos}
+
+\begin{minted}{sql}
+CREATE TABLE eventos (
+    id SERIAL PRIMARY KEY,
+    descricao TEXT,
+    data_evento DATE
+);
+
+INSERT INTO eventos
+(descricao, data_evento)
+VALUES
+('Prova 1', '2025-09-15'),
+('Entrega Trabalho', '2025-10-01'),
+('Prova Final', '2025-12-10');
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Consultar eventos após 01/10/2025}
+
+\begin{minted}{sql}
+SELECT *
+FROM eventos
+WHERE data_evento >= '2025-10-01';
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Observação}
+
+O PostgreSQL permite comparar datas utilizando operadores como
+\texttt{<}, \texttt{<=}, \texttt{>} e \texttt{>=}.
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 2
+% =====================================================================
+\begin{frame}[fragile]{Intervalos de Datas com DATERANGE}
+
+\textbf{Objetivo}
+
+Representar períodos utilizando um único campo.
+
+\vspace{0.3cm}
+
+\textbf{Tabela de férias}
+
+\begin{minted}{sql}
+CREATE TABLE ferias (
+    id SERIAL PRIMARY KEY,
+    funcionario TEXT,
+    periodo DATERANGE
+);
+
+INSERT INTO ferias
+(funcionario, periodo)
+VALUES
+('João',
+ '[2025-01-10,2025-01-25]'),
+
+('Maria',
+ '[2025-07-01,2025-07-20]');
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Quem estava de férias em 15/01/2025?}
+
+\begin{minted}{sql}
+SELECT funcionario
+FROM ferias
+WHERE periodo @> '2025-01-15';
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Operador importante}
+
+\begin{minted}{sql}
+@>   contém
+<@   está contido em
+&&   possui interseção
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{SELECT DISTINCT}
+
+Exemplo: Liste todas as regiões existentes na tabela, sem repetir valores.
+\begin{columns}
+\column[t]{0.49\textwidth}
+\textbf{Dados}
+\begin{minted}{sql}
+CREATE TABLE cidades (
+    id SERIAL PRIMARY KEY, 
+    nome TEXT,
+    regiao TEXT
+);
+
+INSERT INTO cidades (nome, regiao)
+VALUES
+('Rio de Janeiro', 'Sudeste'),
+('São Paulo', 'Sudeste'),
+('Campinas', 'Sudeste'),
+('Curitiba', 'Sul'),
+('Recife', 'Nordeste');
+\end{minted}
+
+\vspace{0.2cm}
+\column[t]{0.49\textwidth}
+\textbf{Consulta}
+
+\begin{minted}{sql}
+SELECT DISTINCT regiao
+FROM cidades;
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Resultado}
+
+\begin{minted}{text}
+Sudeste
+Sul
+Nordeste
+\end{minted}
+\end{columns}
+\vspace{0.2cm}
+
+\textbf{Observação}
+
+O comando \texttt{DISTINCT} elimina linhas duplicadas do resultado da consulta.
+
+\end{frame}
+% =====================================================================
+% SLIDE 1
+% =====================================================================
+\begin{frame}[fragile]{Chave Primária (Primary Key)}
+
+\textbf{Conceito}
+
+Uma chave primária identifica unicamente cada registro de uma tabela.
+
+\vspace{0.3cm}
+
+\textbf{Características}
+
+\begin{itemize}
+    \item Não pode ter valores repetidos
+    \item Não pode ser nula
+    \item Cada linha possui uma identificação única
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Exemplo}
+
+\begin{minted}{sql}
+CREATE TABLE estados (
+    id SERIAL PRIMARY KEY,
+    nome TEXT,
+    sigla TEXT
+);
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Inserção de dados}
+
+\begin{minted}{sql}
+INSERT INTO estados (nome, sigla)
+VALUES ('Paraná', 'PR'), ('São Paulo', 'SP');
+\end{minted}
+
+\vspace{0.2cm}
+
+Neste exemplo, a coluna \texttt{id} identifica cada estado.
+
+\end{frame}
+
+
+% =====================================================================
+% SLIDE 2
+% =====================================================================
+\begin{frame}[fragile]{Chave Estrangeira (Foreign Key)}
+
+\textbf{Conceito}
+
+Uma chave estrangeira cria um relacionamento entre duas tabelas.
+
+\vspace{0.3cm}
+
+\textbf{Exemplo}
+
+\begin{minted}{sql}
+CREATE TABLE cidades (
+    id SERIAL PRIMARY KEY,
+    nome TEXT,
+    estado_id INTEGER,
+
+    FOREIGN KEY (estado_id)
+    REFERENCES estados(id)
+);
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Inserção de dados}
+
+\begin{minted}{sql}
+INSERT INTO cidades
+(nome, estado_id)
+VALUES
+('Curitiba', 1),
+('Campinas', 2);
+\end{minted}
+
+\vspace{0.3cm}
+
+\textbf{Consulta relacionando as tabelas}
+
+\begin{minted}{sql}
+SELECT
+    c.nome,
+    e.sigla
+FROM cidades c
+JOIN estados e
+ON c.estado_id = e.id;
+\end{minted}
+
+\vspace{0.2cm}
+
+A coluna \texttt{estado\_id} referencia a chave primária da tabela \texttt{estados}.
+
+\end{frame}
+
+% =====================================================================
+% SLIDE 1
+% =====================================================================
+\begin{frame}{Relacionamentos N:M (Muitos para Muitos)}
+
+\textbf{Problema}
+
+Um aluno pode visitar vários estados.
+
+\vspace{0.2cm}
+
+Um estado pode ser visitado por vários alunos.
+
+\vspace{0.4cm}
+
+\textbf{Exemplos}
+
+\begin{itemize}
+    \item João visitou PR, SP e RJ.
+    \item Maria visitou SP e MG.
+    \item O estado de São Paulo foi visitado por João e Maria.
+\end{itemize}
+
+\vspace{0.4cm}
+
+\textbf{Conclusão}
+
+Nenhuma das tabelas pode armazenar diretamente essa relação.
+
+É necessário criar uma \textbf{tabela de associação}.
+
+\vspace{0.3cm}
+
+\begin{center}
+Aluno
+$\leftrightarrow$
+Ja\_Visitei
+$\leftrightarrow$
+Estado
+\end{center}
+
+\end{frame}
+
+
+% =====================================================================
+% SLIDE 2
+% =====================================================================
+\begin{frame}[fragile]{Implementação da Tabela de Associação}
+
+\textbf{Tabela de alunos}
+
+\begin{minted}{sql}
+CREATE TABLE alunos (
+    id SERIAL PRIMARY KEY, nome TEXT
+);
+\end{minted}
+
+\textbf{Tabela de estados (já existente)}
+
+\textbf{Tabela N:M}
+
+\begin{minted}{sql}
+CREATE TABLE ja_visitei (
+    aluno_id INTEGER,
+    estado_id INTEGER,
+
+    PRIMARY KEY (
+        aluno_id,
+        estado_id
+    ),
+    FOREIGN KEY (aluno_id)
+        REFERENCES alunos(id),
+    FOREIGN KEY (estado_id)
+        REFERENCES estados(id)
+);
+\end{minted}
+
+\end{frame}
+
+
+% =====================================================================
+% SLIDE 3
+% =====================================================================
+\begin{frame}[fragile]{Inserindo e Consultando Relacionamentos}
+
+\begin{columns}
+\column[t]{0.49\textwidth}
+\textbf{Dados de exemplo}
+
+\begin{minted}{sql}
+INSERT INTO alunos (nome)
+VALUES
+('João'),
+('Maria');
+
+INSERT INTO ja_visitei
+(aluno_id, estado_id)
+VALUES
+(1, 1), -- João -> PR
+(1, 2), -- João -> SP
+(1, 3), -- João -> RJ
+(2, 2), -- Maria -> SP
+(2, 4); -- Maria -> MG
+\end{minted}
+
+\vspace{0.2cm}
+
+\column[t]{0.49\textwidth}
+\textbf{Quais estados João visitou?}
+
+\begin{minted}{sql}
+SELECT
+    a.nome,
+    e.sigla
+FROM alunos a
+JOIN ja_visitei j
+    ON a.id = j.aluno_id
+JOIN estados e
+    ON e.id = j.estado_id
+WHERE a.nome = 'João';
+\end{minted}
+\end{columns}
+\vspace{0.2cm}
+
+Resultado: PR, SP e RJ.
+
+\end{frame}
+
 \section{Exercícios}
 
 \begin{frame}[fragile]{Base de Dados dos Exercícios}
