@@ -808,6 +808,27 @@ ON ST_Within(d.geom, m.geom);
 
 \end{frame}
 
+\begin{frame}[fragile]{Exercício: EDGV de verdade}
+
+\begin{minted}{bash}
+git clone https://github.com/dsgoficial/modelagens.git
+cd modelagens
+pixi init
+pixi add psycopg2-binary geopandas shapely sqlalchemy fiona pyproj geoalchemy2
+
+cp criador_bancos/config_examples/exemplo_banco_unico.json ./config_criacao.json
+#EDITAR o nome do banco
+python -m criador_bancos.main config_criacao.json
+
+
+cp conversao_modelagens/conversor/config_examples/postgis300_shp300.json shp2pg.json
+#EDITAR configurações no shp2pg.json
+
+python -m conversao_modelagens.conversor.main shp2pg.json
+\end{minted}
+
+\end{frame}
+
 
 
 \end{document}
