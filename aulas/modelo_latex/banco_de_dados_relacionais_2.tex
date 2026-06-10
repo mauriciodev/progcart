@@ -566,7 +566,7 @@ SET geom = ST_SetSRID(
 
 Carregue o arquivo br.json na tabela 
 \pause
-\begin{minted}{sql}
+\begin{minted}{python}
 import geopandas as gpd
 from sqlalchemy import create_engine
 
@@ -735,60 +735,282 @@ GROUP BY categoria;
 
 \end{frame}
 
-\section{Exercícios com EDGV}
 
+\section{Conversão de modelagens EDGV com ferramentas da DSG}
 \begin{frame}[fragile]{Importando Shapefiles para PostGIS com GeoPandas}
-
-\textbf{Objetivo}
-
-Importar automaticamente todos os shapefiles contidos em um arquivo ZIP para o banco PostgreSQL/PostGIS.
-
-\vspace{0.3cm}
 
 \begin{minted}{python}
 from pathlib import Path
-import tempfile
-import zipfile
-
+import tempfile, zipfile 
 import geopandas as gpd
 from sqlalchemy import create_engine
-
 # conexão com o banco
 engine = create_engine(
     "postgresql+psycopg2://"
     "postgres:postgres@localhost/geodb"
 )
-
 arquivo_zip = "dados.zip"
-
 with tempfile.TemporaryDirectory() as tmpdir:
-
     with zipfile.ZipFile(arquivo_zip) as z:
         z.extractall(tmpdir)
-
     for shp in Path(tmpdir).rglob("*.shp"):
-
         print(f"Importando {shp.name}")
-
         gdf = gpd.read_file(shp)
-
         tabela = shp.stem.lower()
-
-        gdf.to_postgis(
-            tabela,
-            engine,
-            if_exists="append",
-            index=True
-        )
-
+        gdf.to_postgis( tabela, engine, if_exists="append", index=True)
 print("Importação concluída.")
+\end{minted}
+
+\textbf{Resultado} :
+Cada shapefile será criado como uma tabela PostGIS utilizando o nome do arquivo.
+
+\end{frame}
+
+\begin{frame}[fragile]{Cheat Sheet para Inspecionar um Banco PostgreSQL}
+
+\scriptsize
+
+\begin{columns}[t]
+
+\column{0.5\textwidth}
+
+\textbf{Bancos de Dados}
+
+\begin{minted}{sql}
+SELECT * FROM pg_database;
+\end{minted}
+
+Lista todos os bancos do servidor.
+
+\vspace{0.2cm}
+
+\textbf{Usuários}
+
+\begin{minted}{sql}
+SELECT * FROM pg_user;
+\end{minted}
+
+Lista usuários cadastrados.
+
+\vspace{0.2cm}
+
+\textbf{Esquemas}
+
+\begin{minted}{sql}
+SELECT schema_name
+FROM information_schema.schemata;
+\end{minted}
+
+Lista os esquemas disponíveis.
+
+\vspace{0.2cm}
+
+\textbf{Tabelas}
+
+\begin{minted}{sql}
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema='public';
+\end{minted}
+
+\column{0.5\textwidth}
+
+\textbf{Colunas de uma tabela}
+
+\begin{minted}{sql}
+SELECT column_name,
+       data_type
+FROM information_schema.columns
+WHERE table_name='cidades';
 \end{minted}
 
 \vspace{0.2cm}
 
-\textbf{Resultado}
+\textbf{Contagem de registros}
 
-Cada shapefile será criado como uma tabela PostGIS utilizando o nome do arquivo.
+\begin{minted}{sql}
+SELECT COUNT(*)
+FROM cidades;
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Visualizar dados}
+
+\begin{minted}{sql}
+SELECT *
+FROM cidades
+LIMIT 10;
+\end{minted}
+
+\vspace{0.2cm}
+
+\textbf{Extensões instaladas}
+
+\begin{minted}{sql}
+SELECT *
+FROM pg_extension;
+\end{minted}
+
+Verifica se o PostGIS está instalado.
+
+\end{columns}
+
+\vspace{0.2cm}
+
+\textbf{Dica:} As tabelas \texttt{information\_schema} e \texttt{pg\_*}
+armazenam metadados sobre a estrutura do banco.
+
+\end{frame}
+
+\begin{frame}[fragile]{Exercício: EDGV de verdade}
+
+\textbf{Roteiro:}
+
+\begin{enumerate}
+\item Baixar a carta \textbf{Porto Alegre} do Classroom.
+\item Baixar o código de modelagens da DSG
+\item Criar um banco de dados EDGV 3.0
+\item Copiar dados de uma carta do BDGEx para o banco de dados.
+\item Carregar pelo DSGTools apenas as camadas com elementos.
+\end{enumerate}
+\end{frame}
+\begin{frame}[fragile]{Exercício: EDGV de verdade}
+
+Construindo um banco de dados EDGV 3.0 no PostGIS e carregar dados de uma carta EDGV3.0 vetorial do BDGEx.
+\begin{minted}{bash}
+git clone https://github.com/dsgoficial/modelagens.git
+cd modelagens
+pixi init
+pixi add psycopg2-binary geopandas shapely sqlalchemy fiona pyproj geoalchemy2
+
+cp criador_bancos/config_examples/exemplo_banco_unico.json ./config_criacao.json
+# EDITAR o nome do banco
+python -m criador_bancos.main config_criacao.json
+
+cp conversao_modelagens/conversor/config_examples/postgis300_shp300.json shp2pg.json
+# EDITAR configurações no shp2pg.json
+# Alterar direction: B=>A
+# Alterar parâmetros do banco de dados
+# Alterar a origem dos arquivos shape e os nomes destination e source.
+# Alterar path do shapefile (pasta extraída)
+# /conversao_modelagens/arquivos_mapeamento/conversao_pg-edgv-300_shp-edgv-300.json
+python -m conversao_modelagens.conversor.main shp2pg.json
+\end{minted}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Exercício: EDGV de verdade}
+Banco de dados de Produção: EDGV Topo 2.0
+
+
+
+\begin{minted}{bash}
+cp criador_bancos/config_examples/exemplo_banco_unico.json ./config_criacao.json
+# EDITAR o nome do banco
+# Modelo:  edgv_300_topo_14
+python -m criador_bancos.main config_criacao.json
+\end{minted}
+Existe a conversão da EDGV 3 para EDGV 3 Topo no PostGIS, mas ainda não temos exemplos no repositório. Voluntários?
+\end{frame}
+
+
+\section{Exercícios com EDGV em PostGIS}
+\begin{frame}[fragile]{PostGIS Cheat Sheet I}
+
+\scriptsize
+
+\begin{columns}[t]
+
+\column{0.5\textwidth}
+
+\textbf{Criação de Geometrias}
+
+\begin{itemize}
+    \item \texttt{ST\_Point} --- cria um ponto.
+    \item \texttt{ST\_MakePoint} --- cria um ponto a partir de coordenadas.
+    \item \texttt{ST\_MakeLine} --- cria uma linha.
+    \item \texttt{ST\_MakePolygon} --- cria um polígono.
+    \item \texttt{ST\_GeomFromText} --- converte WKT em geometria.
+    \item \texttt{ST\_GeomFromGeoJSON} --- converte GeoJSON em geometria.
+    \item \texttt{ST\_SetSRID} --- define o SRID da geometria.
+\end{itemize}
+
+\column{0.5\textwidth}
+
+\textbf{Conversão e Sistemas de Referência}
+
+\begin{itemize}
+    \item \texttt{ST\_AsText} --- converte para WKT.
+    \item \texttt{ST\_AsGeoJSON} --- converte para GeoJSON.
+    \item \texttt{ST\_AsBinary} --- converte para WKB.
+    \item \texttt{ST\_Transform} --- reprojeta coordenadas.
+    \item \texttt{ST\_SRID} --- consulta o SRID.
+    \item \texttt{ST\_Envelope} --- retorna a bounding box.
+    \item \texttt{ST\_Centroid} --- calcula o centróide.
+\end{itemize}
+
+\end{columns}
+
+\vspace{0.3cm}
+
+\begin{minted}{sql}
+SELECT ST_Transform(geom, 31983)
+FROM cidades;
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]{PostGIS Cheat Sheet II}
+
+\scriptsize
+
+\begin{columns}[t]
+
+\column{0.5\textwidth}
+
+\textbf{Predicados Espaciais}
+
+\begin{itemize}
+    \item \texttt{ST\_Intersects} --- verifica interseção.
+    \item \texttt{ST\_Contains} --- verifica contenção.
+    \item \texttt{ST\_Within} --- verifica se está dentro.
+    \item \texttt{ST\_Touches} --- verifica contato de fronteiras.
+    \item \texttt{ST\_Crosses} --- verifica cruzamento.
+    \item \texttt{ST\_Overlaps} --- verifica sobreposição.
+    \item \texttt{ST\_Equals} --- compara geometrias.
+\end{itemize}
+
+\column{0.5\textwidth}
+
+\textbf{Operações Geométricas}
+
+\begin{itemize}
+    \item \texttt{ST\_Buffer} --- cria zona de influência.
+    \item \texttt{ST\_Intersection} --- obtém interseção.
+    \item \texttt{ST\_Union} --- une geometrias.
+    \item \texttt{ST\_Difference} --- calcula diferença.
+    \item \texttt{ST\_Distance} --- calcula distância.
+    \item \texttt{ST\_DWithin} --- testa distância máxima.
+    \item \texttt{ST\_Area} --- calcula área.
+    \item \texttt{ST\_Length} --- calcula comprimento.
+\end{itemize}
+
+\end{columns}
+
+\vspace{0.3cm}
+
+\begin{minted}{sql}
+SELECT *
+FROM escolas e
+JOIN cidades c
+ON ST_DWithin(
+    e.geom,
+    c.geom,
+    1000
+);
+\end{minted}
 
 \end{frame}
 
@@ -807,28 +1029,5 @@ ON ST_Within(d.geom, m.geom);
 \end{minted}
 
 \end{frame}
-
-\begin{frame}[fragile]{Exercício: EDGV de verdade}
-
-\begin{minted}{bash}
-git clone https://github.com/dsgoficial/modelagens.git
-cd modelagens
-pixi init
-pixi add psycopg2-binary geopandas shapely sqlalchemy fiona pyproj geoalchemy2
-
-cp criador_bancos/config_examples/exemplo_banco_unico.json ./config_criacao.json
-#EDITAR o nome do banco
-python -m criador_bancos.main config_criacao.json
-
-
-cp conversao_modelagens/conversor/config_examples/postgis300_shp300.json shp2pg.json
-#EDITAR configurações no shp2pg.json
-
-python -m conversao_modelagens.conversor.main shp2pg.json
-\end{minted}
-
-\end{frame}
-
-
 
 \end{document}
