@@ -1,0 +1,38 @@
+@startuml
+
+hide methods
+hide stereotypes
+
+entity "estados" as estados {
+    * id : SERIAL <<PK>>
+    --
+    nome : TEXT
+    sigla : TEXT
+}
+
+entity "cidades" as cidades {
+    * id : SERIAL <<PK>>
+    --
+    nome : TEXT
+    estado_id : INTEGER <<FK>>
+}
+
+entity "alunos" as alunos {
+    * id : SERIAL <<PK>>
+    --
+    nome : TEXT
+}
+
+entity "ja_visitei" as ja_visitei {
+    * aluno_id : INTEGER <<PK, FK>>
+    * estado_id : INTEGER <<PK, FK>>
+}
+
+' Relacionamentos
+
+estados ||--o{ cidades : possui
+
+alunos ||--o{ ja_visitei : visita
+estados ||--o{ ja_visitei : visitado
+
+@enduml

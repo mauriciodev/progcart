@@ -5,7 +5,7 @@
 
 \usepackage{aula}
 
-\title{Aula modelo}
+\title{Bancos de dados relacionais 2}
 \date{\today}
 
 \begin{document}
@@ -875,6 +875,8 @@ armazenam metadados sobre a estrutura do banco.
 \item Carregar pelo DSGTools apenas as camadas com elementos.
 \end{enumerate}
 \end{frame}
+
+
 \begin{frame}[fragile]{Exercício: EDGV de verdade}
 
 Construindo um banco de dados EDGV 3.0 no PostGIS e carregar dados de uma carta EDGV3.0 vetorial do BDGEx.
@@ -1014,19 +1016,18 @@ ON ST_DWithin(
 
 \end{frame}
 
-\begin{frame}[fragile]{Exercício: Classificação}
+\begin{frame}[fragile]{Exercícios}
 
-\textbf{Enunciado}
 
-Faça uma consulta que verifique quais linhas de hid\_trecho\_drenagem\_l estão dentro de polígonos de hid\_trecho\_massa\_dagua\_a.
-\pause
-\begin{minted}{sql}
-SELECT
-    d.*
-FROM hid_trecho_drenagem_l d
-JOIN hid_trecho_massa_dagua_a m
-ON ST_Within(d.geom, m.geom);
-\end{minted}
+\begin{enumerate}[<default overlay specification>][mini template]
+\item Listar quais linhas de hid\_trecho\_drenagem\_l estão dentro de polígonos de hid\_trecho\_massa\_dagua\_a.
+\item Calcular o comprimento dos segmentos das rodovias.
+\item Calcular o comprimento total de rodovias por tipo de revestimento.
+\item Calcule a area de vegetacao arbórea.
+\item Calcule a distância de cada edificação para a rodovia mais próxima.
+\item Encontre quais edificações estao em area urbana.
+\item Construa uma tabela de comando militar de area, utilizando relacionamentos, sem alterar a tabela estados, e crie uma view com a versão consolidada.
+\end{enumerate}
 
 \end{frame}
 
