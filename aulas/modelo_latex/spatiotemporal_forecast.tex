@@ -5,6 +5,8 @@
 
 \usepackage{aula}
 \usepackage{xurl}
+\usepackage{tabularx}
+\usetikzlibrary{positioning,arrows.meta}
 
 \graphicspath{{./spatiotemporal_forecast_figs/}}
 
@@ -515,6 +517,212 @@
 \end{frame}
 
 % ============================================================
+\section{Generative and foundation models (2026)}
+% ============================================================
+
+\begin{frame}{From frame regression to generative prediction}
+    \begin{columns}[t]
+        \column{0.48\textwidth}
+        \footnotesize
+        \textbf{Deterministic models} {\tiny (previous section)}
+        \begin{itemize}
+            \item Trained with MAE/RMSE $\rightarrow$ predict the \emph{average} future $\rightarrow$ blur.
+            \item Still improving: SimVP v2 and IAM4VP lead several benchmarks; PredFormer (2026) uses only gated transformers.
+        \end{itemize}
+
+        \vspace{0.15cm}
+        \textbf{The generative turn}
+        \begin{itemize}
+            \item Diffusion models: sharp forecasts and \alert{many} plausible futures (ensembles).
+            \item Flow matching / rectified flow: straight path from noise to data, plain regression loss, far fewer sampling steps.
+        \end{itemize}
+
+        \column{0.48\textwidth}
+        \footnotesize
+        \textbf{Large video models as world simulators}
+        \begin{itemize}
+            \item Closed: Veo 3.1, Seedance 2.0, Genie 3.
+            \item Open: Wan 2.2, LTX-2.5, NVIDIA Cosmos, V-JEPA 2 (predicts in embedding space).
+            \item Evaluated as future-state predictors (WorldReasonBench, 2026).
+        \end{itemize}
+
+        \vspace{0.15cm}
+        \begin{block}{The shift}
+            \footnotesize From ``predict the next frame'' to \textbf{``sample possible futures''}.
+        \end{block}
+    \end{columns}
+
+    \vfill
+    \hfill{\tiny (Tang et al. 2026; Lipman et al. 2023; Assran et al. 2025)}
+\end{frame}
+
+\begin{frame}{The same shift in weather forecasting}
+    \begin{columns}[t]
+        \column{0.48\textwidth}
+        \footnotesize
+        \textbf{Nowcasting (0--6 h): radar and satellite as video}
+        \begin{itemize}
+            \item Main recipe: \textbf{deterministic backbone + generative residual} (DiffCast, CasCast, CorrDiff).
+            \item Flow matching for speed: FlowCast (ICLR 2026), FREUD (CVPR 2026).
+            \item Satellite brightness temperature: diffusion on SEVIRI and GOES infrared images.
+        \end{itemize}
+
+        \column{0.48\textwidth}
+        \footnotesize
+        \textbf{Global forecasts (up to 15 days)}
+        \begin{itemize}
+            \item GenCast (diffusion, 50 members) beat ECMWF ENS on more than 96\% of targets.
+            \item WeatherNext 3 (Aug 2026): 64 members, hourly updates.
+            \item WeatherNext Cyclones: track, intensity and size.
+        \end{itemize}
+
+        \vspace{0.15cm}
+        \textbf{In practice}
+        \begin{itemize}
+            \item Ensembles by default.
+            \item Metrics beyond RMSE: CRPS, CSI, power spectra.
+            \item Sampling time is the bottleneck.
+        \end{itemize}
+    \end{columns}
+
+    \vfill
+    \hfill{\tiny (Yu et al. 2024; Price et al. 2025; Chase et al. 2026; Afzali Gorooh et al. 2026; Alet et al. 2026)}
+\end{frame}
+
+\begin{frame}{Earth foundation embeddings: what is available}
+    \centering
+    \scriptsize
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabularx}{\textwidth}{@{}l l r l >{\raggedright\arraybackslash}X@{}}
+        \toprule
+        \textbf{Product} & \textbf{Type} & \textbf{Dim} & \textbf{Res.} & \textbf{Years / access} \\
+        \midrule
+        AlphaEarth (Google) & pixel & 64 & 10\,m & 2017--, annual; Earth Engine, Source Coop. \\
+        TESSERA (Cambridge) & pixel & 128 & 10\,m & 2017--2025*, annual \\
+        Presto & pixel & 128 & 10\,m & 2019--2020, Togo only \\
+        Clay & patch & 768 & 5.1\,km & 2018--2023*; Source Coop. \\
+        Major TOM & patch & 2048 & $\sim$3\,km & 2015--2024*; Hugging Face \\
+        Earth Index & patch & 384 & 320\,m & 2024; Source Coop. \\
+        Copernicus-Embed & patch & 768 & 0.25$^\circ$ & 2021; Hugging Face \\
+        \bottomrule
+    \end{tabularx}
+
+    {\tiny * sparse coverage. TorchGeo has data loaders for all of them.}
+
+    \vspace{0.1cm}
+    \begin{columns}[t]
+        \column{0.48\textwidth}
+        \footnotesize
+        \textbf{Foundation models (run them yourself)}
+        \begin{itemize}
+            \item Surface: Prithvi-EO-2.0, TerraMind, OlmoEarth, Galileo, DOFA, Clay.
+            \item Atmosphere: Aurora, Prithvi WxC.
+        \end{itemize}
+
+        \column{0.48\textwidth}
+        \footnotesize
+        \textbf{Watch out for}
+        \begin{itemize}
+            \item Annual snapshots vs.\ minutes-scale weather.
+            \item Mixed licenses (AlphaEarth weights are closed).
+            \item Different data types and grids.
+        \end{itemize}
+    \end{columns}
+
+    \vfill
+    \hfill{\tiny (Earth Embeddings as Products, 2026)}
+\end{frame}
+
+\begin{frame}{How embeddings change the landscape}
+    \begin{itemize}
+        \item Embeddings become a \textbf{data layer}: download a vector per pixel instead of training an encoder.
+        \item Good results with \textbf{few labels} (k-NN or a linear layer on top).
+        \item New models arrived roughly every two weeks in early 2026.
+        \item Surface knowledge (terrain, land cover, water, cities) becomes a ready-made input for weather models.
+    \end{itemize}
+
+    \espaco
+    \centering
+    \begin{tikzpicture}[
+        font=\scriptsize, node distance=3mm and 6mm,
+        box/.style={draw=PastelGreen!70!black, rounded corners=2pt, fill=PastelGreen!25, align=center, minimum height=7mm, text width=22mm},
+        emb/.style={box, draw=orange!80!black, fill=orange!15},
+        arr/.style={-{Stealth[length=2mm]}, thick, gray!70!black}]
+        \node[box] (past) {Past frames};
+        \node[emb, below=of past] (stat) {Earth embeddings\\(A)};
+        \node[emb, below=of stat] (atm) {Weather foundation model (C)};
+        \node[box, right=8mm of stat, minimum height=16mm] (unet) {Backbone\\{\tiny pretrained encoder (B)}};
+        \node[box, right=of unet, minimum height=16mm] (fm) {Generative residual\\{\tiny latent space (D)}};
+        \node[box, right=of fm, text width=16mm] (ens) {Ensemble of futures};
+        \draw[arr] (past) -| (unet);
+        \draw[arr] (stat) -- (unet);
+        \draw[arr] (atm) -| (unet);
+        \draw[arr] (unet) -- (fm);
+        \draw[arr] (fm) -- (ens);
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Integrating embeddings in a forecast model}
+    \small
+    \begin{itemize}
+        \item \textbf{A. Static conditioning}
+        \begin{itemize}
+            \item Pool the embeddings to the forecast grid (e.g.\ 10\,m $\rightarrow$ 2\,km), reduce with PCA, add as extra input channels (or FiLM).
+            \item Cheapest option: works with any model from the previous section.
+        \end{itemize}
+        \item \textbf{B. Pretrained encoder}
+        \begin{itemize}
+            \item Replace the encoder with an Earth observation foundation model (TerraTorch, timm).
+        \end{itemize}
+        \item \textbf{C. Dynamic context}
+        \begin{itemize}
+            \item Forecasts or latents from Aurora / Prithvi WxC as conditioning, so the model knows the large-scale weather.
+        \end{itemize}
+        \item \textbf{D. Latent generation}
+        \begin{itemize}
+            \item Run diffusion / flow matching in a pretrained latent space to reduce cost.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Two kinds of foundation model: Prithvi vs.\ Cosmos}
+    \centering
+    \scriptsize
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.17\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+        \toprule
+         & Prithvi {\normalfont (NASA / IBM)} & Cosmos {\normalfont (NVIDIA)} \\
+        \midrule
+        Learns from & Physical Earth data: reanalysis (WxC) and satellite imagery (EO-2.0) & Huge amounts of everyday video \\
+        Understands & Physical variables and real geography & Generic visual motion: objects, cameras, scenes \\
+        Predicts & Atmospheric and surface fields & Future video frames (and robot actions in Cosmos 3) \\
+        Strongest in & Weather, climate, Earth observation & Robotics and self-driving simulation \\
+        Hardware & Fine-tunable on modest GPUs (TerraTorch) & 2B model borderline on 16\,GB; Cosmos 3 needs data-centre GPUs \\
+        Weather caveat & WxC grid ($\sim$50\,km) is far coarser than 2\,km satellite nowcasts & Plausible-looking clouds, not physically correct ones \\
+        \bottomrule
+    \end{tabularx}
+
+    \espaco
+    \begin{block}{Bottom line}
+        \footnotesize Cosmos has the broader impact across AI; \textbf{Prithvi has the greater impact on Earth science} and is the better starting point for weather forecasting.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Summary before the hands on}
+    \begin{enumerate}
+        \item The field moved from \textbf{deterministic frame regression} to \textbf{generative sampling of possible futures}.
+        \item Weather systems converged on one recipe: \textbf{deterministic backbone + generative residual}, evaluated with CRPS, CSI and spectra.
+        \item \textbf{Earth embeddings} turn the land surface into a ready-made input layer.
+        \item Main gaps: time-scale mismatch (annual vs.\ minutes), licensing, evaluation cost.
+    \end{enumerate}
+
+    \espaco
+    \begin{block}{Next: hands on}
+        \footnotesize The OpenSTL models are the \textbf{deterministic backbone}. A generative residual or embedding channels can be added on top of them.
+    \end{block}
+\end{frame}
+
+% ============================================================
 \section{Hands on}
 % ============================================================
 
@@ -712,21 +920,31 @@
 \begin{frame}[allowframebreaks]{Referências}
     \tiny
     \begin{itemize}
+        \item[] Afzali Gorooh V, Delle Monache L, Axisa D, Sengupta A, Zhang Z, Ralph FM (2026) Deterministic nowcasting of geostationary satellite infrared brightness temperature using 3D U-Net diffusion model. Scientific Reports 16:4191. \url{https://doi.org/10.1038/s41598-025-34207-9}
+        \item[] Alet F, Andersson TR, Titley H, et al. (2026) Operational tropical cyclone forecasting with AI. Nature. \url{https://doi.org/10.1038/s41586-026-10953-2}
         \item[] Arnab A, Dehghani M, Heigold G, Sun C, Lucic M, Schmid C (2021) ViViT: A Video Vision Transformer. In: 2021 IEEE/CVF International Conference on Computer Vision (ICCV). IEEE, Montreal, QC, Canada, pp 6816--6826
+        \item[] Assran M, et al. (2025) V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning
         \item[] Beck M, Pöppel K, Spanring M, Auer A, Prudnikova O, Kopp M, Klambauer G, Brandstetter J, Hochreiter S (2024) xLSTM: Extended Long Short-Term Memory
         \item[] Borovykh A, Bohte S, Oosterlee CW (2018) Conditional Time Series Forecasting with Convolutional Neural Networks. arXiv:170304691 [stat]
+        \item[] Chase RJ, Haynes K, Ver Hoef L, Ebert-Uphoff I (2026) How to use score-based diffusion in earth system science: A satellite nowcasting example. Artificial Intelligence for the Earth Systems. arXiv:2505.10432
         \item[] Dosovitskiy A, Beyer L, Kolesnikov A, Weissenborn D, Zhai X, Unterthiner T, Dehghani M, Minderer M, Heigold G, Gelly S, Uszkoreit J, Houlsby N (2021) An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
+        \item[] Earth Embeddings as Products: Taxonomy, Ecosystem, and Standardized Access (2026). arXiv:2601.13134
         \item[] Fernández JG, Mehrkanoon S (2021) Broad-UNet: Multi-scale feature learning for nowcasting tasks. Neural Networks 144:419--427. \url{https://doi.org/10.1016/j.neunet.2021.08.036}
         \item[] Gao Z, Shi X, Wang H, Zhu Y, Wang B, Li M, Yeung D-Y (2022) Earthformer: Exploring Space-Time Transformers for Earth System Forecasting
+        \item[] Lipman Y, Chen RTQ, Ben-Hamu H, Nickel M, Le M (2023) Flow Matching for Generative Modeling. ICLR
         \item[] Li K, Li X, Wang Y, He Y, Wang Y, Wang L, Qiao Y (2024) VideoMamba: State Space Model for Efficient Video Understanding
         \item[] Li S, Wang Z, Liu Z, Tan C, Lin H, Wu D, Chen Z, Zheng J, Li SZ (2023) Efficient Multi-order Gated Aggregation Network
         \item[] Paulo MCM de, Marques HA, Feitosa RQ, Ferreira MP (2023) New encoder--decoder convolutional LSTM neural network architectures for next-day global ionosphere maps forecast. GPS Solut 27(2):95. \url{https://doi.org/10.1007/s10291-023-01442-4}
         \item[] Paulo MCM de, Marques HA, Ferreira MP, Feitosa RQ (2022) Redes neurais ConvLSTM CD aplicadas à previsão de mapas globais de ionosfera. In: Informações geoespaciais para o monitoramento do sistema terra visando o desenvolvimento sustentável. Curitiba, Brasil
+        \item[] Price I, Sanchez-Gonzalez A, Alet F, et al. (2025) Probabilistic weather forecasting with machine learning. Nature 637:84--90
         \item[] Rogozinski M, Martinez JAC, Feitosa RQ (2021) 3D convolution for multidate crop recognition from multitemporal image sequences. International Journal of Remote Sensing 0(0):1--22. \url{https://doi.org/10.1080/01431161.2021.1976876}
+        \item[] Schmude J, Roy S, Trojak W, et al. (2024) Prithvi WxC: Foundation Model for Weather and Climate. arXiv:2409.13598
         \item[] Tan C, Gao Z, Li SZ, Li S (2022) SimVP: Towards Simple yet Powerful Spatiotemporal Predictive Learning
         \item[] Tan C, Li S, Gao Z, Guan W, Wang Z, Liu Z, Wu L, Li SZ (2023) OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning
         \item[] Tang S, Li C, Zhang P, Tang R (2023) SwinLSTM: Improving Spatiotemporal Prediction Accuracy using Swin Transformer and LSTM
+        \item[] Tang Y, Qi L, Li X, Ma C, Yang M-H (2026) Video Prediction Transformers Without Recurrence or Convolution. Transactions on Machine Learning Research
         \item[] Vaswani A, Shazeer N, Parmar N, Uszkoreit J, Jones L, Gomez AN, Kaiser L, Polosukhin I (2017) Attention Is All You Need
+        \item[] Yu D, Li X, Ye Y, Zhang B, Luo C, Dai K, Wang R, Chen X (2024) DiffCast: A Unified Framework via Residual Diffusion for Precipitation Nowcasting. CVPR
     \end{itemize}
 \end{frame}
 
