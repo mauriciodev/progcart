@@ -6,7 +6,7 @@
 \usepackage{aula}
 \usepackage{xurl}
 \usepackage{tabularx}
-\usetikzlibrary{positioning,arrows.meta}
+\usetikzlibrary{positioning,arrows.meta,decorations.pathreplacing}
 
 \graphicspath{{./spatiotemporal_forecast_figs/}}
 
@@ -49,7 +49,204 @@
     {\tiny Paulo MCM de, Marques HA, Feitosa RQ, Ferreira MP (2023) New encoder--decoder convolutional LSTM neural network architectures for next-day global ionosphere maps forecast. GPS Solut 27(2):95. \url{https://doi.org/10.1007/s10291-023-01442-4}}
 \end{frame}
 
-\begin{frame}{Prediction of the next maps in a time series}
+% ============================================================
+\section{Spatiotemporal forecast basics}
+% ============================================================
+
+\begin{frame}{Types of spatiotemporal problems}
+    \footnotesize
+    \begin{columns}[t]
+        % ---------------- 1. Coordinates in time
+        \column{0.32\textwidth}
+        \centering
+        \textbf{1. Coordinates in time}
+
+        \vspace{0.1cm}
+        \begin{tikzpicture}[scale=0.55]
+            \draw[gray!60] (0,0) rectangle (3.2,2.2);
+            \foreach \x/\y/\c in {0.6/1.6/blue, 1.7/0.6/red, 2.6/1.5/teal}
+                \fill[\c] (\x,\y) circle (2.5pt);
+            % small time series below
+            \begin{scope}[shift={(0,-1.6)}]
+                \draw[->,gray] (0,0) -- (3.3,0) node[right,black] {\tiny $t$};
+                \draw[blue]  plot[smooth] coordinates {(0,1.0) (0.8,1.3) (1.6,0.9) (2.4,1.2) (3.2,1.1)};
+                \draw[red]   plot[smooth] coordinates {(0,0.3) (0.8,0.5) (1.6,0.7) (2.4,0.4) (3.2,0.6)};
+                \draw[teal]  plot[smooth] coordinates {(0,0.7) (0.8,0.6) (1.6,1.1) (2.4,0.8) (3.2,0.9)};
+            \end{scope}
+        \end{tikzpicture}
+
+        \raggedright
+        \begin{itemize}
+            \item Fixed stations / sensors (GNSS, weather, traffic).
+            \item Tensor: $(T, N, F)$ \\ {\tiny $N$ locations, $F$ variables}
+            \item \textbf{Multivariate time series} (LSTM, TCN, transformers).
+            \item Neighborhood as a graph: ST-GNN.
+        \end{itemize}
+
+        % ---------------- 2. Geometries in time
+        \column{0.32\textwidth}
+        \centering
+        \textbf{2. Geometries in time}
+
+        \vspace{0.1cm}
+        \begin{tikzpicture}[scale=0.55]
+            \draw[gray!60] (0,0) rectangle (3.2,2.2);
+            \draw[blue!40, fill=blue!10] (0.3,0.4) -- (1.1,0.3) -- (1.3,1.0) -- (0.6,1.2) -- cycle;
+            \draw[blue!70, fill=blue!20] (1.1,0.7) -- (2.1,0.5) -- (2.4,1.4) -- (1.4,1.7) -- cycle;
+            \draw[blue, thick, fill=blue!35] (2.0,1.1) -- (3.0,1.0) -- (3.0,2.0) -- (2.2,2.05) -- cycle;
+            \draw[->, red, thick] (0.7,0.75) -- (1.7,1.1) -- (2.55,1.55);
+            \begin{scope}[shift={(0,-1.6)}]
+                \draw[->,gray] (0,0) -- (3.3,0) node[right,black] {\tiny $t$};
+                \foreach \x in {0.4,1.6,2.8} \fill[blue!60] (\x,0.6) circle (2pt);
+                \node[font=\tiny] at (1.6,1.1) {$G_{t-1}\;\; G_t\;\; G_{t+1}$};
+            \end{scope}
+        \end{tikzpicture}
+
+        \raggedright
+        \begin{itemize}
+            \item Moving / deforming objects: trajectories, storms, fire fronts, glaciers.
+            \item Variable size: sequences of vertices or polygons.
+            \item \alert{Not addressed in this course.}
+        \end{itemize}
+
+        % ---------------- 3. Maps / images in time
+        \column{0.32\textwidth}
+        \centering
+        \textbf{3. Maps / images in time}
+
+        \vspace{0.1cm}
+        \begin{tikzpicture}[scale=0.55]
+            \foreach \i/\c in {0/blue!15, 1/blue!30, 2/blue!45} {
+                \begin{scope}[shift={(0.45*\i,0.35*\i)}]
+                    \fill[\c] (0,0) rectangle (2.0,1.4);
+                    \draw[gray, step=0.4] (0,0) grid (2.0,1.4);
+                    \draw (0,0) rectangle (2.0,1.4);
+                \end{scope}
+            }
+            \fill[red!60] (1.3,1.1) rectangle (1.7,1.5);
+            \begin{scope}[shift={(0,-1.6)}]
+                \draw[->,gray] (0,0) -- (3.3,0) node[right,black] {\tiny $t$};
+                \node[font=\tiny] at (1.6,0.6) {$X_{t-2}, X_{t-1}, X_t \rightarrow \hat{X}_{t+1}$};
+            \end{scope}
+        \end{tikzpicture}
+
+        \raggedright
+        \begin{itemize}
+            \item Regular grids: VTEC maps, radar, satellite, reanalysis.
+            \item Tensor: $(T, C, H, W)$
+            \item \textbf{Video prediction} (ConvLSTM, 3D CNN, SimVP, transformers).
+            \item \alert{Focus of this course.}
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+% ------------------------------------------------------------
+\begin{frame}{1. Coordinates in time: multivariate time series}
+    \centering
+    \begin{tikzpicture}[x=0.5cm, y=0.38cm]
+        % series as rows, time steps as columns
+        \foreach \r/\c/\lab in {0/teal/{station $N$, var $F$}, 1/red/{station 2, var 1}, 2/blue/{station 1, var 1}} {
+            \foreach \t in {0,...,11}
+                \draw[gray!50, fill=\c!12] (\t,\r) rectangle (\t+1,\r+0.8);
+            \node[left, font=\tiny, text=\c] at (0,\r+0.4) {\lab};
+        }
+        % input and output windows
+        \draw[blue, very thick, rounded corners=2pt] (3,-0.1) rectangle (8,2.9);
+        \draw[red,  very thick, rounded corners=2pt] (8,-0.1) rectangle (10,2.9);
+        \node[above, font=\tiny, blue] at (5.5,2.9) {input: last $L$ steps};
+        \node[above, font=\tiny, red]  at (9.6,2.9) {output: next $H$};
+        \draw[->, gray] (0,-0.6) -- (12.4,-0.6) node[right, black, font=\tiny] {$t$};
+        \node[right, font=\tiny, gray] at (12.1,1.4) {(window slides)};
+    \end{tikzpicture}
+
+    \scriptsize
+    \begin{columns}[t]
+        \column{0.5\textwidth}
+        \textbf{Data}
+        \begin{itemize}
+            \item Stations at fixed coordinates: GNSS (VTEC), weather, air quality, traffic.
+            \item Table $(T, N \times F)$: each location/variable is a series.
+        \end{itemize}
+
+        \textbf{Strategies}
+        \begin{itemize}
+            \item \emph{Local}: one model per series.
+            \item \emph{Global}: one model for all series (coordinates as covariates).
+            \item \emph{Multivariate}: all series jointly (cross-correlations).
+        \end{itemize}
+
+        \column{0.46\textwidth}
+        \textbf{Models}
+        \begin{itemize}
+            \item LSTM/GRU, TCN, N-BEATS/N-HiTS, TFT, PatchTST.
+            \item Library: \texttt{darts} (same API for all).
+        \end{itemize}
+
+        \textbf{Using space explicitly}
+        \begin{itemize}
+            \item Neighbors as a graph $\rightarrow$ spatiotemporal GNNs (DCRNN, Graph WaveNet).
+            \item Dense stations $\rightarrow$ interpolate to a grid (approach 3).
+        \end{itemize}
+    \end{columns}
+
+    \vfill
+    \hfill{\tiny (Herzen et al. 2022; Nie et al. 2023; Li et al. 2018; Wu et al. 2019)}
+\end{frame}
+
+% ------------------------------------------------------------
+\begin{frame}{2. Geometries in time}
+    \centering
+    \begin{tikzpicture}[scale=0.6]
+        % polygon sequence
+        \draw[blue!40, fill=blue!10] (0.0,0.3) -- (1.0,0.1) -- (1.3,1.0) -- (0.4,1.3) -- cycle;
+        \draw[blue!70, fill=blue!20] (1.3,0.5) -- (2.5,0.3) -- (2.8,1.5) -- (1.6,1.8) -- cycle;
+        \draw[blue, thick, fill=blue!35] (2.8,0.9) -- (4.0,0.8) -- (4.1,2.1) -- (3.1,2.2) -- (2.9,1.6) -- cycle;
+        \draw[->, red, thick] (0.6,0.7) -- (2.0,1.05) -- (3.5,1.5);
+        \node[font=\tiny, below] at (2,0) {$G_{t-2},\; G_{t-1},\; G_t$};
+        % representations
+        \draw[->, thick] (4.6,1.1) -- (5.6,1.1);
+        % vertex sequence
+        \node[font=\tiny, align=left, anchor=west] at (5.8,1.9) {vertices $[(x_1,y_1),\dots,(x_k,y_k)]$};
+        \node[font=\tiny, align=left, anchor=west] at (5.8,1.1) {trajectory of the centroid};
+        \node[font=\tiny, align=left, anchor=west] at (5.8,0.3) {rasterized mask / distance field};
+    \end{tikzpicture}
+
+    \scriptsize
+    \begin{columns}[t]
+        \column{0.48\textwidth}
+        \textbf{Examples}
+        \begin{itemize}
+            \item Moving points: hurricane tracks, vessels (AIS), vehicles, animals.
+            \item Deforming shapes: storm cells, fire fronts, flood extent, glacier fronts.
+        \end{itemize}
+
+        \textbf{Why it is hard}
+        \begin{itemize}
+            \item Variable number of vertices per object.
+            \item Objects split, merge, appear and vanish.
+            \item Needs tracking (object identity over time).
+        \end{itemize}
+
+        \column{0.48\textwidth}
+        \textbf{Common workarounds}
+        \begin{itemize}
+            \item Trajectories $\rightarrow$ sequence models on coordinates (Social LSTM, transformers).
+            \item Shapes $\rightarrow$ rasterize, predict maps (approach 3), vectorize again.
+        \end{itemize}
+
+        \vspace{0.2cm}
+        \begin{alertblock}{}
+            \scriptsize Not addressed in this course.
+            \scriptsize Can be reduced to representing the bounding box in time, which leads to coordinates in time.
+        \end{alertblock}
+    \end{columns}
+
+    \vfill
+    \hfill{\tiny (Alahi et al. 2016)}
+\end{frame}
+
+% ------------------------------------------------------------
+\begin{frame}{3. Maps in time: predicting the next maps}
     \centering
     \includegraphics[width=0.9\textwidth]{sliding_window}
 
@@ -70,53 +267,121 @@
         \]
     \end{columns}
 
-    {\footnotesize The model transforms from $t$ input images to the next $t'$ predicted images.}
+    {\footnotesize The model maps $t$ input images $(t, C, H, W)$ to the next $t'$ images $(t', C, H, W)$.}
 \end{frame}
 
 % ============================================================
 \section{Data set construction}
 % ============================================================
 
-\begin{frame}{Hyperparameters}
+\begin{frame}{Building the time series: resolution}
     \begin{columns}[t]
-        \column{0.45\textwidth}
+        % ---------------- spatial resolution
+        \column{0.48\textwidth}
+        \centering
+        \textbf{Spatial resolution} $(H, W)$
+
+        \vspace{0.1cm}
+        \begin{tikzpicture}
+            \foreach \n/\xs/\lab in {4/0/{coarse ($4 \times 4$)}, 12/2.6/{fine ($12 \times 12$)}} {
+                \pgfmathsetmacro{\d}{2/\n}
+                \foreach \i in {1,...,\n} {
+                    \foreach \j in {1,...,\n} {
+                        \pgfmathsetmacro{\cx}{(\i-0.5)/\n}
+                        \pgfmathsetmacro{\cy}{(\j-0.5)/\n}
+                        \pgfmathtruncatemacro{\v}{min(100, 100*exp(-((\cx-0.62)^2+(\cy-0.45)^2)/0.03) + 45*exp(-((\cx-0.25)^2+(\cy-0.7)^2)/0.01))}
+                        \fill[blue!\v!white] (\xs+\d*\i-\d,\d*\j-\d) rectangle (\xs+\d*\i,\d*\j);
+                    }
+                }
+                \draw[gray!70, step=\d] (\xs,0) grid (\xs+2,2);
+                \draw (\xs,0) rectangle (\xs+2,2);
+                \node[below, font=\tiny] at (\xs+1,0) {\lab};
+            }
+        \end{tikzpicture}
+
+        \raggedright
+        \scriptsize
         \begin{itemize}
-            \item Sequences of images
-            \begin{itemize}
-                \item Time, channels, x, y
-            \end{itemize}
-            \item PyTorch
-            \begin{itemize}
-                \item Input: $(t, c, x, y)$
-                \item Output: $(t', c', x, y)$
-            \end{itemize}
+            \item Coarse grids lose small structures (the small blob).
+            \item Memory grows with $H \times W$ (4$\times$ for half the cell size).
+            \item With $n$ pooling layers, $H$ and $W$ must be multiples of $2^n$: crop or pad. \\
+                {\tiny e.g.\ $72 \rightarrow 36 \rightarrow 18 \rightarrow 9$ ($n=3$)}
         \end{itemize}
 
-        \espaco
-        \includegraphics[width=\columnwidth]{sampling_strip}
+        % ---------------- temporal resolution
+        \column{0.48\textwidth}
+        \centering
+        \textbf{Temporal resolution} $(\Delta t)$
 
-        {\footnotesize How do we slice it to produce samples? {\tiny (Paulo et al. 2023)}}
+        \vspace{0.1cm}
+        \begin{tikzpicture}[x=0.6cm, y=0.8cm,
+            declare function={f(\x)=0.5*sin(deg(1.2*\x)) + 1.2*exp(-((\x-3.75)^2)/0.08);}]
+            \draw[->, gray] (0,-0.7) -- (6.4,-0.7) node[right, black, font=\tiny] {$t$};
+            \draw[gray!60] plot[domain=0:6, samples=150, smooth] (\x,{f(\x)});
+            % fine sampling
+            \foreach \k in {0,...,24}
+                \fill[blue] ({0.25*\k},{f(0.25*\k)}) circle (1.3pt);
+            % coarse sampling
+            \draw[red, thick] plot[mark=*, mark size=1.8pt] coordinates {
+                (0,{f(0)}) (1.5,{f(1.5)}) (3,{f(3)}) (4.5,{f(4.5)}) (6,{f(6)})};
+            \node[font=\tiny, anchor=west] at (4.3,1.4) {event};
+        \end{tikzpicture}
 
-        \column{0.52\textwidth}
-        \small
+        {\tiny \textcolor{blue}{$\bullet$ small $\Delta t$} \quad \textcolor{red}{$\bullet$ large $\Delta t$: event missed}}
+
+        \raggedright
+        \scriptsize
         \begin{itemize}
-            \item \textbf{Input sequence length ($t$)}
-            \begin{itemize}
-                \item Must be long enough to provide data for the prediction process.
-            \end{itemize}
-            \item \textbf{Output sequence length ($t'$)}
-            \begin{itemize}
-                \item Must be long enough to be usable.
-            \end{itemize}
-            \item \textbf{Spatial resolution}
-            \begin{itemize}
-                \item Spatial tensor dimensions $(x,y)$
-                \item Multiples of $2^n$, where $n$ is the number of pooling layers.
-            \end{itemize}
-            \item \textbf{Temporal resolution}
-            \begin{itemize}
-                \item Must be compatible with the event.
-            \end{itemize}
+            \item $\Delta t$ must be compatible with the event: at least 2 samples per shortest period of interest (Nyquist).
+            \item Smaller $\Delta t$ $\rightarrow$ more steps for the same horizon (longer sequences).
+            \item Resample: average (smooth) or instantaneous values.
+        \end{itemize}
+    \end{columns}
+
+    \vfill
+    {\footnotesize Result: one tensor $(T, C, H, W)$ for the whole period, ready to be sliced into samples.}
+\end{frame}
+
+\begin{frame}{Sliding window: input length, horizon and stride}
+    \centering
+    \includegraphics[width=0.8\textwidth]{sampling_strip}
+
+    {\tiny One sample from the VTEC series (Paulo et al. 2023).}
+
+    \vspace{0.1cm}
+    \begin{columns}[c]
+        \column{0.5\textwidth}
+        \centering
+        \begin{tikzpicture}[x=0.27cm, y=0.4cm]
+            % full time series
+            \foreach \k in {0,...,17}
+                \draw[gray!60, fill=gray!10] (\k,3) rectangle (\k+0.85,3.8);
+            \node[left, font=\tiny] at (0,3.4) {series};
+            % samples: t=5 input, t'=3 output, stride s=2
+            \foreach \r/\s in {2/0, 1/2, 0/4} {
+                \foreach \k in {0,...,4}
+                    \fill[blue!35] (\s+\k,\r) rectangle (\s+\k+0.85,\r+0.8);
+                \foreach \k in {5,...,7}
+                    \fill[green!50!black!45] (\s+\k,\r) rectangle (\s+\k+0.85,\r+0.8);
+            }
+            \node[left, font=\tiny] at (0,2.4) {sample 1};
+            \node[left, font=\tiny] at (0,1.4) {sample 2};
+            \node[left, font=\tiny] at (0,0.4) {sample 3};
+            \draw[<->] (0,-0.3) -- (2,-0.3) node[midway, below, font=\tiny] {$s$};
+            \draw[decorate, decoration={brace, amplitude=3pt}] (0,4) -- (4.85,4) node[midway, above=2pt, font=\tiny, blue] {$t$};
+            \draw[decorate, decoration={brace, amplitude=3pt}] (5,4) -- (7.85,4) node[midway, above=2pt, font=\tiny, green!40!black] {$t'$};
+        \end{tikzpicture}
+
+        {\tiny Number of samples: $N = \left\lfloor \frac{T - t - t'}{s} \right\rfloor + 1$}
+
+        \column{0.48\textwidth}
+        \scriptsize
+        \begin{itemize}
+            \item \textcolor{blue}{\textbf{Input length $t$}}: long enough to describe the dynamics (e.g.\ a full daily cycle).
+            \item \textcolor{green!40!black}{\textbf{Output length $t'$}}: long enough to be usable.
+            \item \textbf{Stride $s$}: small $s$ $\rightarrow$ more samples, but highly correlated.
+            \item Tensors: input $(t, C, H, W)$, output $(t', C', H, W)$.
+            \item Split train/val/test by \alert{time blocks}: no window crosses two sets.
         \end{itemize}
     \end{columns}
 \end{frame}
@@ -921,6 +1186,7 @@
     \tiny
     \begin{itemize}
         \item[] Afzali Gorooh V, Delle Monache L, Axisa D, Sengupta A, Zhang Z, Ralph FM (2026) Deterministic nowcasting of geostationary satellite infrared brightness temperature using 3D U-Net diffusion model. Scientific Reports 16:4191. \url{https://doi.org/10.1038/s41598-025-34207-9}
+        \item[] Alahi A, Goel K, Ramanathan V, Robicquet A, Fei-Fei L, Savarese S (2016) Social LSTM: Human Trajectory Prediction in Crowded Spaces. In: 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pp 961--971
         \item[] Alet F, Andersson TR, Titley H, et al. (2026) Operational tropical cyclone forecasting with AI. Nature. \url{https://doi.org/10.1038/s41586-026-10953-2}
         \item[] Arnab A, Dehghani M, Heigold G, Sun C, Lucic M, Schmid C (2021) ViViT: A Video Vision Transformer. In: 2021 IEEE/CVF International Conference on Computer Vision (ICCV). IEEE, Montreal, QC, Canada, pp 6816--6826
         \item[] Assran M, et al. (2025) V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning
@@ -931,9 +1197,12 @@
         \item[] Earth Embeddings as Products: Taxonomy, Ecosystem, and Standardized Access (2026). arXiv:2601.13134
         \item[] Fernández JG, Mehrkanoon S (2021) Broad-UNet: Multi-scale feature learning for nowcasting tasks. Neural Networks 144:419--427. \url{https://doi.org/10.1016/j.neunet.2021.08.036}
         \item[] Gao Z, Shi X, Wang H, Zhu Y, Wang B, Li M, Yeung D-Y (2022) Earthformer: Exploring Space-Time Transformers for Earth System Forecasting
+        \item[] Herzen J, Lässig F, Piazzetta SG, et al. (2022) Darts: User-Friendly Modern Machine Learning for Time Series. Journal of Machine Learning Research 23(124):1--6
+        \item[] Li Y, Yu R, Shahabi C, Liu Y (2018) Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting. ICLR
         \item[] Lipman Y, Chen RTQ, Ben-Hamu H, Nickel M, Le M (2023) Flow Matching for Generative Modeling. ICLR
         \item[] Li K, Li X, Wang Y, He Y, Wang Y, Wang L, Qiao Y (2024) VideoMamba: State Space Model for Efficient Video Understanding
         \item[] Li S, Wang Z, Liu Z, Tan C, Lin H, Wu D, Chen Z, Zheng J, Li SZ (2023) Efficient Multi-order Gated Aggregation Network
+        \item[] Nie Y, Nguyen NH, Sinthong P, Kalagnanam J (2023) A Time Series is Worth 64 Words: Long-term Forecasting with Transformers. ICLR
         \item[] Paulo MCM de, Marques HA, Feitosa RQ, Ferreira MP (2023) New encoder--decoder convolutional LSTM neural network architectures for next-day global ionosphere maps forecast. GPS Solut 27(2):95. \url{https://doi.org/10.1007/s10291-023-01442-4}
         \item[] Paulo MCM de, Marques HA, Ferreira MP, Feitosa RQ (2022) Redes neurais ConvLSTM CD aplicadas à previsão de mapas globais de ionosfera. In: Informações geoespaciais para o monitoramento do sistema terra visando o desenvolvimento sustentável. Curitiba, Brasil
         \item[] Price I, Sanchez-Gonzalez A, Alet F, et al. (2025) Probabilistic weather forecasting with machine learning. Nature 637:84--90
@@ -944,6 +1213,7 @@
         \item[] Tang S, Li C, Zhang P, Tang R (2023) SwinLSTM: Improving Spatiotemporal Prediction Accuracy using Swin Transformer and LSTM
         \item[] Tang Y, Qi L, Li X, Ma C, Yang M-H (2026) Video Prediction Transformers Without Recurrence or Convolution. Transactions on Machine Learning Research
         \item[] Vaswani A, Shazeer N, Parmar N, Uszkoreit J, Jones L, Gomez AN, Kaiser L, Polosukhin I (2017) Attention Is All You Need
+        \item[] Wu Z, Pan S, Long G, Jiang J, Zhang C (2019) Graph WaveNet for Deep Spatial-Temporal Graph Modeling. In: Proceedings of the 28th International Joint Conference on Artificial Intelligence (IJCAI), pp 1907--1913
         \item[] Yu D, Li X, Ye Y, Zhang B, Luo C, Dai K, Wang R, Chen X (2024) DiffCast: A Unified Framework via Residual Diffusion for Precipitation Nowcasting. CVPR
     \end{itemize}
 \end{frame}
