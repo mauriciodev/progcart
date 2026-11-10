@@ -1246,9 +1246,40 @@ for k in range(n):
     {\tiny da Hora RDM, Santos DR, de Paulo MCM, Ferrari F, Feitosa RQ, Rosa PFF (2026) Human Trajectory Prediction on UAV Images: A Comparative Study. Int Arch Photogramm Remote Sens Spatial Inf Sci XLIX-B2-2026:755--761. \url{https://doi.org/10.5194/isprs-archives-XLIX-B2-2026-755-2026}\par}
 \end{frame}
 
+
 % ============================================================
 \section{Hands on}
 % ============================================================
+
+\begin{frame}{Spatiotemporal forecasting libraries}
+    \newcommand{\libyes}{\textcolor{green!50!black}{$\checkmark$}}
+    \newcommand{\libpart}{\textcolor{orange!90!black}{$\sim$}}
+    \newcommand{\libno}{\textcolor{gray}{--}}
+    \centering
+    \tiny
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X c c c@{}}
+        \toprule
+        \textbf{Library} & \textbf{Description} & \textbf{Points /} & \textbf{Sensor} & \textbf{Maps} \\
+        & & \textbf{trajectories} & \textbf{graphs} & \textbf{(grids)} \\
+        \midrule
+        \href{https://github.com/unit8co/darts}{\textcolor{blue}{darts}} & Time series forecasting with one API for all models (ARIMA, XGBoost, N-HiTS, TiDE, TFT, \dots). & \libyes & \libno & \libno \\
+        \href{https://github.com/Nixtla/neuralforecast}{\textcolor{blue}{neuralforecast}} & Nixtla's deep learning forecasters (N-HiTS, TFT, PatchTST, \dots), scales to many series. & \libyes & \libno & \libno \\
+        \href{https://github.com/TorchSpatiotemporal/tsl}{\textcolor{blue}{tsl}} & Torch Spatiotemporal: spatiotemporal graph neural networks on PyG + Lightning, handles missing data. & \libpart & \libyes & \libpart \\
+        \href{https://github.com/benedekrozemberczki/pytorch_geometric_temporal}{\textcolor{blue}{PyG Temporal}} & Recurrent and attention graph layers for signals on graphs (older, less active). & \libpart & \libyes & \libpart \\
+        \midrule
+        \href{https://github.com/chengtan9907/OpenSTL}{\textcolor{blue}{OpenSTL}} & Video-style predictive learning: ConvLSTM, PredRNN, SimVP, \dots{} with Lightning. \textbf{Our hands on.} & \libno & \libno & \libyes \\
+        \href{https://github.com/OpenEarthLab/PredBench}{\textcolor{blue}{PredBench}} & Benchmark: 12 methods on 15 datasets, long-term and robustness tests. & \libno & \libno & \libyes \\
+        \href{https://github.com/NVIDIA/physicsnemo}{\textcolor{blue}{PhysicsNeMo}} & NVIDIA training framework: FourCastNet, SFNO (sphere), U-Net, CorrDiff, MeshGraphNet. & \libno & \libpart & \libyes \\
+        \href{https://github.com/ecmwf/anemoi-core}{\textcolor{blue}{Anemoi}} & ECMWF framework for operational weather models (datasets, graphs, training, inference). & \libno & \libno & \libpart \\
+        \href{https://github.com/NVIDIA/earth2studio}{\textcolor{blue}{Earth2Studio}} & Runs pretrained weather models (inference only) with ERA5, GFS, IFS data sources. & \libno & \libno & \libpart \\
+        \bottomrule
+    \end{tabularx}
+
+    \vspace{0.1cm}
+    {\tiny \libyes{} native \quad \libpart{} workaround or limited (pixels as graph nodes, weather data only, inference only) \quad \libno{} not supported\par}
+\end{frame}
+
 
 \begin{frame}{OpenSTL (Pytorch+lightning)}
     \begin{columns}[c]
