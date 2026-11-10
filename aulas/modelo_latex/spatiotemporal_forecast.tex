@@ -1003,38 +1003,48 @@ plot_acf(cube[:, 0, i, j], lags=72)   # cube: (T, C, H, W), pixel (i, j)
 \end{frame}
 
 % ------------------------------------------------------------
-\begin{frame}[fragile]{Diffusion vs.\ flow matching in code}
-    \begin{columns}[t]
-        \column{0.49\textwidth}
-        \footnotesize\textbf{Diffusion (predict the noise)}
-\begin{minted}[fontsize=\tiny, bgcolor=codegray]{python}
-# X: past (B,t,C,H,W)   Y: future (B,t',C,H,W)
-tau = torch.randint(0, T, (B,))
-eps = torch.randn_like(Y)
-a = alpha_bar[tau].view(B, 1, 1, 1, 1)
-Y_tau = a.sqrt() * Y + (1 - a).sqrt() * eps
-loss = mse(model(Y_tau, tau, X), eps)
-\end{minted}
+\begin{frame}{Diffusion vs.\ flow matching}
+    \centering
+    \begin{tikzpicture}[font=\scriptsize,
+        dotr/.style={circle, fill=red!80!black, inner sep=0.75pt},
+        dotb/.style={circle, fill=blue!70!black, inner sep=1.4pt},
+        lbl/.style={font=\tiny, align=center}]
+        % ---------------- diffusion panel
+        \node[font=\footnotesize\bfseries] at (2.1,2.0) {Diffusion: predict the noise};
+        \fill[gray!20] (0,0) circle (0.55);
+        \fill[blue!20] (4.2,0) ellipse (0.4 and 0.75);
+        \node[lbl] at (0,-0.75) {noise};
+        \node[lbl] at (4.2,-0.95) {data (future clip)};
+        \draw[red!80!black] (0.1,0.1) .. controls (1.3,1.4) and (2.7,-1.3) .. (4.1,0.15)
+            node[pos=0.07, dotr]{} node[pos=0.14, dotr]{} node[pos=0.21, dotr]{}
+            node[pos=0.28, dotr]{} node[pos=0.35, dotr]{} node[pos=0.42, dotr]{}
+            node[pos=0.49, dotr]{} node[pos=0.56, dotr]{} node[pos=0.63, dotr]{}
+            node[pos=0.70, dotr]{} node[pos=0.77, dotr]{} node[pos=0.84, dotr]{}
+            node[pos=0.91, dotr]{}
+            coordinate[pos=0.49] (yt);
+        \draw[-{Stealth}, thick, orange!90!black] (yt) -- ++(-0.35,0.75)
+            node[above, lbl, text=black] {$\epsilon_\theta$: ``which noise\\was added?''};
+        \node[lbl, red!80!black] at (2.1,-1.45) {many small steps on a curved path};
+        \node[lbl] at (2.1,-1.75) {\textbf{20--1000 steps}};
 
-        \column{0.49\textwidth}
-        \footnotesize\textbf{Flow matching (predict the velocity)}
-\begin{minted}[fontsize=\tiny, bgcolor=codegray]{python}
-# X: past (B,t,C,H,W)   Y: future (B,t',C,H,W)
-tau = torch.rand(B).view(B, 1, 1, 1, 1)
-Z = torch.randn_like(Y)
-Y_tau = (1 - tau) * Z + tau * Y
-loss = mse(model(Y_tau, tau, X), Y - Z)
-\end{minted}
-        \footnotesize\textbf{Forecast with $n$ Euler steps}
-\begin{minted}[fontsize=\tiny, bgcolor=codegray]{python}
-Y = torch.randn(B, t2, C, H, W)      # noise
-for k in range(n):
-    Y = Y + model(Y, k / n, X) / n   # follow v
-\end{minted}
-    \end{columns}
+        % ---------------- flow matching panel
+        \begin{scope}[xshift=5.8cm]
+            \node[font=\footnotesize\bfseries] at (2.1,2.0) {Flow matching: predict the velocity};
+            \fill[gray!20] (0,0) circle (0.55);
+            \fill[blue!20] (4.2,0) ellipse (0.4 and 0.75);
+            \node[lbl] at (0,-0.75) {noise $Z$};
+            \node[lbl] at (4.2,-0.95) {data $Y$ (future clip)};
+            \draw[blue!70!black] (0.1,0.1) -- (4.1,0.15)
+                node[pos=0.25, dotb]{} node[pos=0.5, dotb]{} node[pos=0.75, dotb]{}
+                coordinate[pos=0.35] (a) coordinate[pos=0.62] (b);
+            \draw[-{Stealth}, thick, green!50!black] ($(a)+(0,0.25)$) -- ($(b)+(0,0.25)$)
+                node[midway, above, lbl, text=black] {$v_\theta = Y - Z$ (constant)};
+            \node[lbl, blue!70!black] at (2.1,-1.45) {few large Euler steps on a straight line};
+            \node[lbl] at (2.1,-1.75) {\textbf{1--20 steps}};
+        \end{scope}
+    \end{tikzpicture}
 
     \vspace{0.15cm}
-    \centering
     \scriptsize
     \begin{tabular}{@{}lll@{}}
         \toprule
@@ -1082,7 +1092,7 @@ for k in range(n):
 \end{frame}
 
 % ============================================================
-\section{Foundation models (2026)}
+    \section{Foundation models (2026)}
 % ============================================================
 
 \begin{frame}{Earth foundation embeddings: what is available}
@@ -1181,28 +1191,6 @@ for k in range(n):
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Two kinds of foundation model: Prithvi vs.\ Cosmos}
-    \centering
-    \scriptsize
-    \renewcommand{\arraystretch}{1.15}
-    \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.17\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
-        \toprule
-         & Prithvi {\normalfont (NASA / IBM)} & Cosmos {\normalfont (NVIDIA)} \\
-        \midrule
-        Learns from & Physical Earth data: reanalysis (WxC) and satellite imagery (EO-2.0) & Huge amounts of everyday video \\
-        Understands & Physical variables and real geography & Generic visual motion: objects, cameras, scenes \\
-        Predicts & Atmospheric and surface fields & Future video frames (and robot actions in Cosmos 3) \\
-        Strongest in & Weather, climate, Earth observation & Robotics and self-driving simulation \\
-        Hardware & Fine-tunable on modest GPUs (TerraTorch) & 2B model borderline on 16\,GB; Cosmos 3 needs data-centre GPUs \\
-        Weather caveat & WxC grid ($\sim$50\,km) is far coarser than 2\,km satellite nowcasts & Plausible-looking clouds, not physically correct ones \\
-        \bottomrule
-    \end{tabularx}
-
-    \espaco
-    \begin{block}{Bottom line}
-        \footnotesize Cosmos has the broader impact across AI; \textbf{Prithvi has the greater impact on Earth science} and is the better starting point for weather forecasting.
-    \end{block}
-\end{frame}
 
 \begin{frame}{Summary before the hands on}
     \begin{enumerate}
