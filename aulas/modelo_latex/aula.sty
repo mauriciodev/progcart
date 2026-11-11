@@ -1,7 +1,28 @@
 \ProvidesPackage{aula}
 
+% Idioma: \usepackage{aula} (português, padrão) ou \usepackage[english]{aula}
+\newif\ifaulaenglish
+\aulaenglishfalse
+\DeclareOption{english}{\aulaenglishtrue}
+\DeclareOption{brazilian}{\aulaenglishfalse}
+\ProcessOptions\relax
+
+\ifaulaenglish
+	\newcommand{\aulasumarioname}{Outline}
+	\newcommand{\aulaexemploname}{Example}
+	\newcommand{\aulasubtitulo}{Course: Programming applied to cartographic engineering}
+\else
+	\newcommand{\aulasumarioname}{Sumário}
+	\newcommand{\aulaexemploname}{Exemplo}
+	\newcommand{\aulasubtitulo}{Disciplina: Programação aplicada à engenharia cartográfica}
+\fi
+
 \usepackage[utf8]{inputenc}
-\usepackage[brazil]{babel}
+\ifaulaenglish
+	\usepackage[english]{babel}
+\else
+	\usepackage[brazilian]{babel}
+\fi
 \usepackage{amsmath, amssymb}
 \usepackage{booktabs}
 \usetheme{Madrid}
@@ -12,20 +33,20 @@
 
 
 \author{Maurício C. M. de Paulo - D.Sc.}
-\subtitle{Disciplina: Programação aplicada à engenharia cartográfica}
+\subtitle{\aulasubtitulo}
 \definecolor{codegray}{rgb}{0.95,0.95,0.95}
 
 
 \newcommand{\espaco}{\vspace{0.3cm}}
 
 \newenvironment{exemplo}{
-	\begin{block}{Exemplo}
+	\begin{block}{\aulaexemploname}
 	}{
 	\end{block}
 }
 
 \newcommand{\sumario}{
-\begin{frame}{Sumário}
+\begin{frame}{\aulasumarioname}
     \tableofcontents{}
 \end{frame}
 }
@@ -50,7 +71,7 @@
  
 \AtBeginSection[]{
   \begin{frame}
-    \frametitle{Sumário}
+    \frametitle{\aulasumarioname}
     \tableofcontents[currentsection]
   \end{frame}
 }
@@ -58,7 +79,7 @@
 \AtBeginSubsection[]
 {
   \begin{frame}
-    \frametitle{Sumário}
+    \frametitle{\aulasumarioname}
     \tableofcontents[currentsection, currentsubsection]
   \end{frame}
 }
@@ -72,7 +93,7 @@
 
 % =========================================================
 % Configuração global do Minted
-\usepackage[outputdir=build]{minted}
+\usepackage{minted} %[outputdir=build]
 
 \setminted{
 	fontsize=\scriptsize,%\small,
@@ -84,9 +105,8 @@
 	%showspaces=true,
 	%bgcolor=codegray % Usando a cor que você definiu
 }
-
 % =========================================================
-%% Listings (substituto do minted)
+% Listings (substituto do minted)
 %\usepackage{listings}
 %
 %\lstdefinestyle{mystyle}{
