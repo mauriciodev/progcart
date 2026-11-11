@@ -764,38 +764,6 @@ plot_acf(cube[:, 0, i, j], lags=72)   # cube: (T, C, H, W), pixel (i, j)
     \end{minipage}%
 }
 
-\begin{frame}{Baselines: what every model must beat}
-    \centering
-    \baselinepanel{Persistence (stationary)}{%
-        \pgfmathsetmacro{\last}{f(6)}
-        \draw[very thick, dashed, red!80!black] (6,\last) -- (8,\last);
-        \fill[red!80!black] (6,\last) circle (1.5pt);
-    }{$\hat y_{t+h} = y_t$: tomorrow equals now}
-    \hfill
-    \baselinepanel{Climatology (mean)}{%
-        \draw[gray, dotted] (0,2.47) -- (6,2.47);
-        \draw[very thick, dashed, red!80!black] (6,2.47) -- (8,2.47);
-    }{$\hat y_{t+h} = \bar y$: average of the past}
-
-    \vspace{0.2cm}
-    \baselinepanel{Linear regression (trend)}{%
-        \draw[gray, dotted] (0,2.0) -- (6,2.9);
-        \draw[very thick, dashed, red!80!black] (6,2.9) -- (8,3.2);
-    }{$\hat y_{t+h} = a + b\,(t+h)$: extend the trend}
-    \hfill
-    \baselinepanel{Repeat the last cycle (seasonal naive)}{%
-        \fill[blue!40, opacity=0.25] (4,0.6) rectangle (6,4.2);
-        \draw[-{Stealth[length=1.2mm]}, blue!60!black, thick] (5,1.0) -- (7,1.0);
-        \draw[very thick, dashed, red!80!black, smooth, samples=30, domain=6:8] plot (\x, {f(\x-2)});
-    }{$\hat y_{t+h} = y_{t+h-P}$: $P$ = 1 day or 1 year}
-
-    \vspace{0.05cm}
-    \begin{block}{Use them as the reference}
-        \scriptsize
-        TEC: repeat \textbf{yesterday} ($P$ = 1 day). Vegetation, land cover: repeat \textbf{last year} ($P$ = 1 year).\\
-        Skill score: $SS = 1 - \mathrm{MSE}_{model} / \mathrm{MSE}_{baseline}$ ($SS > 0$: the model beats the baseline).
-    \end{block}
-\end{frame}
 
 \begin{frame}{Architectures}
     \begin{itemize}
@@ -806,6 +774,39 @@ plot_acf(cube[:, 0, i, j], lags=72)   # cube: (T, C, H, W), pixel (i, j)
         \item Transformers networks
         \item Generative models: diffusion and flow matching
     \end{itemize}
+\end{frame}
+
+\begin{frame}{Baselines: what every model must beat}
+	\centering
+	\baselinepanel{Persistence (stationary)}{%
+		\pgfmathsetmacro{\last}{f(6)}
+		\draw[very thick, dashed, red!80!black] (6,\last) -- (8,\last);
+		\fill[red!80!black] (6,\last) circle (1.5pt);
+	}{$\hat y_{t+h} = y_t$: tomorrow equals now}
+	\hfill
+	\baselinepanel{Climatology (mean)}{%
+		\draw[gray, dotted] (0,2.47) -- (6,2.47);
+		\draw[very thick, dashed, red!80!black] (6,2.47) -- (8,2.47);
+	}{$\hat y_{t+h} = \bar y$: average of the past}
+	
+	\vspace{0.2cm}
+	\baselinepanel{Linear regression (trend)}{%
+		\draw[gray, dotted] (0,2.0) -- (6,2.9);
+		\draw[very thick, dashed, red!80!black] (6,2.9) -- (8,3.2);
+	}{$\hat y_{t+h} = a + b\,(t+h)$: extend the trend}
+	\hfill
+	\baselinepanel{Repeat the last cycle (seasonal naive)}{%
+		\fill[blue!40, opacity=0.25] (4,0.6) rectangle (6,4.2);
+		\draw[-{Stealth[length=1.2mm]}, blue!60!black, thick] (5,1.0) -- (7,1.0);
+		\draw[very thick, dashed, red!80!black, smooth, samples=30, domain=6:8] plot (\x, {f(\x-2)});
+	}{$\hat y_{t+h} = y_{t+h-P}$: $P$ = 1 day or 1 year}
+	
+	\vspace{0.05cm}
+	\begin{block}{Use them as the reference}
+		\scriptsize
+		TEC: repeat \textbf{yesterday} ($P$ = 1 day). Vegetation, land cover: repeat \textbf{last year} ($P$ = 1 year).\\
+		Skill score: $SS = 1 - \mathrm{MSE}_{model} / \mathrm{MSE}_{baseline}$ ($SS > 0$: the model beats the baseline).
+	\end{block}
 \end{frame}
 
 \begin{frame}{Recurrent neural networks: ConvLSTM}
