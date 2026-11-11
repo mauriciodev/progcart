@@ -140,107 +140,6 @@
     \end{columns}
 \end{frame}
 
-% Slide: object kinematics vs. spatiotemporal forecast
-% Needs in the preamble: \usetikzlibrary{positioning,arrows.meta}
-\begin{frame}{Tracking objects vs.\ forecasting the whole field}
-	\begin{columns}[t]
-		% ---------------- left: object kinematics ----------------
-		\column{0.48\textwidth}
-		\centering
-		\textbf{Object kinematics}
-		
-		\vspace{0.05cm}
-		\begin{tikzpicture}[scale=0.75, font=\scriptsize,
-			obj/.style={rectangle, draw=PastelGreen!50!black, thick, minimum width=7mm, minimum height=5mm, inner sep=0pt},
-			arr/.style={-{Stealth[length=1.8mm]}, thick}]
-			\draw[gray!40] (0,0) rectangle (5.4,2.9);
-			% past positions (fading) and current position
-			\node[obj, fill=PastelGreen!20] (a) at (0.75,0.8) {};
-			\node[obj, fill=PastelGreen!45] (b) at (1.9,1.2) {};
-			\node[obj, fill=PastelGreen!80] (c) at (3.05,1.6) {};
-			\node[anchor=south west, fill=PastelGreen!50!black, text=white, font=\tiny,
-			inner sep=0.6pt] at (c.north west) {obj 1};
-			\node[below=0.5mm of a] {$t-2$};
-			\node[below=0.5mm of b] {$t-1$};
-			\node[below right=-1mm and 0mm of c] {$t$};
-			% track of bounding-box centres
-			\draw[gray, dashed] (a) -- (b) -- (c);
-			\fill (a) circle (0.6pt) (b) circle (0.6pt) (c) circle (0.6pt);
-			% velocity and acceleration
-			\draw[arr, blue!70!black] (c.center) -- ++(1.05,0.45) node[midway, below right=-0.5mm and 0mm] {$\vec v$};
-			\draw[arr, red!70!black] (c.center) -- ++(0.4,0.6) node[above=-0.5mm] {$\vec a$};
-			% predicted position: same shape, same intensity
-			\node[obj, dashed, thick] (d) at (4.65,2.15) {};
-			\node[below=0.5mm of d] {$t\!+\!1$};
-		\end{tikzpicture}
-		
-		\vspace{0.05cm}
-		{\footnotesize $\hat{\mathbf x}_{t+1} = \mathbf x_t + \vec v\,\Delta t + \tfrac12 \vec a\,\Delta t^2$}
-		
-		\vspace{0.02cm}
-		\raggedright
-		\scriptsize
-		\begin{itemize}
-			\item Detect boxes $\rightarrow$ track $\rightarrow$ fit $\vec v, \vec a$ $\rightarrow$ extrapolate.
-			\item Objects keep their \alert{shape and intensity}; few, interpretable parameters.
-			\item Fails when objects grow, decay, split, merge or appear.
-		\end{itemize}
-		
-		% ---------------- right: spatiotemporal forecast ----------------
-		\column{0.48\textwidth}
-		\centering
-		\textbf{Spatiotemporal forecast}
-		
-		\vspace{0.05cm}
-		\begin{tikzpicture}[scale=0.8, font=\scriptsize,
-			arr/.style={-{Stealth[length=1.8mm]}, thick, gray!70!black}]
-			% input frames: a field on a grid, stacked in time
-			\foreach \i/\x/\y/\r in {0/0.55/0.55/0.30, 1/0.75/0.70/0.36, 2/0.95/0.85/0.42} {
-				\begin{scope}[shift={(\i*0.32,\i*0.32)}]
-					\fill[white] (0,0) rectangle (1.5,1.5);
-					\draw[gray!50, step=0.25] (0,0) grid (1.5,1.5);
-					\shade[inner color=PastelGreen!70!black, outer color=white] (\x,\y) circle (\r);
-					\draw[gray] (0,0) rectangle (1.5,1.5);
-				\end{scope}
-			}
-			\node at (0.75,-0.25) {$\mathbf X_{t-2}\ldots\mathbf X_{t}$};
-			% model
-			\node[draw=PastelGreen!60!black, fill=PastelGreen!25, rounded corners=2pt, align=center,
-			minimum width=11mm, minimum height=9mm] (net) at (3.05,1.2) {model\\$f_\theta$};
-			\draw[arr] (2.25,1.2) -- (net.west);
-			% output frame: grown blob + a new one
-			\begin{scope}[shift={(4.0,0.45)}]
-				\fill[white] (0,0) rectangle (1.5,1.5);
-				\draw[gray!50, step=0.25] (0,0) grid (1.5,1.5);
-				\shade[inner color=PastelGreen!70!black, outer color=white] (0.95,0.95) circle (0.52);
-				\shade[inner color=orange!80!black, outer color=white] (0.35,0.35) circle (0.22);
-				\draw[gray] (0,0) rectangle (1.5,1.5);
-				\node at (0.75,-0.25) {$\hat{\mathbf X}_{t+1}$};
-				\node[orange!70!black, align=center, font=\tiny] at (0.75,1.8) {new feature};
-				\draw[orange!70!black, -{Stealth[length=1.2mm]}] (0.55,1.68) -- (0.38,0.6);
-			\end{scope}
-			\draw[arr] (net.east) -- (4.0,1.2);
-		\end{tikzpicture}
-		
-		\vspace{0.05cm}
-		{\footnotesize $\hat{\mathbf X}_{t+1} = f_\theta(\mathbf X_{t-k}, \ldots, \mathbf X_t)$}
-		
-		\vspace{0.02cm}
-		\raggedright
-		\scriptsize
-		\begin{itemize}
-			\item Predicts \alert{every pixel}: no detection or tracking.
-			\item Learns motion \emph{and} change: growth, decay, initiation.
-			\item Needs training data; MSE/MAE training blurs the forecast.
-		\end{itemize}
-	\end{columns}
-	
-	\vspace{-0.1cm}
-	\begin{block}{Bridge: optical flow}
-		\scriptsize A velocity for \emph{every pixel} (kinematics of the whole field). ConvLSTM and SimVP learn this motion \textbf{plus} how the values change along it.
-	\end{block}
-\end{frame}
-
 % ------------------------------------------------------------
 \begin{frame}{1. Coordinates in time: multivariate time series}
     \centering
@@ -369,6 +268,107 @@
     \end{columns}
 
     {\footnotesize The model maps $t$ input images $(t, C, H, W)$ to the next $t'$ images $(t', C, H, W)$.}
+\end{frame}
+
+% Slide: object kinematics vs. spatiotemporal forecast
+% Needs in the preamble: \usetikzlibrary{positioning,arrows.meta}
+\begin{frame}{Tracking objects vs.\ forecasting the whole field}
+	\begin{columns}[t]
+		% ---------------- left: object kinematics ----------------
+		\column{0.48\textwidth}
+		\centering
+		\textbf{Object kinematics}
+		
+		\vspace{0.05cm}
+		\begin{tikzpicture}[scale=0.75, font=\scriptsize,
+			obj/.style={rectangle, draw=PastelGreen!50!black, thick, minimum width=7mm, minimum height=5mm, inner sep=0pt},
+			arr/.style={-{Stealth[length=1.8mm]}, thick}]
+			\draw[gray!40] (0,0) rectangle (5.4,2.9);
+			% past positions (fading) and current position
+			\node[obj, fill=PastelGreen!20] (a) at (0.75,0.8) {};
+			\node[obj, fill=PastelGreen!45] (b) at (1.9,1.2) {};
+			\node[obj, fill=PastelGreen!80] (c) at (3.05,1.6) {};
+			\node[anchor=south west, fill=PastelGreen!50!black, text=white, font=\tiny,
+			inner sep=0.6pt] at (c.north west) {obj 1};
+			\node[below=0.5mm of a] {$t-2$};
+			\node[below=0.5mm of b] {$t-1$};
+			\node[below right=-1mm and 0mm of c] {$t$};
+			% track of bounding-box centres
+			\draw[gray, dashed] (a) -- (b) -- (c);
+			\fill (a) circle (0.6pt) (b) circle (0.6pt) (c) circle (0.6pt);
+			% velocity and acceleration
+			\draw[arr, blue!70!black] (c.center) -- ++(1.05,0.45) node[midway, below right=-0.5mm and 0mm] {$\vec v$};
+			\draw[arr, red!70!black] (c.center) -- ++(0.4,0.6) node[above=-0.5mm] {$\vec a$};
+			% predicted position: same shape, same intensity
+			\node[obj, dashed, thick] (d) at (4.65,2.15) {};
+			\node[below=0.5mm of d] {$t\!+\!1$};
+		\end{tikzpicture}
+		
+		\vspace{0.05cm}
+		{\footnotesize $\hat{\mathbf x}_{t+1} = \mathbf x_t + \vec v\,\Delta t + \tfrac12 \vec a\,\Delta t^2$}
+		
+		\vspace{0.02cm}
+		\raggedright
+		\scriptsize
+		\begin{itemize}
+			\item Detect boxes $\rightarrow$ track $\rightarrow$ fit $\vec v, \vec a$ $\rightarrow$ extrapolate.
+			\item Objects keep their \alert{shape and intensity}; few, interpretable parameters.
+			\item Fails when objects grow, decay, split, merge or appear.
+		\end{itemize}
+		
+		% ---------------- right: spatiotemporal forecast ----------------
+		\column{0.48\textwidth}
+		\centering
+		\textbf{Spatiotemporal forecast}
+		
+		\vspace{0.05cm}
+		\begin{tikzpicture}[scale=0.8, font=\scriptsize,
+			arr/.style={-{Stealth[length=1.8mm]}, thick, gray!70!black}]
+			% input frames: a field on a grid, stacked in time
+			\foreach \i/\x/\y/\r in {0/0.55/0.55/0.30, 1/0.75/0.70/0.36, 2/0.95/0.85/0.42} {
+				\begin{scope}[shift={(\i*0.32,\i*0.32)}]
+					\fill[white] (0,0) rectangle (1.5,1.5);
+					\draw[gray!50, step=0.25] (0,0) grid (1.5,1.5);
+					\shade[inner color=PastelGreen!70!black, outer color=white] (\x,\y) circle (\r);
+					\draw[gray] (0,0) rectangle (1.5,1.5);
+				\end{scope}
+			}
+			\node at (0.75,-0.25) {$\mathbf X_{t-2}\ldots\mathbf X_{t}$};
+			% model
+			\node[draw=PastelGreen!60!black, fill=PastelGreen!25, rounded corners=2pt, align=center,
+			minimum width=11mm, minimum height=9mm] (net) at (3.05,1.2) {model\\$f_\theta$};
+			\draw[arr] (2.25,1.2) -- (net.west);
+			% output frame: grown blob + a new one
+			\begin{scope}[shift={(4.0,0.45)}]
+				\fill[white] (0,0) rectangle (1.5,1.5);
+				\draw[gray!50, step=0.25] (0,0) grid (1.5,1.5);
+				\shade[inner color=PastelGreen!70!black, outer color=white] (0.95,0.95) circle (0.52);
+				\shade[inner color=orange!80!black, outer color=white] (0.35,0.35) circle (0.22);
+				\draw[gray] (0,0) rectangle (1.5,1.5);
+				\node at (0.75,-0.25) {$\hat{\mathbf X}_{t+1}$};
+				\node[orange!70!black, align=center, font=\tiny] at (0.75,1.8) {new feature};
+				\draw[orange!70!black, -{Stealth[length=1.2mm]}] (0.55,1.68) -- (0.38,0.6);
+			\end{scope}
+			\draw[arr] (net.east) -- (4.0,1.2);
+		\end{tikzpicture}
+		
+		\vspace{0.05cm}
+		{\footnotesize $\hat{\mathbf X}_{t+1} = f_\theta(\mathbf X_{t-k}, \ldots, \mathbf X_t)$}
+		
+		\vspace{0.02cm}
+		\raggedright
+		\scriptsize
+		\begin{itemize}
+			\item Predicts \alert{every pixel}: no detection or tracking.
+			\item Learns motion \emph{and} change: growth, decay, initiation.
+			\item Needs training data; MSE/MAE training blurs the forecast.
+		\end{itemize}
+	\end{columns}
+	
+	\vspace{-0.1cm}
+	\begin{block}{Bridge: optical flow}
+		\scriptsize A velocity for \emph{every pixel} (kinematics of the whole field). ConvLSTM and SimVP learn this motion \textbf{plus} how the values change along it.
+	\end{block}
 \end{frame}
 
 % ============================================================
