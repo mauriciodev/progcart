@@ -743,8 +743,63 @@ plot_acf(cube[:, 0, i, j], lags=72)   # cube: (T, C, H, W), pixel (i, j)
 \section{Architectures}
 % ============================================================
 
+% Baseline panel: #1 title, #2 forecast drawing (TikZ, x from 6 to 8), #3 formula
+% Series: three cycles of history (period 2) with a slow trend; the forecast starts at x = 6.
+\newcommand{\baselinepanel}[3]{%
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        {\footnotesize\textbf{#1}}\\[-2pt]
+        \begin{tikzpicture}[x=0.42cm, y=0.32cm,
+            declare function={f(\x) = 2 + 0.8*sin(\x*180) + 0.15*\x + 0.15*sin(\x*470);}]
+            \fill[gray!10] (6,0.6) rectangle (8,4.2);
+            \draw[gray!60, -{Stealth[length=1.2mm]}] (0,0.6) -- (8.4,0.6) node[right, font=\tiny, black] {$t$};
+            \draw[gray!60] (6,0.6) -- (6,4.2);
+            \node[font=\tiny, gray] at (3,4.0) {history};
+            \node[font=\tiny, gray] at (7,4.0) {forecast};
+            \draw[thick, PastelGreen!50!black, smooth, samples=80, domain=0:6] plot (\x, {f(\x)});
+            \draw[gray!60, smooth, samples=30, domain=6:8] plot (\x, {f(\x)});
+            #2
+        \end{tikzpicture}\\[-1pt]
+        {\scriptsize #3}
+    \end{minipage}%
+}
+
+\begin{frame}{Baselines: what every model must beat}
+    \centering
+    \baselinepanel{Persistence (stationary)}{%
+        \pgfmathsetmacro{\last}{f(6)}
+        \draw[very thick, dashed, red!80!black] (6,\last) -- (8,\last);
+        \fill[red!80!black] (6,\last) circle (1.5pt);
+    }{$\hat y_{t+h} = y_t$: tomorrow equals now}
+    \hfill
+    \baselinepanel{Climatology (mean)}{%
+        \draw[gray, dotted] (0,2.47) -- (6,2.47);
+        \draw[very thick, dashed, red!80!black] (6,2.47) -- (8,2.47);
+    }{$\hat y_{t+h} = \bar y$: average of the past}
+
+    \vspace{0.2cm}
+    \baselinepanel{Linear regression (trend)}{%
+        \draw[gray, dotted] (0,2.0) -- (6,2.9);
+        \draw[very thick, dashed, red!80!black] (6,2.9) -- (8,3.2);
+    }{$\hat y_{t+h} = a + b\,(t+h)$: extend the trend}
+    \hfill
+    \baselinepanel{Repeat the last cycle (seasonal naive)}{%
+        \fill[blue!40, opacity=0.25] (4,0.6) rectangle (6,4.2);
+        \draw[-{Stealth[length=1.2mm]}, blue!60!black, thick] (5,1.0) -- (7,1.0);
+        \draw[very thick, dashed, red!80!black, smooth, samples=30, domain=6:8] plot (\x, {f(\x-2)});
+    }{$\hat y_{t+h} = y_{t+h-P}$: $P$ = 1 day or 1 year}
+
+    \vspace{0.05cm}
+    \begin{block}{Use them as the reference}
+        \scriptsize
+        TEC: repeat \textbf{yesterday} ($P$ = 1 day). Vegetation, land cover: repeat \textbf{last year} ($P$ = 1 year).\\
+        Skill score: $SS = 1 - \mathrm{MSE}_{model} / \mathrm{MSE}_{baseline}$ ($SS > 0$: the model beats the baseline).
+    \end{block}
+\end{frame}
+
 \begin{frame}{Architectures}
     \begin{itemize}
+        \item Baselines (what every model must beat)
         \item Recurrent neural networks
         \item 3D Convolutional networks
         \item 2D Convolutional networks (based on SimVP)
