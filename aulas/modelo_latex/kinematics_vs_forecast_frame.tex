@@ -9,24 +9,26 @@
 
         \vspace{0.05cm}
         \begin{tikzpicture}[scale=0.75, font=\scriptsize,
-            obj/.style={circle, draw=PastelGreen!60!black, minimum size=7mm, inner sep=0pt},
+            obj/.style={rectangle, draw=PastelGreen!50!black, thick, minimum width=7mm, minimum height=5mm, inner sep=0pt},
             arr/.style={-{Stealth[length=1.8mm]}, thick}]
             \draw[gray!40] (0,0) rectangle (5.4,2.9);
             % past positions (fading) and current position
-            \node[obj, fill=PastelGreen!20] (a) at (0.7,0.8) {};
-            \node[obj, fill=PastelGreen!45] (b) at (1.75,1.15) {};
-            \node[obj, fill=PastelGreen!80] (c) at (2.9,1.6) {};
+            \node[obj, fill=PastelGreen!20] (a) at (0.75,0.8) {};
+            \node[obj, fill=PastelGreen!45] (b) at (1.9,1.2) {};
+            \node[obj, fill=PastelGreen!80] (c) at (3.05,1.6) {};
+            \node[anchor=south west, fill=PastelGreen!50!black, text=white, font=\tiny,
+                  inner sep=0.6pt] at (c.north west) {obj 1};
             \node[below=0.5mm of a] {$t-2$};
             \node[below=0.5mm of b] {$t-1$};
             \node[below right=-1mm and 0mm of c] {$t$};
-            % track of centroids
+            % track of bounding-box centres
             \draw[gray, dashed] (a) -- (b) -- (c);
             \fill (a) circle (0.6pt) (b) circle (0.6pt) (c) circle (0.6pt);
             % velocity and acceleration
-            \draw[arr, blue!70!black] (c.center) -- ++(1.1,0.45) node[midway, below right=-0.5mm and 0mm] {$\vec v$};
-            \draw[arr, red!70!black] (c.center) -- ++(0.15,0.55) node[above=-0.5mm] {$\vec a$};
+            \draw[arr, blue!70!black] (c.center) -- ++(1.05,0.45) node[midway, below right=-0.5mm and 0mm] {$\vec v$};
+            \draw[arr, red!70!black] (c.center) -- ++(0.4,0.6) node[above=-0.5mm] {$\vec a$};
             % predicted position: same shape, same intensity
-            \node[obj, dashed, thick] (d) at (4.55,2.15) {};
+            \node[obj, dashed, thick] (d) at (4.65,2.15) {};
             \node[below=0.5mm of d] {$t\!+\!1$};
         \end{tikzpicture}
 
@@ -37,7 +39,7 @@
         \raggedright
         \scriptsize
         \begin{itemize}
-            \item Detect $\rightarrow$ track $\rightarrow$ fit $\vec v, \vec a$ $\rightarrow$ extrapolate.
+            \item Detect boxes $\rightarrow$ track $\rightarrow$ fit $\vec v, \vec a$ $\rightarrow$ extrapolate.
             \item Objects keep their \alert{shape and intensity}; few, interpretable parameters.
             \item Fails when objects grow, decay, split, merge or appear.
         \end{itemize}
