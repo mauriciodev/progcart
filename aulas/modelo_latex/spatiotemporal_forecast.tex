@@ -408,6 +408,11 @@
     \textbf{Common workflow:} search (collection, bbox, dates, clouds) $\rightarrow$ lazy load $\rightarrow$ cloud mask $\rightarrow$ composite / resample to a regular $\Delta t$ $\rightarrow$ tensor $(T, C, H, W)$
 \end{frame}
 
+\begin{frame}{Brazil Data Cube}
+	\centering
+	\includegraphics[height=0.8\textheight,width=\textwidth,keepaspectratio]{spatiotemporal_forecast_figs/infografico-plataforma-brazil-data-cube}
+\end{frame}
+
 \begin{frame}{Main image time series (data cubes)}
     \centering
     \tiny
@@ -1210,6 +1215,7 @@ plot_acf(cube[:, 0, i, j], lags=72)   # cube: (T, C, H, W), pixel (i, j)
         Major TOM & patch & 2048 & $\sim$3\,km & 2015--2024*; Hugging Face \\
         Earth Index & patch & 384 & 320\,m & 2024; Source Coop. \\
         Copernicus-Embed & patch & 768 & 0.25$^\circ$ & 2021; Hugging Face \\
+        DINOv3-Sat (Meta) & patch & 1024 & $\sim$10\,m & weights only, no precomputed embeddings; Hugging Face \\
         \bottomrule
     \end{tabularx}
 
@@ -1221,7 +1227,7 @@ plot_acf(cube[:, 0, i, j], lags=72)   # cube: (T, C, H, W), pixel (i, j)
         \footnotesize
         \textbf{Foundation models (run them yourself)}
         \begin{itemize}
-            \item Surface: Prithvi-EO-2.0, TerraMind, OlmoEarth, Galileo, DOFA, Clay.
+            \item Surface: Prithvi-EO-2.0, TerraMind, OlmoEarth, Galileo, DOFA, Clay, DINOv3-Sat.
             \item Atmosphere: Aurora, Prithvi WxC.
         \end{itemize}
 
