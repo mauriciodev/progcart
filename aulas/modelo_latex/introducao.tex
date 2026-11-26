@@ -26,12 +26,12 @@
         NumPy, SciPy \\
         
         Interface gráfica (GUI) &
-        PyQt5, Tkinter, Kivys \\
+        PyQt5, Tkinter, Kivy \\
         
         Análises em SIG &
         PyQGIS, OGR, whitebox \\
         
-        Dados raster geográficos &
+        Dados geográficos (raster e vetor) &
         GDAL, Fiona, Rasterio \\
         
         Dataframes (tabelas) &
@@ -61,11 +61,11 @@
         \item Plugin Hello Map
         \\ Carregar dados matriciais e vetoriais no QGIS (GDAL opcional)
         \item Abrir coordenadas da rede de monitoramento SIRGAS e converter para um arquivo vetorial
-        \\ Baixar e manipular dados tabulados com Pandas e escrever com Geopandas.
-        \item Processing Plugin de extrair cotas de um Modelo Digital de Superfícies
+        \\ Baixar e manipular dados tabulados com Pandas e escrever com GeoPandas.
+        \item Processing Plugin para extrair cotas de um Modelo Digital de Superfície
         \\ Manipular dados matriciais e vetoriais no QGIS
         \item Operações topológicas
-        \\ Processing Plugin com model builder para resolver um problema de geoprocessamento.
+        \\ Processing Plugin com Model Builder para resolver um problema de geoprocessamento.
         \item Opcionais (não valem nota)
         \begin{itemize}
             \item Classificação de imagens com RasterIO+Sklearn (XGBoost)
@@ -80,7 +80,7 @@
     \begin{itemize}
         \item /docs
         \\ Diagrama de classes: Representa visualmente as principais classes que serão implementadas.
-        \\ Fluxogramas: Representa uma visão geral de um procedimento importante.
+        \\ Fluxogramas: Representam uma visão geral de um procedimento importante.
         \item /src
         \\ Exemplos de código
         \item /tests 
@@ -91,10 +91,10 @@
 \begin{frame}{Avaliação}
     \begin{itemize}
         \item   6 – Implementação 
-        \\ Entrega no github. Colocar o link para o repositório no Classroom.
+        \\ Entrega no GitHub. Colocar o link para o repositório no Classroom.
         \\  Em pares.
         \item   3 – Apresentação oral do código (no computador)
-        \\ Alternado entre os dos dois membros do par.
+        \\ Alternada entre os dois membros do par.
         \\ Os alunos explicam o que cada parte do código está fazendo e as decisões tomadas. 
         \item   1 – Inovação
         \\  Ponto para ideias interessantes que o par tiver. 
@@ -105,7 +105,7 @@
     \begin{itemize}
         \item Desenvolvimento ágil em ciclos de 2 semanas
         \item \url{https://ronjeffries.com/xprog/what-is-extreme-programming/}
-        \item Programação em pares (Xtreme programming - XP)
+        \item Programação em pares (Extreme Programming - XP)
     \end{itemize}
     \begin{figure}
         \includegraphics[width=\textwidth]{./introducao_figs/xp.png}
@@ -114,7 +114,7 @@
 
 
 \begin{frame}{Instalação do Python (com ambientes virtuais)}
-Ambiente virtuais em Python: 
+Ambientes virtuais em Python: 
 \begin{itemize}
     \item Isolamento de dependências entre projetos
     \item Evita conflitos de versões de bibliotecas
@@ -158,7 +158,7 @@ Ambiente virtuais em Python:
         \bottomrule
     \end{tabular}
     \begin{itemize}
-        \item GDAL e QGIS: Pixi (recomendado) ou miniforge (conda).
+        \item GDAL e QGIS: Pixi (recomendado) ou Miniforge (conda).
         \item Deep learning: uv para pytorch, tensorflow, etc.
     \end{itemize}
 \end{frame}
@@ -269,9 +269,9 @@ pixi run qgis
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Inicialização de ambiente com UV}
-    
-    \textbf{O que é o UV?}  
+\begin{frame}[fragile]{Inicialização de ambiente com uv}
+
+    \textbf{O que é o uv?}
     Gerenciador moderno de:
     \begin{itemize}
         \item ambientes virtuais
@@ -289,7 +289,7 @@ cd projeto_geo
     
     \vspace{0.3cm}
     
-    \textbf{O que o UV cria automaticamente:}
+    \textbf{O que o uv cria automaticamente:}
     \begin{itemize}
         \item Arquivo \texttt{pyproject.toml}
         \item Ambiente virtual isolado
@@ -299,11 +299,11 @@ cd projeto_geo
     \vspace{0.3cm}
     
     \textbf{Ativação do ambiente:}  
-    O UV ativa o ambiente automaticamente ao executar comandos.
+    O uv ativa o ambiente automaticamente ao executar comandos.
     
 \end{frame}
 
-\begin{frame}[fragile]{Instalação do GeoPandas com UV}
+\begin{frame}[fragile]{Instalação do GeoPandas com uv}
     
     \textbf{Instalando o GeoPandas:}
     
@@ -339,7 +339,7 @@ print(gpd.__version__)
 
 
 \begin{frame}{Interface de desenvolvimento}
-    \textbf{Integrated Development Environment (IDE)}
+    \textbf{Integrated Development Environment (IDE)}\\
     \textbf{VSCodium}: \url{https://vscodium.com/}
     \begin{columns}[t]
         \begin{column}[t]{0.48\textwidth}
@@ -367,7 +367,7 @@ print(gpd.__version__)
 \end{frame}
 
 \begin{frame}[fragile]{Interface de desenvolvimento}
-    Caso ainda não tenha instalado, essa é a hora de instalar o VSCodium.
+    Caso ainda não tenha instalado, esta é a hora de instalar o VSCodium.
     Acessar \url{https://github.com/VSCodium/vscodium/releases}
     \begin{itemize}
         \item Windows: Baixar o arquivo VSCodiumUserSetup-x64-1.108.20787.exe e executar.
@@ -386,34 +386,34 @@ dpkg -i codium_1.108.20787_amd64.deb
     \begin{itemize}
         
         \item ChatGPT \url{https://chatgpt.com/}
-        \item Github Copilot \url{https://github.com/features/copilot}
+        \item GitHub Copilot \url{https://github.com/features/copilot}
         \item Gemini \url{https://gemini.google.com}
         \item Llama: \url{https://www.meta.ai/} (pesos e código abertos)
         \item \textbf{Instalação local}: Ollama \url{https://ollama.com/} 
     \end{itemize}
-    Entre outros, alguns especialistas. 
+    Entre outros, incluindo alguns especializados.
     
     \espaco
     Não confie cegamente no trabalho de outra pessoa.  
     
     \espaco
     \centering
-    \textbf{\Large{Muito menos de uma IA.}}
+    \textbf{\Large{Muito menos no de uma IA.}}
 \end{frame}
 
 \begin{frame}{VSCodium: Copilotos de desenvolvimento}
     Extensões disponíveis no VSCode/VSCodium:
     \begin{itemize}
-        \item Github Copilot (nativo)
-        \item Gemini 
-        \item Codegpt
+        \item GitHub Copilot (nativo)
+        \item Gemini
+        \item CodeGPT
         \item Continue.dev + Ollama \textbf{Instalação local}     
     \end{itemize}
     \espaco
     Cuidados:
     \begin{itemize}
         \item Seu código é compartilhado com o dono do serviço (exceto se o serviço for seu).
-        \item É fácil consumir todos os limites de uso das versões gratúitas.
+        \item É fácil consumir todos os limites de uso das versões gratuitas.
     \end{itemize}
 \end{frame}
 
@@ -423,9 +423,9 @@ dpkg -i codium_1.108.20787_amd64.deb
         \begin{column}[t]{0.48\textwidth}
             
             \begin{itemize}
-                \item Pasta: \url{projeto/docs/fluxograma.drawio}   
-                \item Abrir com: \url{https://www.drawio.com/}          
-                \item VSCodium Draw.io Integration (Author: Hediet)
+                \item Arquivo: \url{projeto/docs/fluxograma.drawio}
+                \item Abrir com: \url{https://www.drawio.com/}
+                \item VSCodium Draw.io Integration (Autor: Hediet)
                 \item Tutorial de edição: \url{https://www.drawio.com/doc/getting-started-basic-flow-chart}
             \end{itemize}
         \end{column}
@@ -441,10 +441,10 @@ dpkg -i codium_1.108.20787_amd64.deb
     \begin{columns}[t]
         \begin{column}[t]{0.48\textwidth}
             \begin{itemize}
-                \item Pasta: \url{projeto/docs/diagrama_de_classes.drawio}  
-                \item Abrir com: \url{https://www.drawio.com/}          
-                \item VSCodium Draw.io Integration (Author: Hediet)
-                \item Tutorial de edição: \url{https://www.drawio.com/blog/uml-class-diagrams}s
+                \item Arquivo: \url{projeto/docs/diagrama_de_classes.drawio}
+                \item Abrir com: \url{https://www.drawio.com/}
+                \item VSCodium Draw.io Integration (Autor: Hediet)
+                \item Tutorial de edição: \url{https://www.drawio.com/blog/uml-class-diagrams}
             \end{itemize}
         \end{column}
         
@@ -506,11 +506,11 @@ dpkg -i codium_1.108.20787_amd64.deb
 pixi shell
     \end{minted}
     
-    Isso garante que o Python e as dependências corretas estejam ativas.
+    Isso garante que o Python e as dependências corretas estejam ativos.
     
     \vspace{0.3cm}
     
-    \textbf{Passo 3 — Configurar o Debug}
+    \textbf{Passo 3 — Configurar o Debug}\\
     No menu \textit{Run and Debug}, escolha:
     \begin{itemize}
         \item \textbf{Python File}
